@@ -1,0 +1,33 @@
+{
+  "name": "jsonld-signatures-merkle-proof-2019",
+  "version": "0.0.0-dev",
+  "description": "A jsonld signature implementation to support MerkleProof2019 verification in Verifiable Credential context",
+  "main": "src/MerkleProof2019.js",
+  "dependencies": {
+    "@blockcerts/cert-verifier-js": "^4.4.0",
+    "jsonld-signatures": "^6.0.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/blockchain-certificates/jsonld-signatures-merkle-proof-2019.git"
+  },
+  "keywords": [
+    "verifiable",
+    "credentials",
+    "blockcerts",
+    "merkle",
+    "tree",
+    "jsonld",
+    "signatures"
+  ],
+  "author": "Blockcerts",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/blockchain-certificates/jsonld-signatures-merkle-proof-2019/issues"
+  },
+  "homepage": "https://github.com/blockchain-certificates/jsonld-signatures-merkle-proof-2019#readme"
+}
