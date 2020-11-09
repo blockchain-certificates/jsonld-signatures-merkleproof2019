@@ -1,11 +1,11 @@
 import getTransactionId from '../../src/helpers/getTransactionId';
-import decodedProof from '../assertions/proof';
+import decodedProof, { assertionTransactionId } from '../assertions/proof';
 
 describe('getTransactionId test suite', function () {
   describe('given it is called with a proof', function () {
-    it('should return the transactionId', function () {
+    it('should return the assertionTransactionId', function () {
       const transactionId: string = getTransactionId(decodedProof);
-      expect(transactionId).toBe('0xfdc9956953feee55a356b828a81791c6b8f1c743cc918457b7dc6ccf810544a1');
+      expect(transactionId).toBe(assertionTransactionId);
     });
   });
 

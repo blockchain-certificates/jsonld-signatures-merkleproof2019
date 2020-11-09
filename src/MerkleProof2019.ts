@@ -1,6 +1,8 @@
 import { Decoder } from '@vaultie/lds-merkle-proof-2019';
 import jsigs from 'jsonld-signatures';
 import Proof from '../tests/models/Proof';
+import getTransactionId from './helpers/getTransactionId';
+import isTransactionIdValid from './inspectors/isTransactionIdValid';
 const { LinkedDataProof } = jsigs.suites;
 
 export class MerkleProof2019 extends LinkedDataProof {
@@ -18,6 +20,8 @@ export class MerkleProof2019 extends LinkedDataProof {
   public verificationMethod: string = '';
   public proof: Proof = null;
   public blockcertsDocument: any = null; // TODO: define blockcertsDocument type
+
+  private transactionId: string = '';
 
   constructor ({
     type = 'MerkleProof2019',
@@ -40,11 +44,17 @@ export class MerkleProof2019 extends LinkedDataProof {
   }
 
   async verifyProof (): Promise<any> { // TODO: define return type
+    this.validateTransactionId();
     const verificationStatus = {} as any;
     const verified = verificationStatus.status === 'success';
     return {
       verified,
       verificationStatus
     };
+  }
+
+  private validateTransactionId (): string {
+    this.transactionId = getTransactionId(this.proof);
+    return isTransactionIdValid(this.transactionId);
   }
 }

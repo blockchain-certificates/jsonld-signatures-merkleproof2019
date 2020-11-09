@@ -4,15 +4,15 @@ describe('Inspectors test suite', function () {
   describe('isTransactionIdValid method', function () {
     const errorMessage = 'Transaction id is invalid';
 
-    describe('given transactionId is a string with characters', function () {
-      it('should return the transactionId', function () {
+    describe('given assertionTransactionId is a string with characters', function () {
+      it('should return the assertionTransactionId', function () {
         const transactionIdFixture = 'transaction-id';
         const result = isTransactionIdValid(transactionIdFixture);
         expect(result).toBe(transactionIdFixture);
       });
     });
 
-    describe('given transactionId is not a string', function () {
+    describe('given assertionTransactionId is not a string', function () {
       it('throw an error', function () {
         const transactionIdFixture = 1 as any;
         expect(() => {
@@ -21,7 +21,7 @@ describe('Inspectors test suite', function () {
       });
     });
 
-    describe('given transactionId is an empty string', function () {
+    describe('given assertionTransactionId is an empty string', function () {
       it('throw an error', function () {
         const transactionIdFixture = '';
         expect(() => {
