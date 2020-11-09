@@ -7,8 +7,17 @@
     "@blockcerts/cert-verifier-js": "^4.4.0",
     "jsonld-signatures": "^6.0.0"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "@rollup/plugin-commonjs": "^16.0.0",
+    "@rollup/plugin-json": "^4.1.0",
+    "@rollup/plugin-node-resolve": "^10.0.0",
+    "@rollup/plugin-typescript": "^6.1.0",
+    "rollup": "^2.33.1",
+    "tslib": "^2.0.3",
+    "typescript": "^4.0.5"
+  },
   "scripts": {
+    "compile": "rollup -c",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
