@@ -1,6 +1,6 @@
 import { MerkleProof2019 } from '../src/MerkleProof2019';
 import fixtureProof from './fixtures/proof';
-import assertionProof from './assertions/proof';
+import decodedProof from './assertions/proof';
 
 describe('MerkleProof2019 test suite', function () {
   let instance;
@@ -18,6 +18,6 @@ describe('MerkleProof2019 test suite', function () {
   });
 
   it('decodes the CBOR encoded proofValue', function () {
-    expect(instance.proof).toEqual(assertionProof);
+    expect(instance.proof).toEqual(decodedProof);
   });
 });

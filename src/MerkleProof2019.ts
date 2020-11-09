@@ -1,5 +1,6 @@
 import { Decoder } from '@vaultie/lds-merkle-proof-2019';
 import jsigs from 'jsonld-signatures';
+import Proof from '../tests/models/Proof';
 const { LinkedDataProof } = jsigs.suites;
 
 export class MerkleProof2019 extends LinkedDataProof {
@@ -15,7 +16,7 @@ export class MerkleProof2019 extends LinkedDataProof {
   public type: string = 'MerkleProof2019';
   public issuer: any = null; // TODO: define issuer type
   public verificationMethod: string = '';
-  public proof: any = null; // TODO: define proof type
+  public proof: Proof = null;
   public blockcertsDocument: any = null; // TODO: define blockcertsDocument type
 
   constructor ({
