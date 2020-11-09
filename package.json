@@ -4,7 +4,6 @@
   "description": "A jsonld signature implementation to support MerkleProof2019 verification in Verifiable Credential context",
   "main": "src/MerkleProof2019.js",
   "dependencies": {
-    "@blockcerts/cert-verifier-js": "^4.4.0",
     "jsonld-signatures": "^6.0.0"
   },
   "devDependencies": {

@@ -1,4 +1,3 @@
-import { Certificate } from '@blockcerts/cert-verifier-js/lib';
 import { Decoder } from '@vaultie/lds-merkle-proof-2019';
 import jsigs from 'jsonld-signatures';
 const { LinkedDataProof } = jsigs.suites;
@@ -17,7 +16,7 @@ export class MerkleProof2019 extends LinkedDataProof {
   public issuer: any = null; // TODO: define issuer type
   public verificationMethod: string = '';
   public proof: any = null; // TODO: define proof type
-  public blockcertsCertificate: any = null;
+  public blockcertsDocument: any = null; // TODO: define blockcertsDocument type
 
   constructor ({
     type = 'MerkleProof2019',
@@ -36,11 +35,11 @@ export class MerkleProof2019 extends LinkedDataProof {
     this.verificationMethod = verificationMethod;
     const base58Decoder = new Decoder(proof.proofValue);
     this.proof = base58Decoder.decode();
-    this.blockcertsCertificate = new Certificate(blockcertsDocument);
+    this.blockcertsDocument = blockcertsDocument;
   }
 
   async verifyProof (): Promise<any> { // TODO: define return type
-    const verificationStatus = await this.blockcertsCertificate.verify();
+    const verificationStatus = {} as any;
     const verified = verificationStatus.status === 'success';
     return {
       verified,
