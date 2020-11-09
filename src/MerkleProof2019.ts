@@ -17,17 +17,18 @@ export class MerkleProof2019 extends LinkedDataProof {
   public issuer: any = null; // TODO: define issuer type
   public verificationMethod: string = '';
   public proof: any = null; // TODO: define proof type
+  public blockcertsCertificate: any = null;
 
-  constructor({
+  constructor ({
     type = 'MerkleProof2019',
     issuer = null,
     verificationMethod = '',
     proof = null,
     blockcertsDocument = null
   } = {}) {
-    super({type});
+    super({ type });
     // validate common options
-    if(verificationMethod !== undefined &&
+    if (verificationMethod !== undefined &&
       typeof verificationMethod !== 'string') {
       throw new TypeError('"verificationMethod" must be a URL string.');
     }
@@ -38,7 +39,7 @@ export class MerkleProof2019 extends LinkedDataProof {
     this.blockcertsCertificate = new Certificate(blockcertsDocument);
   }
 
-  async verifyProof () {
+  async verifyProof (): Promise<any> { // TODO: define return type
     const verificationStatus = await this.blockcertsCertificate.verify();
     const verified = verificationStatus.status === 'success';
     return {
