@@ -1,9 +1,16 @@
 import { Decoder } from '@vaultie/lds-merkle-proof-2019';
 import jsigs from 'jsonld-signatures';
-import Proof from '../tests/models/Proof';
+import Proof from './models/Proof';
 import getTransactionId from './helpers/getTransactionId';
 import isTransactionIdValid from './inspectors/isTransactionIdValid';
+import lookForTx from './helpers/lookForTx';
+import { TDefaultExplorersPerBlockchain } from './explorers';
+import { TExplorerFunctionsArray } from './explorers/explorer';
 const { LinkedDataProof } = jsigs.suites;
+
+export type TExplorerAPIs = TDefaultExplorersPerBlockchain & {
+  custom?: TExplorerFunctionsArray;
+};
 
 export class MerkleProof2019 extends LinkedDataProof {
   /**
@@ -56,5 +63,13 @@ export class MerkleProof2019 extends LinkedDataProof {
   private validateTransactionId (): string {
     this.transactionId = getTransactionId(this.proof);
     return isTransactionIdValid(this.transactionId);
+  }
+
+  private async fetchRemoteHash (): string {
+    await lookForTx({
+      transactionId: this.transactionId,
+      chain: this.chain.code,
+      explorerAPIs: this.explorerAPIs
+    });
   }
 }

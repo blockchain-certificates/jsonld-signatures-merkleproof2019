@@ -1,4 +1,4 @@
-import Proof from '../models/Proof';
+import Proof from '../../src/models/Proof';
 
 export const assertionTransactionId = '0xfdc9956953feee55a356b828a81791c6b8f1c743cc918457b7dc6ccf810544a1';
 

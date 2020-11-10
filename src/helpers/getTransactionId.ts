@@ -1,4 +1,4 @@
-import Proof from '../../tests/models/Proof';
+import Proof from '../models/Proof';
 
 export default function getTransactionId (proof: Proof = null): string {
   if (!proof) {
