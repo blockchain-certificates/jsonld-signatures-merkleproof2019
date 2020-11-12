@@ -1,16 +1,30 @@
 import { Decoder } from '@vaultie/lds-merkle-proof-2019';
 import jsigs from 'jsonld-signatures';
-import Proof from './models/Proof';
+import { DecodedProof, JSONLDProof } from './models/Proof';
 import getTransactionId from './helpers/getTransactionId';
 import isTransactionIdValid from './inspectors/isTransactionIdValid';
 import lookForTx from './helpers/lookForTx';
 import { TDefaultExplorersPerBlockchain } from './explorers';
 import { TExplorerFunctionsArray } from './explorers/explorer';
+import { ExplorerAPI } from './models/Explorers';
 const { LinkedDataProof } = jsigs.suites;
 
 export type TExplorerAPIs = TDefaultExplorersPerBlockchain & {
   custom?: TExplorerFunctionsArray;
 };
+
+export interface MerkleProof2019Options {
+  explorerAPIs?: ExplorerAPI[];
+}
+
+export interface MerkleProof2019API {
+  options?: MerkleProof2019Options;
+  type?: 'MerkleProof2019';
+  issuer?: any; // TODO: define issuer type
+  proof: JSONLDProof;
+  verificationMethod?: string;
+  blockcertsDocument?: any; // TODO: define blockcertsDocument type
+}
 
 export class MerkleProof2019 extends LinkedDataProof {
   /**
@@ -25,8 +39,9 @@ export class MerkleProof2019 extends LinkedDataProof {
   public type: string = 'MerkleProof2019';
   public issuer: any = null; // TODO: define issuer type
   public verificationMethod: string = '';
-  public proof: Proof = null;
+  public proof: DecodedProof = null;
   public blockcertsDocument: any = null; // TODO: define blockcertsDocument type
+  public explorerAPIs: ExplorerAPI[] = [];
 
   private transactionId: string = '';
 
@@ -35,8 +50,9 @@ export class MerkleProof2019 extends LinkedDataProof {
     issuer = null,
     verificationMethod = '',
     proof = null,
-    blockcertsDocument = null
-  } = {}) {
+    blockcertsDocument = null,
+    options = {}
+  }: MerkleProof2019API) {
     super({ type });
     // validate common options
     if (verificationMethod !== undefined &&
@@ -48,6 +64,7 @@ export class MerkleProof2019 extends LinkedDataProof {
     const base58Decoder = new Decoder(proof.proofValue);
     this.proof = base58Decoder.decode();
     this.blockcertsDocument = blockcertsDocument;
+    this.setOptions(options);
   }
 
   async verifyProof (): Promise<any> { // TODO: define return type
@@ -65,7 +82,7 @@ export class MerkleProof2019 extends LinkedDataProof {
     return isTransactionIdValid(this.transactionId);
   }
 
-  private async fetchRemoteHash (): string {
+  private async fetchRemoteHash (): Promise<void> {
     await lookForTx({
       transactionId: this.transactionId,
       chain: this.chain.code,

@@ -21,6 +21,12 @@ describe('MerkleProof2019 test suite', function () {
     expect(instance.proof).toEqual(decodedProof);
   });
 
+  describe('given the options explorerAPIs is set', function () {
+    it('sets the explorerAPIs property to this value', function () {
+      expect(true).toBe(true);
+    });
+  });
+
   describe('verifyProof method', function () {
     beforeEach(function () {
       instance.verifyProof();

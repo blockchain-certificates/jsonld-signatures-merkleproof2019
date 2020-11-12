@@ -14,7 +14,7 @@ describe('getTransactionId test suite', function () {
       it('should throw an error', function () {
         expect(() => {
           getTransactionId(null);
-        }).toThrow('Proof is not set');
+        }).toThrow('DecodedProof is not set');
       });
     });
 

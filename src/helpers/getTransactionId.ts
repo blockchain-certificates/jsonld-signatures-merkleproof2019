@@ -1,8 +1,8 @@
-import Proof from '../models/Proof';
+import { DecodedProof } from '../models/Proof';
 
-export default function getTransactionId (proof: Proof = null): string {
+export default function getTransactionId (proof: DecodedProof = null): string {
   if (!proof) {
-    throw new Error('Proof is not set');
+    throw new Error('DecodedProof is not set');
   }
   const { anchors } = proof;
   const anchor = anchors[0];

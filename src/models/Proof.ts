@@ -3,7 +3,15 @@ interface PathDefinition {
   right?: string;
 }
 
-export default interface Proof {
+export interface JSONLDProof {
+  type: string;
+  created: string;
+  proofValue: string;
+  proofPurpose: string;
+  verificationMethod: string;
+}
+
+export interface DecodedProof {
   anchors: string[];
   merkleRoot: string;
   targetHash: string;
