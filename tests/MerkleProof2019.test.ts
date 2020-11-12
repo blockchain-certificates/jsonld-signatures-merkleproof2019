@@ -1,8 +1,10 @@
+import sinon from 'sinon';
 import { MerkleProof2019, MerkleProof2019Options } from '../src/MerkleProof2019';
 import fixtureProof from './fixtures/proof';
 import decodedProof, { assertionTransactionId } from './assertions/proof';
 import { TransactionData } from '../src/models/TransactionData';
 import { BLOCKCHAINS } from '../src/constants/blockchains';
+import * as lookForTxFunctions from '../src/helpers/lookForTx';
 
 describe('MerkleProof2019 test suite', function () {
   let instance;
@@ -53,12 +55,28 @@ describe('MerkleProof2019 test suite', function () {
   });
 
   describe('verifyProof method', function () {
-    beforeEach(function () {
-      instance.verifyProof();
+    const fixtureTransactionData: TransactionData = {
+      remoteHash: 'a',
+      issuingAddress: 'b',
+      time: 'c',
+      revokedAddresses: ['d']
+    };
+
+    beforeEach(async function () {
+      sinon.stub(lookForTxFunctions, 'default').resolves(fixtureTransactionData);
+      await instance.verifyProof();
+    });
+
+    afterEach(function () {
+      sinon.restore();
     });
 
     it('should retrieve the transaction id', function () {
       expect(instance.transactionId).toBe(assertionTransactionId);
+    });
+
+    it('should retrieve the transaction data', function () {
+      expect(instance.txData).toEqual(fixtureTransactionData);
     });
   });
 

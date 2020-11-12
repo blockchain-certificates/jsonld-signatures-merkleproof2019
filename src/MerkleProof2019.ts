@@ -7,6 +7,7 @@ import lookForTx, { prepareExplorerAPIs } from './helpers/lookForTx';
 import { ExplorerAPI } from './models/Explorers';
 import { IBlockchainObject } from './constants/blockchains';
 import getChain from './helpers/getChain';
+import { TransactionData } from './models/TransactionData';
 const { LinkedDataProof } = jsigs.suites;
 
 export interface MerkleProof2019Options {
@@ -39,6 +40,7 @@ export class MerkleProof2019 extends LinkedDataProof {
   public blockcertsDocument: any = null; // TODO: define blockcertsDocument type
   public explorerAPIs: ExplorerAPI[] = [];
   public chain: IBlockchainObject;
+  public txData: TransactionData;
 
   private transactionId: string = '';
 
@@ -67,6 +69,7 @@ export class MerkleProof2019 extends LinkedDataProof {
 
   async verifyProof (): Promise<any> { // TODO: define return type
     this.validateTransactionId();
+    await this.fetchTransactionData();
     const verificationStatus = {} as any;
     const verified = verificationStatus.status === 'success';
     return {
@@ -88,8 +91,8 @@ export class MerkleProof2019 extends LinkedDataProof {
     return isTransactionIdValid(this.transactionId);
   }
 
-  private async fetchRemoteHash (): Promise<void> {
-    await lookForTx({
+  private async fetchTransactionData (): Promise<void> {
+    this.txData = await lookForTx({
       transactionId: this.transactionId,
       chain: this.chain.code,
       explorerAPIs: prepareExplorerAPIs(this.explorerAPIs)
