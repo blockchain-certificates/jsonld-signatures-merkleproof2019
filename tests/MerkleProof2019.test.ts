@@ -2,6 +2,7 @@ import { MerkleProof2019, MerkleProof2019Options } from '../src/MerkleProof2019'
 import fixtureProof from './fixtures/proof';
 import decodedProof, { assertionTransactionId } from './assertions/proof';
 import { TransactionData } from '../src/models/TransactionData';
+import { BLOCKCHAINS } from '../src/constants/blockchains';
 
 describe('MerkleProof2019 test suite', function () {
   let instance;
@@ -26,6 +27,10 @@ describe('MerkleProof2019 test suite', function () {
     it('sets the explorerAPIs property as an empty array', function () {
       expect(instance.explorerAPIs).toEqual([]);
     });
+  });
+
+  it('should retrieve the chain', function () {
+    expect(instance.chain).toEqual(BLOCKCHAINS.ethropst);
   });
 
   describe('given the options explorerAPIs is set', function () {

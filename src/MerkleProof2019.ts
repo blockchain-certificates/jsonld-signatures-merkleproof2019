@@ -5,6 +5,8 @@ import getTransactionId from './helpers/getTransactionId';
 import isTransactionIdValid from './inspectors/isTransactionIdValid';
 import lookForTx, { prepareExplorerAPIs } from './helpers/lookForTx';
 import { ExplorerAPI } from './models/Explorers';
+import { IBlockchainObject } from './constants/blockchains';
+import getChain from './helpers/getChain';
 const { LinkedDataProof } = jsigs.suites;
 
 export interface MerkleProof2019Options {
@@ -36,6 +38,7 @@ export class MerkleProof2019 extends LinkedDataProof {
   public proof: DecodedProof = null;
   public blockcertsDocument: any = null; // TODO: define blockcertsDocument type
   public explorerAPIs: ExplorerAPI[] = [];
+  public chain: IBlockchainObject;
 
   private transactionId: string = '';
 
@@ -59,6 +62,7 @@ export class MerkleProof2019 extends LinkedDataProof {
     this.proof = base58Decoder.decode();
     this.blockcertsDocument = blockcertsDocument;
     this.setOptions(options);
+    this.getChain();
   }
 
   async verifyProof (): Promise<any> { // TODO: define return type
@@ -69,6 +73,10 @@ export class MerkleProof2019 extends LinkedDataProof {
       verified,
       verificationStatus
     };
+  }
+
+  private getChain (): void {
+    this.chain = getChain(this.proof);
   }
 
   private setOptions (options: MerkleProof2019Options): void {
