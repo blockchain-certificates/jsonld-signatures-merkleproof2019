@@ -12,7 +12,7 @@ export default async function PromiseProperRace (promises: Array<Promise<any>>, 
     async (p, index): Promise<number | void> => p
       .then((): number => index)
       .catch((err): void => {
-        console.error(err);
+        // console.error(err);
         throw new Error(`${index}`);
       }));
 

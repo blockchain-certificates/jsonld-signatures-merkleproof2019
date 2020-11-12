@@ -3,15 +3,9 @@ import jsigs from 'jsonld-signatures';
 import { DecodedProof, JSONLDProof } from './models/Proof';
 import getTransactionId from './helpers/getTransactionId';
 import isTransactionIdValid from './inspectors/isTransactionIdValid';
-import lookForTx from './helpers/lookForTx';
-import { TDefaultExplorersPerBlockchain } from './explorers';
-import { TExplorerFunctionsArray } from './explorers/explorer';
+import lookForTx, { prepareExplorerAPIs } from './helpers/lookForTx';
 import { ExplorerAPI } from './models/Explorers';
 const { LinkedDataProof } = jsigs.suites;
-
-export type TExplorerAPIs = TDefaultExplorersPerBlockchain & {
-  custom?: TExplorerFunctionsArray;
-};
 
 export interface MerkleProof2019Options {
   explorerAPIs?: ExplorerAPI[];
@@ -77,6 +71,10 @@ export class MerkleProof2019 extends LinkedDataProof {
     };
   }
 
+  private setOptions (options: MerkleProof2019Options): void {
+    this.explorerAPIs = options.explorerAPIs || [];
+  }
+
   private validateTransactionId (): string {
     this.transactionId = getTransactionId(this.proof);
     return isTransactionIdValid(this.transactionId);
@@ -86,7 +84,7 @@ export class MerkleProof2019 extends LinkedDataProof {
     await lookForTx({
       transactionId: this.transactionId,
       chain: this.chain.code,
-      explorerAPIs: this.explorerAPIs
+      explorerAPIs: prepareExplorerAPIs(this.explorerAPIs)
     });
   }
 }

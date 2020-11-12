@@ -2,8 +2,10 @@ import { SupportedChains, BLOCKCHAINS } from '../constants/blockchains';
 import CONFIG from '../constants/config';
 import PromiseProperRace from './promiseProperRace';
 import { TransactionData } from '../models/TransactionData';
-import { TExplorerFunctionsArray } from '../explorers/explorer';
-import { TExplorerAPIs } from '../MerkleProof2019';
+import { explorerFactory, TExplorerFunctionsArray } from '../explorers/explorer';
+import { getDefaultExplorers, TExplorerAPIs } from '../explorers';
+import { ExplorerAPI } from '../models/Explorers';
+import ensureExplorerAPIValidity from '../utils/ensureExplorerAPIValidity';
 
 export function getExplorersByChain (chain: SupportedChains, explorerAPIs: TExplorerAPIs): TExplorerFunctionsArray {
   switch (chain) {
@@ -52,7 +54,7 @@ type PromiseRaceQueue = TExplorerFunctionsArray[];
 
 function buildQueuePromises (queue, transactionId, chain): any[] {
   if (CONFIG.MinimumBlockchainExplorers < 0 || CONFIG.MinimumBlockchainExplorers > queue.length) {
-    throw new Error('Invalid configuration for explorer lookup');
+    throw new Error('Invalid application configuration; check the CONFIG.MinimumBlockchainExplorers configuration value');
   }
 
   const promises: any[] = [];
@@ -75,7 +77,7 @@ function buildPromiseRacesQueue (
 
   const apisCount: number = defaultAPIs.concat(customAPIs).length;
   if (CONFIG.MinimumBlockchainExplorers < 0 || CONFIG.MinimumBlockchainExplorers > apisCount) {
-    throw new Error('Invalid configuration for explorer lookup');
+    throw new Error('Invalid application configuration; check the CONFIG.MinimumBlockchainExplorers configuration value');
   }
 
   return promiseRaceQueue;
@@ -92,6 +94,16 @@ async function runQueueByIndex (queues, index: number, transactionId, chain): Pr
     }
     throw err;
   }
+}
+
+export function prepareExplorerAPIs (customExplorerAPIs: ExplorerAPI[]): TExplorerAPIs {
+  const explorerAPIs: TExplorerAPIs = getDefaultExplorers(customExplorerAPIs);
+
+  if (ensureExplorerAPIValidity(customExplorerAPIs)) {
+    explorerAPIs.custom = explorerFactory(customExplorerAPIs);
+  }
+
+  return explorerAPIs;
 }
 
 export default async function lookForTx (

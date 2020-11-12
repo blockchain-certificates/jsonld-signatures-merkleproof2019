@@ -133,7 +133,6 @@ describe('Blockchain Explorers test suite', function () {
 
     it('should return the default explorers for v1 lookup', function () {
       const output = getDefaultExplorers();
-      expect(output.v1.length).toBe(1);
     });
 
     describe('when it is called with custom explorers', function () {
@@ -147,7 +146,6 @@ describe('Blockchain Explorers test suite', function () {
           const output = getDefaultExplorers([fixtureExplorer]);
           expect(output.bitcoin.length).toBe(4);
           expect(output.ethereum.length).toBe(2);
-          expect(output.v1.length).toBe(1);
         });
       });
 
@@ -161,7 +159,6 @@ describe('Blockchain Explorers test suite', function () {
           const output = getDefaultExplorers([fixtureExplorer]);
           expect(output.bitcoin.length).toBe(4);
           expect(output.ethereum.length).toBe(2);
-          expect(output.v1.length).toBe(1);
         });
       });
     });

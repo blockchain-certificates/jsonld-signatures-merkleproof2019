@@ -1,6 +1,5 @@
 import {
   BitcoinTransactionAPIArray as BitcoinExplorers,
-  BlockchainExplorersWithSpentOutputInfo,
   EthereumTransactionAPIArray as EthereumExplorers,
   explorerFactory,
   TExplorerFunctionsArray
@@ -11,8 +10,11 @@ import { ExplorerAPI } from '../models/Explorers';
 export interface TDefaultExplorersPerBlockchain {
   bitcoin: TExplorerFunctionsArray;
   ethereum: TExplorerFunctionsArray;
-  v1: TExplorerFunctionsArray;
 }
+
+export type TExplorerAPIs = TDefaultExplorersPerBlockchain & {
+  custom?: TExplorerFunctionsArray;
+};
 
 function cleanupExplorerAPIs (explorerAPIs: ExplorerAPI[], indexes: number[]): void {
   indexes.forEach(index => explorerAPIs.splice(index, 1)); // remove modified explorer to avoid setting them in the custom option later
@@ -62,7 +64,6 @@ export function overwriteDefaultExplorers (explorerAPIs: ExplorerAPI[] = [], def
 export function getDefaultExplorers (explorerAPIs?: ExplorerAPI[]): TDefaultExplorersPerBlockchain {
   return {
     bitcoin: explorerFactory(overwriteDefaultExplorers(explorerAPIs, BitcoinExplorers)),
-    ethereum: explorerFactory(overwriteDefaultExplorers(explorerAPIs, EthereumExplorers)),
-    v1: explorerFactory(overwriteDefaultExplorers(explorerAPIs, BlockchainExplorersWithSpentOutputInfo, true))
+    ethereum: explorerFactory(overwriteDefaultExplorers(explorerAPIs, EthereumExplorers))
   };
 }
