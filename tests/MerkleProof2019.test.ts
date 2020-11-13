@@ -5,12 +5,13 @@ import decodedProof, { assertionTransactionId } from './assertions/proof';
 import { TransactionData } from '../src/models/TransactionData';
 import { BLOCKCHAINS } from '../src/constants/blockchains';
 import * as lookForTxFunctions from '../src/helpers/lookForTx';
+import blockcertsV3Fixture from './fixtures/blockcerts-v3';
 
 describe('MerkleProof2019 test suite', function () {
   let instance;
 
   beforeEach(function () {
-    instance = new MerkleProof2019({ proof: fixtureProof });
+    instance = new MerkleProof2019({ proof: fixtureProof, document: blockcertsV3Fixture });
   });
 
   afterEach(function () {
@@ -77,6 +78,10 @@ describe('MerkleProof2019 test suite', function () {
 
     it('should retrieve the transaction data', function () {
       expect(instance.txData).toEqual(fixtureTransactionData);
+    });
+
+    it('should compute the local document\'s hash', function () {
+      expect(instance.localDocumentHash).toBe('5a44e794431569f4b50a44336c3d445085f09ac5785e38e133385fb486ada9c5');
     });
   });
 

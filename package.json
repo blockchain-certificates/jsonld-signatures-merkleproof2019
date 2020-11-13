@@ -5,7 +5,9 @@
   "main": "src/MerkleProof2019.js",
   "dependencies": {
     "@vaultie/lds-merkle-proof-2019": "0.0.8",
+    "jsonld": "^1.8.1",
     "jsonld-signatures": "^6.0.0",
+    "sha256": "^0.2.0",
     "xmlhttprequest": "^1.8.0"
   },
   "devDependencies": {
