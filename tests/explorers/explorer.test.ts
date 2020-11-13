@@ -131,10 +131,6 @@ describe('Blockchain Explorers test suite', function () {
       expect(output.ethereum.length).toBe(2);
     });
 
-    it('should return the default explorers for v1 lookup', function () {
-      const output = getDefaultExplorers();
-    });
-
     describe('when it is called with custom explorers', function () {
       describe('and one of the custom explorers matches one of the default explorers', function () {
         it('should return the same expected amount of default explorers', function () {
