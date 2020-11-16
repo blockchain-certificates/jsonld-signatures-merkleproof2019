@@ -10,6 +10,7 @@ import getChain from './helpers/getChain';
 import { TransactionData } from './models/TransactionData';
 import computeLocalHash from './inspectors/computeLocalHash';
 import ensureHashesEqual from './inspectors/ensureHashesEqual';
+import ensureMerkleRootEqual from './inspectors/ensureMerkleRootEqual';
 const { LinkedDataProof } = jsigs.suites;
 
 export interface MerkleProof2019Options {
@@ -75,12 +76,17 @@ export class MerkleProof2019 extends LinkedDataProof {
     await this.computeLocalHash();
     await this.fetchTransactionData();
     this.compareHashes();
+    this.confirmMerkleRoot();
     const verificationStatus = {} as any;
     const verified = verificationStatus.status === 'success';
     return {
       verified,
       verificationStatus
     };
+  }
+
+  private confirmMerkleRoot (): void {
+    ensureMerkleRootEqual(this.proof.merkleRoot, this.txData.remoteHash);
   }
 
   private compareHashes (): void {

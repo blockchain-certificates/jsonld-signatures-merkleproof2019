@@ -1,17 +1,11 @@
 import sinon from 'sinon';
-import alteredBlockcertsV3Fixture, { documentHash } from '../fixtures/altered-blockcerts-v3';
+import alteredBlockcertsV3Fixture from '../fixtures/altered-blockcerts-v3';
 import { MerkleProof2019 } from '../../src/MerkleProof2019';
 import fixtureProof from '../fixtures/proof';
-import { TransactionData } from '../../src/models/TransactionData';
 import * as lookForTxFunctions from '../../src/helpers/lookForTx';
+import fixtureTransactionData from '../fixtures/transactionData';
 
 describe('when the process fails', function () {
-  const fixtureTransactionData: TransactionData = {
-    remoteHash: documentHash,
-    issuingAddress: 'b',
-    time: 'c',
-    revokedAddresses: ['d']
-  };
   let instance;
 
   beforeEach(function () {

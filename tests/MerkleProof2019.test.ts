@@ -6,6 +6,7 @@ import { TransactionData } from '../src/models/TransactionData';
 import { BLOCKCHAINS } from '../src/constants/blockchains';
 import * as lookForTxFunctions from '../src/helpers/lookForTx';
 import blockcertsV3Fixture, { documentHash } from './fixtures/blockcerts-v3';
+import fixtureTransactionData from './fixtures/transactionData';
 
 describe('MerkleProof2019 test suite', function () {
   let instance;
@@ -42,12 +43,7 @@ describe('MerkleProof2019 test suite', function () {
         explorerAPIs: [{
           serviceURL: 'https://explorer-example.com',
           priority: 0,
-          parsingFunction: (): TransactionData => ({
-            remoteHash: 'a',
-            issuingAddress: 'b',
-            time: 'c',
-            revokedAddresses: ['d']
-          })
+          parsingFunction: (): TransactionData => fixtureTransactionData
         }]
       };
       const instance = new MerkleProof2019({ proof: fixtureProof, options: fixtureOptions });
@@ -57,13 +53,6 @@ describe('MerkleProof2019 test suite', function () {
 
   describe('verifyProof method', function () {
     describe('when the process is successful', function () {
-      const fixtureTransactionData: TransactionData = {
-        remoteHash: documentHash,
-        issuingAddress: 'b',
-        time: 'c',
-        revokedAddresses: ['d']
-      };
-
       beforeEach(async function () {
         sinon.stub(lookForTxFunctions, 'default').resolves(fixtureTransactionData);
         await instance.verifyProof();
