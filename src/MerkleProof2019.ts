@@ -9,6 +9,7 @@ import { IBlockchainObject } from './constants/blockchains';
 import getChain from './helpers/getChain';
 import { TransactionData } from './models/TransactionData';
 import computeLocalHash from './inspectors/computeLocalHash';
+import ensureHashesEqual from './inspectors/ensureHashesEqual';
 const { LinkedDataProof } = jsigs.suites;
 
 export interface MerkleProof2019Options {
@@ -73,12 +74,17 @@ export class MerkleProof2019 extends LinkedDataProof {
     this.validateTransactionId();
     await this.computeLocalHash();
     await this.fetchTransactionData();
+    this.compareHashes();
     const verificationStatus = {} as any;
     const verified = verificationStatus.status === 'success';
     return {
       verified,
       verificationStatus
     };
+  }
+
+  private compareHashes (): void {
+    ensureHashesEqual(this.localDocumentHash, this.proof.targetHash);
   }
 
   private async computeLocalHash (): Promise<void> {

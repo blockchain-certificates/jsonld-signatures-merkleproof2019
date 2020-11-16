@@ -1,4 +1,4 @@
-const blockcertsV3Fixture = {
+const alteredBlockcertsV3Fixture = {
   '@context': [
     'https://www.w3.org/2018/credentials/v1',
     'https://www.blockcerts.org/schema/3.0-alpha/context.json',
@@ -9,7 +9,7 @@ const blockcertsV3Fixture = {
     'VerifiableCredential',
     'BlockcertsCredential'
   ],
-  issuer: 'https://raw.githubusercontent.com/AnthonyRonning/https-github.com-labnol-files/master/issuer-eth.json',
+  issuer: 'a-different-issuer',
   issuanceDate: '2010-01-01T19:33:24Z',
   credentialSubject: {
     id: 'did:key:z6Mkq3L1jEDDZ5R7eT523FMLxC4k6MCpzqD7ff1CrkWpoJwM',
@@ -27,4 +27,4 @@ const blockcertsV3Fixture = {
 };
 
 export const documentHash = '5a44e794431569f4b50a44336c3d445085f09ac5785e38e133385fb486ada9c5';
-export default blockcertsV3Fixture;
+export default alteredBlockcertsV3Fixture;

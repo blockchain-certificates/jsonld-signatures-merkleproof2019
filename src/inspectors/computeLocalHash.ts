@@ -56,6 +56,7 @@ export default async function computeLocalHash (document: any): Promise<string> 
   }
 
   return new Promise((resolve, reject) => {
+    console.log('about to');
     jsonld.normalize(theDocument, normalizeArgs, (err, normalized) => {
       const isErr = !!err;
       if (isErr) {

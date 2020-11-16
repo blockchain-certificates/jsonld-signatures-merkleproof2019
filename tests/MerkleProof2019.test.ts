@@ -5,7 +5,7 @@ import decodedProof, { assertionTransactionId } from './assertions/proof';
 import { TransactionData } from '../src/models/TransactionData';
 import { BLOCKCHAINS } from '../src/constants/blockchains';
 import * as lookForTxFunctions from '../src/helpers/lookForTx';
-import blockcertsV3Fixture from './fixtures/blockcerts-v3';
+import blockcertsV3Fixture, { documentHash } from './fixtures/blockcerts-v3';
 
 describe('MerkleProof2019 test suite', function () {
   let instance;
@@ -56,32 +56,34 @@ describe('MerkleProof2019 test suite', function () {
   });
 
   describe('verifyProof method', function () {
-    const fixtureTransactionData: TransactionData = {
-      remoteHash: 'a',
-      issuingAddress: 'b',
-      time: 'c',
-      revokedAddresses: ['d']
-    };
+    describe('when the process is successful', function () {
+      const fixtureTransactionData: TransactionData = {
+        remoteHash: documentHash,
+        issuingAddress: 'b',
+        time: 'c',
+        revokedAddresses: ['d']
+      };
 
-    beforeEach(async function () {
-      sinon.stub(lookForTxFunctions, 'default').resolves(fixtureTransactionData);
-      await instance.verifyProof();
-    });
+      beforeEach(async function () {
+        sinon.stub(lookForTxFunctions, 'default').resolves(fixtureTransactionData);
+        await instance.verifyProof();
+      });
 
-    afterEach(function () {
-      sinon.restore();
-    });
+      afterEach(function () {
+        sinon.restore();
+      });
 
-    it('should retrieve the transaction id', function () {
-      expect(instance.transactionId).toBe(assertionTransactionId);
-    });
+      it('should retrieve the transaction id', function () {
+        expect(instance.transactionId).toBe(assertionTransactionId);
+      });
 
-    it('should retrieve the transaction data', function () {
-      expect(instance.txData).toEqual(fixtureTransactionData);
-    });
+      it('should retrieve the transaction data', function () {
+        expect(instance.txData).toEqual(fixtureTransactionData);
+      });
 
-    it('should compute the local document\'s hash', function () {
-      expect(instance.localDocumentHash).toBe('5a44e794431569f4b50a44336c3d445085f09ac5785e38e133385fb486ada9c5');
+      it('should compute the local document\'s hash', function () {
+        expect(instance.localDocumentHash).toBe(documentHash);
+      });
     });
   });
 
