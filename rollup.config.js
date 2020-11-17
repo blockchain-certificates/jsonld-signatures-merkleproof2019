@@ -2,6 +2,7 @@ import commonjs from '@rollup/plugin-commonjs';
 import json from '@rollup/plugin-json';
 import resolve from '@rollup/plugin-node-resolve';
 import typescript from '@rollup/plugin-typescript';
+import builtins from 'rollup-plugin-node-builtins';
 
 export default {
   input: 'src/MerkleProof2019.ts',
@@ -23,8 +24,9 @@ export default {
       preferBuiltins: true,
       extensions: ['.js', '.json']
     }),
-    json(),
     typescript(),
-    commonjs()
+    commonjs({ extensions: ['.js', '.ts'] }),
+    json(),
+    builtins()
   ]
 };
