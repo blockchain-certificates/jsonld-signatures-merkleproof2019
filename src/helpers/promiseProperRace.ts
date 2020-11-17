@@ -8,13 +8,10 @@ export default async function PromiseProperRace (promises: Array<Promise<any>>, 
     throw new Error('Could not retrieve tx data');
   }
 
-  const indexPromises = promises.map(
-    async (p, index): Promise<number | void> => p
-      .then((): number => index)
-      .catch((err): void => {
-        // console.error(err);
-        throw new Error(`${index}`);
-      }));
+  const indexPromises = promises.map((p, index) => p.then(() => index).catch((err) => {
+    // console.error(err);
+    throw index;
+  }));
 
   return Promise.race(indexPromises).then((index: number) => {
     const p = promises.splice(index, 1)[0];
