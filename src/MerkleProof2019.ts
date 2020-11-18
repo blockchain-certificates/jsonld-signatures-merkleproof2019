@@ -29,6 +29,11 @@ export interface MerkleProof2019API {
   document: VCDocument;
 }
 
+export interface MerkleProof2019VerificationResult {
+  verified: boolean;
+  error?: string;
+}
+
 export class MerkleProof2019 extends LinkedDataProof {
   /**
    * @param type {string} Provided by subclass.
@@ -91,17 +96,23 @@ export class MerkleProof2019 extends LinkedDataProof {
     this.proof = base58Decoder.decode();
   }
 
-  async verifyProof (): Promise<any> { // TODO: define return type
-    this.validateTransactionId();
-    await this.computeLocalHash();
-    await this.fetchTransactionData();
-    this.compareHashes();
-    this.confirmMerkleRoot();
-    const verificationStatus = {} as any;
-    const verified = verificationStatus.status === 'success';
+  async verifyProof (): Promise<MerkleProof2019VerificationResult> { // TODO: define return type
+    let verified: boolean = false;
+    let error: string = '';
+    try {
+      this.validateTransactionId();
+      await this.computeLocalHash();
+      await this.fetchTransactionData();
+      this.compareHashes();
+      this.confirmMerkleRoot();
+      verified = true;
+    } catch (e) {
+      verified = false;
+      error = e.message;
+    }
     return {
       verified,
-      verificationStatus
+      error
     };
   }
 
