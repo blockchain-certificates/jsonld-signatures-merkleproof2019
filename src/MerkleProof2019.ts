@@ -17,13 +17,16 @@ export interface MerkleProof2019Options {
   explorerAPIs?: ExplorerAPI[];
 }
 
+export interface VCDocument {
+  proof: JSONLDProof;
+}
+
 export interface MerkleProof2019API {
   options?: MerkleProof2019Options;
   type?: 'MerkleProof2019';
   issuer?: any; // TODO: define issuer type
-  proof: JSONLDProof;
   verificationMethod?: string;
-  document?: any; // TODO: define document type
+  document: VCDocument;
 }
 
 export class MerkleProof2019 extends LinkedDataProof {
@@ -40,7 +43,7 @@ export class MerkleProof2019 extends LinkedDataProof {
   public issuer: any = null; // TODO: define issuer type
   public verificationMethod: string = '';
   public proof: DecodedProof = null;
-  public document: any = null; // TODO: define document type
+  public document: VCDocument = null;
   public explorerAPIs: ExplorerAPI[] = [];
   public chain: IBlockchainObject;
   public txData: TransactionData;
@@ -52,7 +55,6 @@ export class MerkleProof2019 extends LinkedDataProof {
     type = 'MerkleProof2019',
     issuer = null,
     verificationMethod = '',
-    proof = null,
     document = null,
     options = {}
   }: MerkleProof2019API) {
@@ -62,13 +64,31 @@ export class MerkleProof2019 extends LinkedDataProof {
       typeof verificationMethod !== 'string') {
       throw new TypeError('"verificationMethod" must be a URL string.');
     }
+
+    if (!document) {
+      throw new Error('A document signed by MerkleProof2019 is required for the verification process.');
+    }
+
     this.issuer = issuer;
     this.verificationMethod = verificationMethod;
-    const base58Decoder = new Decoder(proof.proofValue);
-    this.proof = base58Decoder.decode();
     this.document = document;
+    this.setProof();
     this.setOptions(options);
     this.getChain();
+  }
+
+  setProof (): void {
+    const { proof } = this.document;
+    if (!proof) {
+      throw new Error('The passed document is not signed.');
+    }
+
+    if (proof.type !== this.type) {
+      throw new Error(`Incorrect proof type passed for verification. Expected: ${this.type}, Received: ${proof.type}`);
+    }
+
+    const base58Decoder = new Decoder(proof.proofValue);
+    this.proof = base58Decoder.decode();
   }
 
   async verifyProof (): Promise<any> { // TODO: define return type
