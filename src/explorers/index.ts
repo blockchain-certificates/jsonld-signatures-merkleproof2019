@@ -6,6 +6,7 @@ import {
 } from './explorer';
 import { TRANSACTION_APIS } from '../constants/api';
 import { ExplorerAPI } from '../models/Explorers';
+import { ethereumRPCParsingFunction } from './rpc/ethereum';
 
 export interface TDefaultExplorersPerBlockchain {
   bitcoin: TExplorerFunctionsArray;
@@ -66,4 +67,23 @@ export function getDefaultExplorers (explorerAPIs?: ExplorerAPI[]): TDefaultExpl
     bitcoin: explorerFactory(overwriteDefaultExplorers(explorerAPIs, BitcoinExplorers)),
     ethereum: explorerFactory(overwriteDefaultExplorers(explorerAPIs, EthereumExplorers))
   };
+}
+
+function rpcFactory (explorerAPIs: ExplorerAPI[]) {
+  return explorerAPIs.map(explorerAPI => (
+    {
+      getTxData: async (transactionId) => await explorerAPI.parsingFunction(explorerAPI.serviceURL, transactionId),
+      priority: explorerAPI.priority
+    }
+  ));
+}
+
+export function getRPCExplorers (explorerAPIs?: ExplorerAPI[]) {
+  return {
+    ethereum: rpcFactory([{
+      serviceURL: 'https://rpc-mumbai.maticvigil.com/',
+      priority: 0,
+      parsingFunction: ethereumRPCParsingFunction
+    }])
+  }
 }

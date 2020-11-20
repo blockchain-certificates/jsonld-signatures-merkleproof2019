@@ -2,7 +2,7 @@ import { XMLHttpRequest as xhrPolyfill } from 'xmlhttprequest';
 
 export interface RequestParameters {
   url: string;
-  method?: 'GET';
+  method?: 'GET' | 'POST';
   body?: any;
 }
 

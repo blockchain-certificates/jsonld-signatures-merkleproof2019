@@ -88,16 +88,17 @@ export class MerkleProof2019 extends LinkedDataProof {
       throw new Error('The passed document is not signed.');
     }
 
-    if (proof.type !== this.type) {
-      throw new Error(`Incorrect proof type passed for verification. Expected: ${this.type}, Received: ${proof.type}`);
-    }
-
     const base58Decoder = new Decoder(proof.proofValue);
     this.proof = base58Decoder.decode();
   }
 
-  async verifyProof (): Promise<MerkleProof2019VerificationResult> {
-    let verified: boolean = false;
+  // DO NOT PUT THIS IN PROD
+  matchProof ({ proof }): boolean {
+    return proof.type === this.type || proof.type === 'EcdsaSecp256k1Signature2019';
+  }
+
+  async verifyProof (): Promise<MerkleProof2019VerificationResult> { // TODO: define return type
+    let verified: boolean;
     let error: string = '';
     try {
       this.validateTransactionId();
@@ -144,7 +145,7 @@ export class MerkleProof2019 extends LinkedDataProof {
   private async fetchTransactionData (): Promise<void> {
     this.txData = await lookForTx({
       transactionId: this.transactionId,
-      chain: this.chain.code,
+      chain: this.chain?.code,
       explorerAPIs: prepareExplorerAPIs(this.explorerAPIs)
     });
   }
