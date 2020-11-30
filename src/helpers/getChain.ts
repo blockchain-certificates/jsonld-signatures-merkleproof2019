@@ -19,8 +19,6 @@ function getMerkleRoot2019Chain (anchor): IBlockchainObject {
     const network = dataArray[chainIndex + 1];
     const chainCodeProofValue = supportedChainsMap[chainCode].chainName.toLowerCase() + capitalize(network);
     return getChainObject(chainCodeProofValue);
-  } else {
-    throw new Error('Unsupported anchoring chain.');
   }
 }
 

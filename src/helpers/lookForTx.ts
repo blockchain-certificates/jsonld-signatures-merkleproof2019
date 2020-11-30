@@ -3,7 +3,7 @@ import CONFIG from '../constants/config';
 import PromiseProperRace from './promiseProperRace';
 import { TransactionData } from '../models/TransactionData';
 import { explorerFactory, TExplorerFunctionsArray } from '../explorers/explorer';
-import { getDefaultExplorers, TExplorerAPIs } from '../explorers';
+import { getDefaultExplorers, getRPCExplorers, TExplorerAPIs } from '../explorers';
 import { ExplorerAPI } from '../models/Explorers';
 import ensureExplorerAPIValidity from '../utils/ensureExplorerAPIValidity';
 
@@ -18,9 +18,12 @@ export function getExplorersByChain (chain: SupportedChains, explorerAPIs: TExpl
     case BLOCKCHAINS[SupportedChains.Ethropst].code:
     case BLOCKCHAINS[SupportedChains.Ethrinkeby].code:
       return explorerAPIs.ethereum;
+    default:
+      if (!explorerAPIs.custom.length) {
+        throw new Error('Chain is not natively supported. Use custom explorers to retrieve tx data.');
+      }
+      return explorerAPIs.custom;
   }
-
-  throw new Error('Chain is not natively supported. Use custom explorers to retrieve tx data.');
 }
 
 // eslint-disable-next-line @typescript-eslint/promise-function-async
@@ -97,13 +100,14 @@ async function runQueueByIndex (queues, index: number, transactionId, chain): Pr
 }
 
 export function prepareExplorerAPIs (customExplorerAPIs: ExplorerAPI[]): TExplorerAPIs {
-  const explorerAPIs: TExplorerAPIs = getDefaultExplorers(customExplorerAPIs);
+  // const explorerAPIs: TExplorerAPIs = getDefaultExplorers(customExplorerAPIs);
+  //
+  // if (ensureExplorerAPIValidity(customExplorerAPIs)) {
+  //   explorerAPIs.custom = explorerFactory(customExplorerAPIs);
+  // }
 
-  if (ensureExplorerAPIValidity(customExplorerAPIs)) {
-    explorerAPIs.custom = explorerFactory(customExplorerAPIs);
-  }
-
-  return explorerAPIs;
+  const explorerAPIs = getRPCExplorers(customExplorerAPIs);
+  return explorerAPIs as any;
 }
 
 export default async function lookForTx (

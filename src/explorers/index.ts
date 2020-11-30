@@ -83,8 +83,8 @@ function rpcFactory (explorerAPIs: ExplorerAPI[]) {
   ));
 }
 
-export function getRPCExplorers (explorerAPIs?: ExplorerAPI[]) {
+export function getRPCExplorers (customExplorerAPIs?: ExplorerAPI[]) {
   return {
-    ethereum: rpcFactory(explorerAPIs)
+    custom: rpcFactory(customExplorerAPIs)
   }
 }
