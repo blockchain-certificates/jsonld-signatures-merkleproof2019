@@ -100,14 +100,18 @@ async function runQueueByIndex (queues, index: number, transactionId, chain): Pr
 }
 
 export function prepareExplorerAPIs (customExplorerAPIs: ExplorerAPI[]): TExplorerAPIs {
-  // const explorerAPIs: TExplorerAPIs = getDefaultExplorers(customExplorerAPIs);
-  //
-  // if (ensureExplorerAPIValidity(customExplorerAPIs)) {
-  //   explorerAPIs.custom = explorerFactory(customExplorerAPIs);
-  // }
+  const { bitcoin, ethereum } = getDefaultExplorers(customExplorerAPIs);
+  const { custom: rpcCustomExplorers } = getRPCExplorers(customExplorerAPIs.filter(e => e.apiType === 'rpc'));
+  const restCustomExplorers = explorerFactory(customExplorerAPIs.filter(e => e.apiType === 'rest'));
 
-  const explorerAPIs = getRPCExplorers(customExplorerAPIs);
-  return explorerAPIs as any;
+  return {
+    bitcoin,
+    ethereum,
+    custom: [
+      ...rpcCustomExplorers,
+      ...restCustomExplorers
+    ]
+  };
 }
 
 export default async function lookForTx (
