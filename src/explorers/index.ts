@@ -70,7 +70,12 @@ export function getDefaultExplorers (explorerAPIs?: ExplorerAPI[]): TDefaultExpl
 }
 
 function rpcFactory (explorerAPIs: ExplorerAPI[]) {
-  return explorerAPIs.map(explorerAPI => (
+  return explorerAPIs.map(explorerAPI => {
+    if (!explorerAPI.parsingFunction) {
+      explorerAPI.parsingFunction = ethereumRPCParsingFunction
+    }
+    return explorerAPI;
+  }).map(explorerAPI => (
     {
       getTxData: async (transactionId) => await explorerAPI.parsingFunction(explorerAPI.serviceURL, transactionId),
       priority: explorerAPI.priority
@@ -80,10 +85,6 @@ function rpcFactory (explorerAPIs: ExplorerAPI[]) {
 
 export function getRPCExplorers (explorerAPIs?: ExplorerAPI[]) {
   return {
-    ethereum: rpcFactory([{
-      serviceURL: 'https://rpc-mumbai.maticvigil.com/',
-      priority: 0,
-      parsingFunction: ethereumRPCParsingFunction
-    }])
+    ethereum: rpcFactory(explorerAPIs)
   }
 }
