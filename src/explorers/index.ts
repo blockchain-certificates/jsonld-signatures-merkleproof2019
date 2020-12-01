@@ -69,10 +69,10 @@ export function getDefaultExplorers (explorerAPIs?: ExplorerAPI[]): TDefaultExpl
   };
 }
 
-function rpcFactory (explorerAPIs: ExplorerAPI[]) {
+function rpcFactory (explorerAPIs: ExplorerAPI[]): TExplorerFunctionsArray {
   return explorerAPIs.map(explorerAPI => {
     if (!explorerAPI.parsingFunction) {
-      explorerAPI.parsingFunction = ethereumRPCParsingFunction
+      explorerAPI.parsingFunction = ethereumRPCParsingFunction;
     }
     return explorerAPI;
   }).map(explorerAPI => (
@@ -83,8 +83,8 @@ function rpcFactory (explorerAPIs: ExplorerAPI[]) {
   ));
 }
 
-export function getRPCExplorers (customExplorerAPIs?: ExplorerAPI[]) {
+export function getRPCExplorers (customExplorerAPIs?: ExplorerAPI[]): Partial<TExplorerAPIs> {
   return {
     custom: rpcFactory(customExplorerAPIs)
-  }
+  };
 }

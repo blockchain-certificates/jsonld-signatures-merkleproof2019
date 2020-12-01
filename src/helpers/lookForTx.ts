@@ -70,7 +70,9 @@ function buildQueuePromises (queue, transactionId, chain): any[] {
 }
 
 function buildPromiseRacesQueue (
-  { defaultAPIs, customAPIs }: { defaultAPIs: TExplorerFunctionsArray; customAPIs: TExplorerFunctionsArray }): PromiseRaceQueue {
+  { defaultAPIs, customAPIs }:
+  { defaultAPIs: TExplorerFunctionsArray; customAPIs: TExplorerFunctionsArray }
+): PromiseRaceQueue {
   const promiseRaceQueue = [defaultAPIs];
 
   if (customAPIs?.length) {
