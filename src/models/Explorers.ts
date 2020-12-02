@@ -13,5 +13,8 @@ export interface ExplorerAPI {
   serviceName?: TRANSACTION_APIS; // in case one would want to overload the default explorers
   key?: string; // the user's own key to the service
   keyPropertyName?: string; // the name of the property
-  apiType?: 'rpc' | 'rest'; // whether the parsing function is calling a rpc or rest method. RPC parsing functions are provided for BTC and ETH (EVM) chains
+  // apiType: whether the parsing function is calling a rpc or rest method.
+  // RPC parsing functions are provided for BTC and ETH (EVM) chains.
+  // defaults to rest
+  apiType?: 'rpc' | 'rest';
 }

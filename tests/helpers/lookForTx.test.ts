@@ -161,6 +161,7 @@ describe('prepareExplorerAPIs function', function () {
   describe('given no explorers are provided', function () {
     it('should return only the default explorers', function () {
       const expectedExplorers: TExplorerAPIs = getDefaultExplorers();
+      expectedExplorers.custom = [];
       const output = prepareExplorerAPIs([]);
       expect(JSON.stringify(output)).toEqual(JSON.stringify(expectedExplorers));
     });

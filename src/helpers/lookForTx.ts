@@ -19,7 +19,7 @@ export function getExplorersByChain (chain: SupportedChains, explorerAPIs: TExpl
     case BLOCKCHAINS[SupportedChains.Ethrinkeby].code:
       return explorerAPIs.ethereum;
     default:
-      if (!explorerAPIs.custom.length) {
+      if (!explorerAPIs.custom?.length) {
         throw new Error('Chain is not natively supported. Use custom explorers to retrieve tx data.');
       }
       return explorerAPIs.custom;
@@ -104,7 +104,7 @@ async function runQueueByIndex (queues, index: number, transactionId, chain): Pr
 export function prepareExplorerAPIs (customExplorerAPIs: ExplorerAPI[]): TExplorerAPIs {
   const { bitcoin, ethereum } = getDefaultExplorers(customExplorerAPIs);
   const { custom: rpcCustomExplorers } = getRPCExplorers(customExplorerAPIs.filter(e => e.apiType === 'rpc'));
-  const restCustomExplorers = explorerFactory(customExplorerAPIs.filter(e => e.apiType === 'rest'));
+  const restCustomExplorers = explorerFactory(customExplorerAPIs.filter(e => e.apiType !== 'rpc'));
 
   return {
     bitcoin,
