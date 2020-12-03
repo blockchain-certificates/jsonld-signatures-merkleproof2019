@@ -93,11 +93,6 @@ export class MerkleProof2019 extends LinkedDataProof {
     this.proof = base58Decoder.decode();
   }
 
-  // DO NOT PUT THIS IN PROD
-  matchProof ({ proof }): boolean {
-    return proof.type === this.type || proof.type === 'EcdsaSecp256k1Signature2019';
-  }
-
   async verifyProof (): Promise<MerkleProof2019VerificationResult> { // TODO: define return type
     let verified: boolean;
     let error: string = '';
