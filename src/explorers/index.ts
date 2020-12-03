@@ -89,3 +89,18 @@ export function getRPCExplorers (customExplorerAPIs?: ExplorerAPI[]): Partial<TE
     custom: rpcFactory(customExplorerAPIs)
   };
 }
+
+export function prepareExplorerAPIs (customExplorerAPIs: ExplorerAPI[]): TExplorerAPIs {
+  const { bitcoin, ethereum } = getDefaultExplorers(customExplorerAPIs);
+  const { custom: rpcCustomExplorers } = getRPCExplorers(customExplorerAPIs.filter(e => e.apiType === 'rpc'));
+  const restCustomExplorers = explorerFactory(customExplorerAPIs.filter(e => e.apiType !== 'rpc'));
+
+  return {
+    bitcoin,
+    ethereum,
+    custom: [
+      ...rpcCustomExplorers,
+      ...restCustomExplorers
+    ]
+  };
+}

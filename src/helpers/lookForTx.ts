@@ -2,10 +2,8 @@ import { SupportedChains, BLOCKCHAINS } from '../constants/blockchains';
 import CONFIG from '../constants/config';
 import PromiseProperRace from './promiseProperRace';
 import { TransactionData } from '../models/TransactionData';
-import { explorerFactory, TExplorerFunctionsArray } from '../explorers/explorer';
-import { getDefaultExplorers, getRPCExplorers, TExplorerAPIs } from '../explorers';
-import { ExplorerAPI } from '../models/Explorers';
-import ensureExplorerAPIValidity from '../utils/ensureExplorerAPIValidity';
+import { TExplorerFunctionsArray } from '../explorers/explorer';
+import { TExplorerAPIs } from '../explorers';
 
 export function getExplorersByChain (chain: SupportedChains, explorerAPIs: TExplorerAPIs): TExplorerFunctionsArray {
   switch (chain) {
@@ -99,21 +97,6 @@ async function runQueueByIndex (queues, index: number, transactionId, chain): Pr
     }
     throw err;
   }
-}
-
-export function prepareExplorerAPIs (customExplorerAPIs: ExplorerAPI[]): TExplorerAPIs {
-  const { bitcoin, ethereum } = getDefaultExplorers(customExplorerAPIs);
-  const { custom: rpcCustomExplorers } = getRPCExplorers(customExplorerAPIs.filter(e => e.apiType === 'rpc'));
-  const restCustomExplorers = explorerFactory(customExplorerAPIs.filter(e => e.apiType !== 'rpc'));
-
-  return {
-    bitcoin,
-    ethereum,
-    custom: [
-      ...rpcCustomExplorers,
-      ...restCustomExplorers
-    ]
-  };
 }
 
 export default async function lookForTx (

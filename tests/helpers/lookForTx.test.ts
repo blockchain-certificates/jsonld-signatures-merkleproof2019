@@ -1,5 +1,5 @@
 import sinon from 'sinon';
-import lookForTx, { getExplorersByChain, prepareExplorerAPIs } from '../../src/helpers/lookForTx';
+import lookForTx, { getExplorersByChain } from '../../src/helpers/lookForTx';
 import { SupportedChains } from '../../src/constants/blockchains';
 import { getDefaultExplorers, TExplorerAPIs } from '../../src/explorers';
 import { TransactionData } from '../../src/models/TransactionData';
@@ -132,38 +132,6 @@ describe('getExplorersByChain test suite', function () {
         // because they are wrapped, we don't necessarily have the deep nature of the result, so we use a weak test to ensure
         expect(selectedSelectors.length).toBe(4);
       });
-    });
-  });
-});
-
-describe('prepareExplorerAPIs function', function () {
-  describe('given custom explorers are provided', function () {
-    it('should return the explorers object with the custom explorers', function () {
-      const fixtureCustomExplorerAPI: ExplorerAPI[] = [{
-        serviceURL: 'https://explorer-example.com',
-        priority: 0,
-        parsingFunction: (): TransactionData => {
-          return {
-            remoteHash: 'a',
-            issuingAddress: 'b',
-            time: 'c',
-            revokedAddresses: ['d']
-          };
-        }
-      }];
-      const expectedExplorers: TExplorerAPIs = getDefaultExplorers();
-      expectedExplorers.custom = explorerFactory(fixtureCustomExplorerAPI);
-      const output = prepareExplorerAPIs(fixtureCustomExplorerAPI);
-      expect(JSON.stringify(output)).toEqual(JSON.stringify(expectedExplorers));
-    });
-  });
-
-  describe('given no explorers are provided', function () {
-    it('should return only the default explorers', function () {
-      const expectedExplorers: TExplorerAPIs = getDefaultExplorers();
-      expectedExplorers.custom = [];
-      const output = prepareExplorerAPIs([]);
-      expect(JSON.stringify(output)).toEqual(JSON.stringify(expectedExplorers));
     });
   });
 });

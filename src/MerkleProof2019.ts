@@ -3,7 +3,7 @@ import jsigs from 'jsonld-signatures';
 import { DecodedProof, JSONLDProof } from './models/Proof';
 import getTransactionId from './helpers/getTransactionId';
 import isTransactionIdValid from './inspectors/isTransactionIdValid';
-import lookForTx, { prepareExplorerAPIs } from './helpers/lookForTx';
+import lookForTx from './helpers/lookForTx';
 import { ExplorerAPI } from './models/Explorers';
 import { IBlockchainObject } from './constants/blockchains';
 import getChain from './helpers/getChain';
@@ -11,6 +11,7 @@ import { TransactionData } from './models/TransactionData';
 import computeLocalHash from './inspectors/computeLocalHash';
 import ensureHashesEqual from './inspectors/ensureHashesEqual';
 import ensureMerkleRootEqual from './inspectors/ensureMerkleRootEqual';
+import { prepareExplorerAPIs } from './explorers';
 const { LinkedDataProof } = jsigs.suites;
 
 export interface MerkleProof2019Options {

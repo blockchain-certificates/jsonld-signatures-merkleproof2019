@@ -3,13 +3,20 @@ import * as RequestService from '../../src/services/request';
 import { explorerApi as BitpayAPI } from '../../src/explorers/bitcoin/bitpay';
 import { explorerApi as BlockcypherAPI } from '../../src/explorers/bitcoin/blockcypher';
 import * as mockBitpayResponse from './mocks/mockBitpayResponse.json';
-import { getTransactionFromApi } from '../../src/explorers/explorer';
+import { explorerFactory, getTransactionFromApi } from '../../src/explorers/explorer';
 import { TRANSACTION_APIS } from '../../src/constants/api';
 import { BLOCKCHAINS } from '../../src/constants/blockchains';
 import { ExplorerAPI } from '../../src/models/Explorers';
-import { getDefaultExplorers, getRPCExplorers, overwriteDefaultExplorers } from '../../src/explorers';
+import {
+  getDefaultExplorers,
+  getRPCExplorers,
+  overwriteDefaultExplorers,
+  prepareExplorerAPIs,
+  TExplorerAPIs
+} from '../../src/explorers';
 import * as ethRPCExplorer from '../../src/explorers/rpc/ethereum';
 import * as btcRPCExplorer from '../../src/explorers/rpc/bitcoin';
+import { TransactionData } from '../../src/models/TransactionData';
 
 describe('Blockchain Explorers test suite', function () {
   const fixtureTransactionId = '2378076e8e140012814e98a2b2cb1af07ec760b239c1d6d93ba54d658a010ecd';
@@ -231,6 +238,38 @@ describe('Blockchain Explorers test suite', function () {
         const testOutput = await explorers.custom[0].getTxData('test');
         expect(testOutput).toBe(`${rpcFunctionName} was called`);
         sinon.restore();
+      });
+    });
+  });
+
+  describe('prepareExplorerAPIs function', function () {
+    describe('given custom explorers are provided', function () {
+      it('should return the explorers object with the custom explorers', function () {
+        const fixtureCustomExplorerAPI: ExplorerAPI[] = [{
+          serviceURL: 'https://explorer-example.com',
+          priority: 0,
+          parsingFunction: (): TransactionData => {
+            return {
+              remoteHash: 'a',
+              issuingAddress: 'b',
+              time: 'c',
+              revokedAddresses: ['d']
+            };
+          }
+        }];
+        const expectedExplorers: TExplorerAPIs = getDefaultExplorers();
+        expectedExplorers.custom = explorerFactory(fixtureCustomExplorerAPI);
+        const output = prepareExplorerAPIs(fixtureCustomExplorerAPI);
+        expect(JSON.stringify(output)).toEqual(JSON.stringify(expectedExplorers));
+      });
+    });
+
+    describe('given no explorers are provided', function () {
+      it('should return only the default explorers', function () {
+        const expectedExplorers: TExplorerAPIs = getDefaultExplorers();
+        expectedExplorers.custom = [];
+        const output = prepareExplorerAPIs([]);
+        expect(JSON.stringify(output)).toEqual(JSON.stringify(expectedExplorers));
       });
     });
   });
