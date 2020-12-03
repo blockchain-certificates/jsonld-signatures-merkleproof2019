@@ -2,8 +2,9 @@ import { TransactionData } from '../../models/TransactionData';
 import { stripHashPrefix } from '../../utils/stripHashPrefix';
 import { timestampToDateObject } from '../../utils/date';
 import { request } from '../../services/request';
+import { IParsingFunctionAPI } from '../explorer';
 
-export async function bitcoinRPCParsingFunction (serverUrl: string, transactionId: string): Promise<TransactionData> {
+export async function bitcoinRPCParsingFunction ({ serviceUrl, transactionId }: IParsingFunctionAPI): Promise<TransactionData> {
   const getRawTransactionParams = {
     method: 'getrawtransaction',
     jsonrpc: '2.0',
@@ -14,7 +15,7 @@ export async function bitcoinRPCParsingFunction (serverUrl: string, transactionI
     ]
   };
   const resultRawTransaction = await request({
-    url: serverUrl,
+    url: serviceUrl,
     body: getRawTransactionParams,
     method: 'POST'
   });

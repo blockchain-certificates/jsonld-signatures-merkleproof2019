@@ -1,8 +1,9 @@
 import { TransactionData } from '../../models/TransactionData';
 import { stripHashPrefix } from '../../utils/stripHashPrefix';
 import { request } from '../../services/request';
+import { IParsingFunctionAPI } from '../explorer';
 
-export async function ethereumRPCParsingFunction (serverUrl: string, transactionId: string): Promise<TransactionData> {
+export async function ethereumRPCParsingFunction ({ serviceUrl, transactionId }: IParsingFunctionAPI): Promise<TransactionData> {
   const transactionByHashParams = {
     method: 'eth_getTransactionByHash',
     jsonrpc: '2.0',
@@ -12,7 +13,7 @@ export async function ethereumRPCParsingFunction (serverUrl: string, transaction
     ]
   };
   const resultTransactionByHash = await request({
-    url: serverUrl,
+    url: serviceUrl,
     body: transactionByHashParams,
     method: 'POST'
   });
@@ -29,7 +30,7 @@ export async function ethereumRPCParsingFunction (serverUrl: string, transaction
     ]
   };
   const resultBlockByNumber = await request({
-    url: serverUrl,
+    url: serviceUrl,
     body: blockByNumberParams,
     method: 'POST'
   });

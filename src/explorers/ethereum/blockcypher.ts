@@ -6,6 +6,7 @@ import { ExplorerAPI, ExplorerURLs } from '../../models/Explorers';
 import CONFIG from '../../constants/config';
 import { dateToUnixTimestamp } from '../../utils/date';
 import { prependHashPrefix } from '../../utils/prependHashPrefix';
+import { IParsingFunctionAPI } from '../explorer';
 
 const serviceURL: ExplorerURLs = {
   main: `https://api.blockcypher.com/v1/eth/main/txs/${TRANSACTION_ID_PLACEHOLDER}?limit=500`,
@@ -13,7 +14,7 @@ const serviceURL: ExplorerURLs = {
 };
 
 // TODO: use tests/explorers/mocks/mockBlockcypherResponse as type
-function parsingFunction (jsonResponse): TransactionData {
+function parsingFunction ({ jsonResponse }: IParsingFunctionAPI): TransactionData {
   if (jsonResponse.confirmations < CONFIG.MininumConfirmations) {
     // TODO: not tested
     throw new Error('Not enough');

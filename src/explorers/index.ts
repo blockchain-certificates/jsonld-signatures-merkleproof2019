@@ -78,7 +78,10 @@ function rpcFactory (explorerAPIs: ExplorerAPI[]): TExplorerFunctionsArray {
     return explorerAPI;
   }).map(explorerAPI => (
     {
-      getTxData: async (transactionId) => await explorerAPI.parsingFunction(explorerAPI.serviceURL, transactionId),
+      getTxData: async (transactionId) => await explorerAPI.parsingFunction({
+        ...explorerAPI,
+        transactionId
+      }),
       priority: explorerAPI.priority
     }
   ));

@@ -9,11 +9,11 @@ describe('Bitcoin RPC response parsing test suite', function () {
     it('should retrieve the transaction data', async function () {
       const requestStub: sinon.SinonStub = sinon.stub(request, 'request');
       const transactionId = 'd75b7a5bdb3d5244b753e6b84e987267cfa4ffa7a532a2ed49ad3848be1d82f8';
-      const serverUrl = 'a-btc-rpc-url.com';
+      const serviceUrl = 'a-btc-rpc-url.com';
 
       requestStub.onCall(0).resolves(getRawTransactionResponse);
 
-      const output = await bitcoinRPCParsingFunction(serverUrl, transactionId);
+      const output = await bitcoinRPCParsingFunction({ serviceUrl, transactionId });
       expect(output).toEqual({
         remoteHash: 'f029b45bb1a7b1f0b970f6de35344b73cccd16177b4c037acbc2541c7fc27078',
         issuingAddress: 'msBCHdwaQ7N2ypBYupkp6uNxtr9Pg76imj',
