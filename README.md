@@ -55,7 +55,7 @@ Here is an example of how you would provide such service:
     const myOwnExplorerAPI: ExplorerAPI = {
       serviceURL: 'path/to/distant/api', // you may need to provide identification details here according to your service pattern
       priority: 0, // this is to decide if this gets called before the out-of-the-box services. 0 means your custom service is going to be called first, use 1 if you prefer the default explorers to be called first.
-      parsingFunction: function (serviceResponse): TransactionData { // only define this function when referring to a custom explorer
+      parsingFunction: function ({ jsonResponse: serviceReponse }: IParsingFunctionAPI): TransactionData { // only define this function when referring to a custom explorer
         // parse your service response in order to return the following information:
         return {
           remoteHash,
@@ -112,7 +112,7 @@ You will need to additionally provide your own lookup function. Contrary to rest
           priority: 0,
           apiType: 'rpc',
           chainType: 'evm',
-          parsingFunction: function (serverUrl, transactionId): TransactionData { // note that function signature is different than for REST parsingFunctions
+          parsingFunction: function ({ serverUrl, transactionId }: IParsingFunctionAPI): TransactionData { // note that function signature is different than for REST parsingFunctions
             // your call to the `serverUrl` with the `transaction` id
             // parse your service response in order to return the following information:
             return {
