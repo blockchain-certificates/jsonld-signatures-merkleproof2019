@@ -34,6 +34,7 @@
     "rollup": "^2.33.1",
     "rollup-plugin-node-builtins": "^2.1.2",
     "rollup-plugin-node-globals": "^1.4.0",
+    "semantic-release": "^17.3.0",
     "sinon": "^9.2.1",
     "ts-jest": "^26.4.4",
     "tslib": "^2.0.3",
@@ -46,7 +47,8 @@
     "test:watch": "jest --watch",
     "transpile:node": "npm run transpile:node:ts && npm run clean:lib:ts",
     "transpile:node:ts": "npx babel src -d lib --copy-files --extensions '.ts'",
-    "clean:lib:ts": "rimraf lib/\"**\"/*.ts"
+    "clean:lib:ts": "rimraf lib/\"**\"/*.ts",
+    "semantic-release": "semantic-release"
   },
   "husky": {
     "hooks": {
