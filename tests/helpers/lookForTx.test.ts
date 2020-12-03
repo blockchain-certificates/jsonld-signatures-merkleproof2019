@@ -4,8 +4,6 @@ import { SupportedChains } from '../../src/constants/blockchains';
 import { getDefaultExplorers, TExplorerAPIs } from '../../src/explorers';
 import { TransactionData } from '../../src/models/TransactionData';
 import CONFIG from '../../src/constants/config';
-import { ExplorerAPI } from '../../src/models/Explorers';
-import { explorerFactory } from '../../src/explorers/explorer';
 
 describe('lookForTx test suite', function () {
   const MOCK_TRANSACTION_ID = 'mock-transaction-id';

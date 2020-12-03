@@ -240,6 +240,24 @@ describe('Blockchain Explorers test suite', function () {
         sinon.restore();
       });
     });
+
+    describe('given the parsing function is provided', function () {
+      it('should use the provided function to retrieve the data', async function () {
+        const fixtureExplorer: ExplorerAPI = {
+          serviceURL: 'a-rpc-server.com',
+          priority: 0,
+          parsingFunction: () => 'custom function was called' as any
+        };
+
+        const rpcFunctionName = 'ethereumRPCParsingFunction';
+        sinon.stub(ethRPCExplorer, rpcFunctionName).resolves(`${rpcFunctionName} was called` as any);
+
+        const explorers = getRPCExplorers([fixtureExplorer]);
+        const testOutput = await explorers.custom[0].getTxData('test');
+        expect(testOutput).toBe('custom function was called');
+        sinon.restore();
+      });
+    });
   });
 
   describe('prepareExplorerAPIs function', function () {
