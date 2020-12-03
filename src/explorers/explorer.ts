@@ -11,7 +11,7 @@ import { explorerApi as BlockCypherBTCApi } from './bitcoin/blockcypher';
 import { explorerApi as BitPayApi } from './bitcoin/bitpay';
 
 export type TExplorerFunctionsArray = Array<{
-  getTxData: (transactionId: string, chain: SupportedChains) => Promise<TransactionData>;
+  getTxData: (transactionId: string, chain?: SupportedChains) => Promise<TransactionData>;
   priority?: number;
 }>;
 export type TExplorerParsingFunction = ((jsonResponse, chain?: SupportedChains, key?: string, keyPropertyName?: string) => TransactionData) |

@@ -7,7 +7,9 @@ import { getTransactionFromApi } from '../../src/explorers/explorer';
 import { TRANSACTION_APIS } from '../../src/constants/api';
 import { BLOCKCHAINS } from '../../src/constants/blockchains';
 import { ExplorerAPI } from '../../src/models/Explorers';
-import { getDefaultExplorers, overwriteDefaultExplorers } from '../../src/explorers';
+import { getDefaultExplorers, getRPCExplorers, overwriteDefaultExplorers } from '../../src/explorers';
+import * as ethRPCExplorer from '../../src/explorers/rpc/ethereum';
+import * as btcRPCExplorer from '../../src/explorers/rpc/bitcoin';
 
 describe('Blockchain Explorers test suite', function () {
   const fixtureTransactionId = '2378076e8e140012814e98a2b2cb1af07ec760b239c1d6d93ba54d658a010ecd';
@@ -156,6 +158,79 @@ describe('Blockchain Explorers test suite', function () {
           expect(output.bitcoin.length).toBe(4);
           expect(output.ethereum.length).toBe(2);
         });
+      });
+    });
+  });
+
+  describe('getRPCExplorers method', function () {
+    describe('given it is called with an eth custom explorer', function () {
+      it('should assign the ethereumRPCParsing function to retrieve the data', async function () {
+        const fixtureExplorer: ExplorerAPI = {
+          serviceURL: 'a-rpc-server.com',
+          chainType: 'eth',
+          priority: 0
+        };
+
+        const rpcFunctionName = 'ethereumRPCParsingFunction';
+        sinon.stub(ethRPCExplorer, rpcFunctionName).resolves(`${rpcFunctionName} was called` as any);
+
+        const explorers = getRPCExplorers([fixtureExplorer]);
+        const testOutput = await explorers.custom[0].getTxData('test');
+        expect(testOutput).toBe(`${rpcFunctionName} was called`);
+        sinon.restore();
+      });
+    });
+
+    describe('given it is called with an evm custom explorer', function () {
+      it('should assign the ethereumRPCParsing function to retrieve the data', async function () {
+        const fixtureExplorer: ExplorerAPI = {
+          serviceURL: 'a-rpc-server.com',
+          chainType: 'evm',
+          priority: 0
+        };
+
+        const rpcFunctionName = 'ethereumRPCParsingFunction';
+        sinon.stub(ethRPCExplorer, rpcFunctionName).resolves(`${rpcFunctionName} was called` as any);
+
+        const explorers = getRPCExplorers([fixtureExplorer]);
+        const testOutput = await explorers.custom[0].getTxData('test');
+        expect(testOutput).toBe(`${rpcFunctionName} was called`);
+        sinon.restore();
+      });
+    });
+
+    describe('given it is called with a btc custom explorer', function () {
+      it('should assign the bitcoinRPCParsingFunction to retrieve the data', async function () {
+        const fixtureExplorer: ExplorerAPI = {
+          serviceURL: 'a-rpc-server.com',
+          chainType: 'btc',
+          priority: 0
+        };
+
+        const rpcFunctionName = 'bitcoinRPCParsingFunction';
+        sinon.stub(btcRPCExplorer, rpcFunctionName).resolves(`${rpcFunctionName} was called` as any);
+
+        const explorers = getRPCExplorers([fixtureExplorer]);
+        const testOutput = await explorers.custom[0].getTxData('test', '' as any);
+        expect(testOutput).toBe(`${rpcFunctionName} was called`);
+        sinon.restore();
+      });
+    });
+
+    describe('given the chain type is not provided', function () {
+      it('should assign the ethereumRPCParsingFunction to retrieve the data', async function () {
+        const fixtureExplorer: ExplorerAPI = {
+          serviceURL: 'a-rpc-server.com',
+          priority: 0
+        };
+
+        const rpcFunctionName = 'ethereumRPCParsingFunction';
+        sinon.stub(ethRPCExplorer, rpcFunctionName).resolves(`${rpcFunctionName} was called` as any);
+
+        const explorers = getRPCExplorers([fixtureExplorer]);
+        const testOutput = await explorers.custom[0].getTxData('test');
+        expect(testOutput).toBe(`${rpcFunctionName} was called`);
+        sinon.restore();
       });
     });
   });

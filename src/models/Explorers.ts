@@ -19,6 +19,7 @@ export interface ExplorerAPI {
   apiType?: 'rpc' | 'rest';
   // This library provides 2 types of RPC call parsing function,
   // one for Bitcoin ('btc') RPCs and one for Ethereum ('eth', alias 'evm') RPCs.
-  // This option allows the consumer to use one of these functions
+  // This option allows the consumer to use one of these function
+  // defaults to 'eth'
   chainType?: 'btc' | 'evm' | 'eth';
 }

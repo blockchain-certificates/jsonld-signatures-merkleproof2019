@@ -7,6 +7,7 @@ import {
 import { TRANSACTION_APIS } from '../constants/api';
 import { ExplorerAPI } from '../models/Explorers';
 import { ethereumRPCParsingFunction } from './rpc/ethereum';
+import { bitcoinRPCParsingFunction } from './rpc/bitcoin';
 
 export interface TDefaultExplorersPerBlockchain {
   bitcoin: TExplorerFunctionsArray;
@@ -72,7 +73,7 @@ export function getDefaultExplorers (explorerAPIs?: ExplorerAPI[]): TDefaultExpl
 function rpcFactory (explorerAPIs: ExplorerAPI[]): TExplorerFunctionsArray {
   return explorerAPIs.map(explorerAPI => {
     if (!explorerAPI.parsingFunction) {
-      explorerAPI.parsingFunction = ethereumRPCParsingFunction;
+      explorerAPI.parsingFunction = explorerAPI.chainType === 'btc' ? bitcoinRPCParsingFunction : ethereumRPCParsingFunction;
     }
     return explorerAPI;
   }).map(explorerAPI => (
