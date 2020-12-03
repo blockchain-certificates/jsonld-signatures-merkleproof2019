@@ -21,7 +21,7 @@ describe('Blockstream Explorer test suite', function () {
     };
 
     it('should return the transaction data', function () {
-      expect(explorerApi.parsingFunction(mockResponse)).toEqual(assertionTransactionData);
+      expect(explorerApi.parsingFunction({ jsonResponse: mockResponse })).toEqual(assertionTransactionData);
     });
   });
 
@@ -29,7 +29,7 @@ describe('Blockstream Explorer test suite', function () {
     it('should throw the right error', async function () {
       mockResponse.status.confirmed = false;
       await expect(async () => {
-        await explorerApi.parsingFunction(mockResponse);
+        await explorerApi.parsingFunction({ jsonResponse: mockResponse });
       }).rejects.toThrowError('Number of transaction confirmations were less than the minimum required, according to Blockstream API');
     });
   });

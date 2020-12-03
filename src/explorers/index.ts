@@ -6,6 +6,8 @@ import {
 } from './explorer';
 import { TRANSACTION_APIS } from '../constants/api';
 import { ExplorerAPI } from '../models/Explorers';
+import { ethereumRPCParsingFunction } from './rpc/ethereum';
+import { bitcoinRPCParsingFunction } from './rpc/bitcoin';
 
 export interface TDefaultExplorersPerBlockchain {
   bitcoin: TExplorerFunctionsArray;
@@ -65,5 +67,43 @@ export function getDefaultExplorers (explorerAPIs?: ExplorerAPI[]): TDefaultExpl
   return {
     bitcoin: explorerFactory(overwriteDefaultExplorers(explorerAPIs, BitcoinExplorers)),
     ethereum: explorerFactory(overwriteDefaultExplorers(explorerAPIs, EthereumExplorers))
+  };
+}
+
+function rpcFactory (explorerAPIs: ExplorerAPI[]): TExplorerFunctionsArray {
+  return explorerAPIs.map(explorerAPI => {
+    if (!explorerAPI.parsingFunction) {
+      explorerAPI.parsingFunction = explorerAPI.chainType === 'btc' ? bitcoinRPCParsingFunction : ethereumRPCParsingFunction;
+    }
+    return explorerAPI;
+  }).map(explorerAPI => (
+    {
+      getTxData: async (transactionId) => await explorerAPI.parsingFunction({
+        ...explorerAPI,
+        transactionId
+      }),
+      priority: explorerAPI.priority
+    }
+  ));
+}
+
+export function getRPCExplorers (customExplorerAPIs?: ExplorerAPI[]): Partial<TExplorerAPIs> {
+  return {
+    custom: rpcFactory(customExplorerAPIs)
+  };
+}
+
+export function prepareExplorerAPIs (customExplorerAPIs: ExplorerAPI[]): TExplorerAPIs {
+  const { bitcoin, ethereum } = getDefaultExplorers(customExplorerAPIs);
+  const { custom: rpcCustomExplorers } = getRPCExplorers(customExplorerAPIs.filter(e => e.apiType === 'rpc'));
+  const restCustomExplorers = explorerFactory(customExplorerAPIs.filter(e => e.apiType !== 'rpc'));
+
+  return {
+    bitcoin,
+    ethereum,
+    custom: [
+      ...rpcCustomExplorers,
+      ...restCustomExplorers
+    ]
   };
 }

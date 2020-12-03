@@ -6,6 +6,7 @@ import { TransactionData } from '../../models/TransactionData';
 import { TRANSACTION_APIS, TRANSACTION_ID_PLACEHOLDER } from '../../constants/api';
 import { ExplorerAPI, ExplorerURLs } from '../../models/Explorers';
 import CONFIG from '../../constants/config';
+import { IParsingFunctionAPI } from '../explorer';
 
 const MAIN_API_BASE_URL = 'https://api.etherscan.io/api?module=proxy';
 const TEST_API_BASE_URL = 'https://api-ropsten.etherscan.io/api?module=proxy';
@@ -15,7 +16,7 @@ const serviceURL: ExplorerURLs = {
 };
 
 // TODO: use tests/explorers/mocks/mockEtherscanResponse as type
-async function parsingFunction (jsonResponse, chain: SupportedChains, key: string, keyPropertyName: string): Promise<TransactionData> {
+async function parsingFunction ({ jsonResponse, chain, key, keyPropertyName }: IParsingFunctionAPI): Promise<TransactionData> {
   const getBlockByNumberServiceUrls: Partial<ExplorerAPI> = {
     serviceURL: {
       main: `${MAIN_API_BASE_URL}&action=eth_getBlockByNumber&boolean=true&tag=${TRANSACTION_ID_PLACEHOLDER}`,

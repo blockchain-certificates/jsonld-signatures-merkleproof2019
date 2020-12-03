@@ -3,7 +3,7 @@ import jsigs from 'jsonld-signatures';
 import { DecodedProof, JSONLDProof } from './models/Proof';
 import getTransactionId from './helpers/getTransactionId';
 import isTransactionIdValid from './inspectors/isTransactionIdValid';
-import lookForTx, { prepareExplorerAPIs } from './helpers/lookForTx';
+import lookForTx from './helpers/lookForTx';
 import { ExplorerAPI } from './models/Explorers';
 import { IBlockchainObject } from './constants/blockchains';
 import getChain from './helpers/getChain';
@@ -11,6 +11,7 @@ import { TransactionData } from './models/TransactionData';
 import computeLocalHash from './inspectors/computeLocalHash';
 import ensureHashesEqual from './inspectors/ensureHashesEqual';
 import ensureMerkleRootEqual from './inspectors/ensureMerkleRootEqual';
+import { prepareExplorerAPIs } from './explorers';
 const { LinkedDataProof } = jsigs.suites;
 
 export interface MerkleProof2019Options {
@@ -88,16 +89,12 @@ export class MerkleProof2019 extends LinkedDataProof {
       throw new Error('The passed document is not signed.');
     }
 
-    if (proof.type !== this.type) {
-      throw new Error(`Incorrect proof type passed for verification. Expected: ${this.type}, Received: ${proof.type}`);
-    }
-
     const base58Decoder = new Decoder(proof.proofValue);
     this.proof = base58Decoder.decode();
   }
 
-  async verifyProof (): Promise<MerkleProof2019VerificationResult> {
-    let verified: boolean = false;
+  async verifyProof (): Promise<MerkleProof2019VerificationResult> { // TODO: define return type
+    let verified: boolean;
     let error: string = '';
     try {
       this.validateTransactionId();
@@ -144,7 +141,7 @@ export class MerkleProof2019 extends LinkedDataProof {
   private async fetchTransactionData (): Promise<void> {
     this.txData = await lookForTx({
       transactionId: this.transactionId,
-      chain: this.chain.code,
+      chain: this.chain?.code,
       explorerAPIs: prepareExplorerAPIs(this.explorerAPIs)
     });
   }

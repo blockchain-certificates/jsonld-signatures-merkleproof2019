@@ -5,9 +5,10 @@ import { TransactionData } from '../../models/TransactionData';
 import { TRANSACTION_APIS, TRANSACTION_ID_PLACEHOLDER } from '../../constants/api';
 import { BLOCKCHAINS } from '../../constants/blockchains';
 import CONFIG from '../../constants/config';
+import { IParsingFunctionAPI } from '../explorer';
 
 // TODO: use tests/explorers/mocks/mockBlockexplorer as type
-function parsingFunction (jsonResponse): TransactionData {
+function parsingFunction ({ jsonResponse }: IParsingFunctionAPI): TransactionData {
   if (jsonResponse.confirmations < CONFIG.MininumConfirmations) {
     throw new Error('Number of transaction confirmations were less than the minimum required, according to Blockexplorer API');
   }

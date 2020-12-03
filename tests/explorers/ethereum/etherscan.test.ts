@@ -24,14 +24,14 @@ describe('Etherscan Explorer test suite', function () {
         time: new Date('2019-06-02T08:38:26.000Z')
       };
 
-      const res = await explorerApi.parsingFunction(mockResponse);
+      const res = await explorerApi.parsingFunction({ jsonResponse: mockResponse });
       expect(res).toEqual(assertionTransactionData);
     });
 
     describe('given the ether scan block cannot get retrieved', function () {
       it('should throw the right error', async function () {
         const stubRequest = sinon.stub(RequestServices, 'request').rejects();
-        await expect(explorerApi.parsingFunction(mockResponse))
+        await expect(explorerApi.parsingFunction({ jsonResponse: mockResponse }))
           .rejects.toThrow('Unable to get remote hash');
         stubRequest.restore();
       });

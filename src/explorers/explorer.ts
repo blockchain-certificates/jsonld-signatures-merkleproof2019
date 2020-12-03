@@ -11,11 +11,19 @@ import { explorerApi as BlockCypherBTCApi } from './bitcoin/blockcypher';
 import { explorerApi as BitPayApi } from './bitcoin/bitpay';
 
 export type TExplorerFunctionsArray = Array<{
-  getTxData: (transactionId: string, chain: SupportedChains) => Promise<TransactionData>;
+  getTxData: (transactionId: string, chain?: SupportedChains) => Promise<TransactionData>;
   priority?: number;
 }>;
-export type TExplorerParsingFunction = ((jsonResponse, chain?: SupportedChains, key?: string, keyPropertyName?: string) => TransactionData) |
-((jsonResponse, chain?: SupportedChains, key?: string, keyPropertyName?: string) => Promise<TransactionData>);
+export interface IParsingFunctionAPI {
+  jsonResponse?: any; // the response from the service when called as rest
+  chain?: SupportedChains; // TODO: look at how to deprecate this. Only used in etherscan
+  key?: string; // identification key to pass to the service -> TODO: can this be merged into the serviceUrl? Only used in etherscan
+  keyPropertyName?: string; // the key property to associate with the identification key -> TODO: can this be merged into the serviceUrl? Only used in etherscan
+  transactionId?: string; // when using in RPCs we pass the tx id to look up since these functions are responsible for service lookup
+  serviceUrl?: string; // the distant service url
+}
+export type TExplorerParsingFunction = ((data: IParsingFunctionAPI) => TransactionData) |
+((data: IParsingFunctionAPI) => Promise<TransactionData>);
 
 export function explorerFactory (TransactionAPIArray: ExplorerAPI[]): TExplorerFunctionsArray {
   return TransactionAPIArray
@@ -40,7 +48,11 @@ export async function getTransactionFromApi (
 
   try {
     const response = await request({ url: requestUrl });
-    return await explorerAPI.parsingFunction(JSON.parse(response), chain, explorerAPI.key, explorerAPI.keyPropertyName);
+    return await explorerAPI.parsingFunction({
+      jsonResponse: JSON.parse(response),
+      chain,
+      ...explorerAPI
+    });
   } catch (err) {
     throw new Error('Unable to get remote hash');
   }

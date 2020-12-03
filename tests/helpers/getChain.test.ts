@@ -86,22 +86,6 @@ describe('getChain test suite', function () {
           expect(result).toEqual(chainAssertion);
         });
       });
-
-      describe('and the chain is not supported', function () {
-        it('should throw', function () {
-          const fixtureSignature: DecodedProof = {
-            anchors: [
-              'blink:blabla:rinkeby:0xfaea9061b06ff532d96ad91bab89fdfab900ae7d4524161431dc88318216435a'
-            ],
-            targetHash: 'a-target-hash',
-            path: [{ left: 'a-path' }],
-            merkleRoot: 'a-merkle-root'
-          };
-          expect(() => {
-            getChain(fixtureSignature);
-          }).toThrow('Unsupported anchoring chain.');
-        });
-      });
     });
   });
 

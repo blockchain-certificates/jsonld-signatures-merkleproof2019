@@ -2,10 +2,8 @@ import { SupportedChains, BLOCKCHAINS } from '../constants/blockchains';
 import CONFIG from '../constants/config';
 import PromiseProperRace from './promiseProperRace';
 import { TransactionData } from '../models/TransactionData';
-import { explorerFactory, TExplorerFunctionsArray } from '../explorers/explorer';
-import { getDefaultExplorers, TExplorerAPIs } from '../explorers';
-import { ExplorerAPI } from '../models/Explorers';
-import ensureExplorerAPIValidity from '../utils/ensureExplorerAPIValidity';
+import { TExplorerFunctionsArray } from '../explorers/explorer';
+import { TExplorerAPIs } from '../explorers';
 
 export function getExplorersByChain (chain: SupportedChains, explorerAPIs: TExplorerAPIs): TExplorerFunctionsArray {
   switch (chain) {
@@ -18,9 +16,12 @@ export function getExplorersByChain (chain: SupportedChains, explorerAPIs: TExpl
     case BLOCKCHAINS[SupportedChains.Ethropst].code:
     case BLOCKCHAINS[SupportedChains.Ethrinkeby].code:
       return explorerAPIs.ethereum;
+    default:
+      if (!explorerAPIs.custom?.length) {
+        throw new Error('Chain is not natively supported. Use custom explorers to retrieve tx data.');
+      }
+      return explorerAPIs.custom;
   }
-
-  throw new Error('Chain is not natively supported. Use custom explorers to retrieve tx data.');
 }
 
 // eslint-disable-next-line @typescript-eslint/promise-function-async
@@ -67,7 +68,9 @@ function buildQueuePromises (queue, transactionId, chain): any[] {
 }
 
 function buildPromiseRacesQueue (
-  { defaultAPIs, customAPIs }: { defaultAPIs: TExplorerFunctionsArray; customAPIs: TExplorerFunctionsArray }): PromiseRaceQueue {
+  { defaultAPIs, customAPIs }:
+  { defaultAPIs: TExplorerFunctionsArray; customAPIs: TExplorerFunctionsArray }
+): PromiseRaceQueue {
   const promiseRaceQueue = [defaultAPIs];
 
   if (customAPIs?.length) {
@@ -94,16 +97,6 @@ async function runQueueByIndex (queues, index: number, transactionId, chain): Pr
     }
     throw err;
   }
-}
-
-export function prepareExplorerAPIs (customExplorerAPIs: ExplorerAPI[]): TExplorerAPIs {
-  const explorerAPIs: TExplorerAPIs = getDefaultExplorers(customExplorerAPIs);
-
-  if (ensureExplorerAPIValidity(customExplorerAPIs)) {
-    explorerAPIs.custom = explorerFactory(customExplorerAPIs);
-  }
-
-  return explorerAPIs;
 }
 
 export default async function lookForTx (

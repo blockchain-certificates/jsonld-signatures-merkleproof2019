@@ -4,9 +4,10 @@ import { ExplorerAPI, ExplorerURLs } from '../../models/Explorers';
 import { TransactionData } from '../../models/TransactionData';
 import { TRANSACTION_APIS, TRANSACTION_ID_PLACEHOLDER } from '../../constants/api';
 import { BLOCKCHAINS } from '../../constants/blockchains';
+import { IParsingFunctionAPI } from '../explorer';
 
 // TODO: use tests/explorers/mocks/mockBlockstreamResponse as type
-function parsingFunction (jsonResponse): TransactionData {
+function parsingFunction ({ jsonResponse }: IParsingFunctionAPI): TransactionData {
   if (!jsonResponse.status.confirmed) {
     throw new Error('Number of transaction confirmations were less than the minimum required, according to Blockstream API');
   }

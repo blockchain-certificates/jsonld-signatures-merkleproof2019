@@ -28,17 +28,6 @@ describe('MerkleProof2019 test suite', function () {
     });
   });
 
-  describe('given the document is not signed by MerkleProof2019', function () {
-    it('should throw', function () {
-      const unsignedDocument = JSON.parse(JSON.stringify(blockcertsV3Fixture));
-      unsignedDocument.proof.type = 'Not merkle proof 2019';
-      expect(() => {
-        // eslint-disable-next-line no-new
-        new MerkleProof2019({ document: unsignedDocument });
-      }).toThrow('Incorrect proof type passed for verification. Expected: MerkleProof2019, Received: Not merkle proof 2019');
-    });
-  });
-
   describe('given a MerkleProof2019 signed document is passed', function () {
     let instance;
 

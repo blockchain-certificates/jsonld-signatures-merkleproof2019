@@ -53,7 +53,7 @@ describe('Blockcypher Ethereum explorer test suite', function () {
         time: new Date('2018-06-01T20:47:55.000Z')
       };
 
-      const output: TransactionData = await BlockcyperETHApi.parsingFunction(responseData);
+      const output: TransactionData = await BlockcyperETHApi.parsingFunction({ jsonResponse: responseData });
 
       expect(output).toEqual(expectedOutput);
     });

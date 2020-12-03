@@ -2,7 +2,7 @@ import { XMLHttpRequest as xhrPolyfill } from 'xmlhttprequest';
 
 export interface RequestParameters {
   url: string;
-  method?: 'GET';
+  method?: 'GET' | 'POST';
   body?: any;
 }
 
@@ -23,6 +23,7 @@ export async function request (obj: RequestParameters): Promise<string> {
       if (request.status >= 200 && request.status < 300) {
         resolve(request.responseText);
       } else {
+        console.log(request.responseText);
         const failureMessage: string = `Error fetching url:${url}; status code:${request.status}`;
         reject(new Error(failureMessage));
       }
