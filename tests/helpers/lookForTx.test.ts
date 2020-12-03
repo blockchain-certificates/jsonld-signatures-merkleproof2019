@@ -131,5 +131,22 @@ describe('getExplorersByChain test suite', function () {
         expect(selectedSelectors.length).toBe(4);
       });
     });
+
+    describe('in all other cases', function () {
+      it('should return the custom explorers', function () {
+        const explorers = {
+          ...getDefaultExplorers(),
+          custom: [
+            {
+              getTxData: () => '' as any,
+              priority: 0
+            }
+          ]
+        };
+        const selectedSelectors = getExplorersByChain('Matic' as any, explorers);
+        // because they are wrapped, we don't necessarily have the deep nature of the result, so we use a weak test to ensure
+        expect(selectedSelectors.length).toBe(1);
+      });
+    });
   });
 });
