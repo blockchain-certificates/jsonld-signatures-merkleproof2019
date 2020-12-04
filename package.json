@@ -3,6 +3,8 @@
   "version": "0.1.0",
   "description": "A jsonld signature implementation to support MerkleProof2019 verification in Verifiable Credential context",
   "main": "dist/MerkleProof2019.js",
+  "module": "dist/MerkleProof2019-es.js",
+  "typings": "dist/index.d.ts",
   "dependencies": {
     "@vaultie/lds-merkle-proof-2019": "0.0.8",
     "core-js": "^3.7.0",
@@ -34,19 +36,22 @@
     "rollup": "^2.33.1",
     "rollup-plugin-node-builtins": "^2.1.2",
     "rollup-plugin-node-globals": "^1.4.0",
+    "semantic-release": "^17.3.0",
     "sinon": "^9.2.1",
     "ts-jest": "^26.4.4",
     "tslib": "^2.0.3",
     "typescript": "^4.0.5"
   },
   "scripts": {
-    "build": "rollup -c && npm run transpile:node",
+    "copy:declaration": "cp src/index.d.ts dist/index.d.ts",
+    "build": "rollup -c && npm run transpile:node && npm run copy:declaration",
     "lint": "eslint . --ext .ts",
     "test": "jest",
     "test:watch": "jest --watch",
     "transpile:node": "npm run transpile:node:ts && npm run clean:lib:ts",
     "transpile:node:ts": "npx babel src -d lib --copy-files --extensions '.ts'",
-    "clean:lib:ts": "rimraf lib/\"**\"/*.ts"
+    "clean:lib:ts": "rimraf lib/\"**\"/*.ts",
+    "semantic-release": "semantic-release"
   },
   "husky": {
     "hooks": {
