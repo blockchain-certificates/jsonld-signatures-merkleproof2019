@@ -2,11 +2,10 @@ import { stripHashPrefix } from '../../utils/stripHashPrefix';
 import { BLOCKCHAINS } from '../../constants/blockchains';
 import { TransactionData } from '../../models/TransactionData';
 import { TRANSACTION_APIS, TRANSACTION_ID_PLACEHOLDER } from '../../constants/api';
-import { ExplorerAPI, ExplorerURLs } from '../../models/Explorers';
+import { ExplorerAPI, ExplorerURLs, IParsingFunctionAPI } from '../../models/Explorers';
 import CONFIG from '../../constants/config';
 import { dateToUnixTimestamp } from '../../utils/date';
 import { prependHashPrefix } from '../../utils/prependHashPrefix';
-import { IParsingFunctionAPI } from '../explorer';
 
 const serviceURL: ExplorerURLs = {
   main: `https://api.blockcypher.com/v1/eth/main/txs/${TRANSACTION_ID_PLACEHOLDER}?limit=500`,

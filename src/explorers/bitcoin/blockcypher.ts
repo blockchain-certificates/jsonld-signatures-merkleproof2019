@@ -1,11 +1,10 @@
 import { stripHashPrefix } from '../../utils/stripHashPrefix';
 import { dateToUnixTimestamp } from '../../utils/date';
-import { ExplorerAPI, ExplorerURLs } from '../../models/Explorers';
+import { ExplorerAPI, ExplorerURLs, IParsingFunctionAPI } from '../../models/Explorers';
 import { TransactionData } from '../../models/TransactionData';
 import { TRANSACTION_APIS, TRANSACTION_ID_PLACEHOLDER } from '../../constants/api';
 import CONFIG from '../../constants/config';
 import { BLOCKCHAINS } from '../../constants/blockchains';
-import { IParsingFunctionAPI } from '../explorer';
 
 // TODO: use tests/explorers/mocks/mockBlockcypher as type
 function parsingFunction ({ jsonResponse }: IParsingFunctionAPI): TransactionData {
