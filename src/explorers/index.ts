@@ -1,11 +1,10 @@
 import {
   BitcoinTransactionAPIArray as BitcoinExplorers,
   EthereumTransactionAPIArray as EthereumExplorers,
-  explorerFactory,
-  TExplorerFunctionsArray
+  explorerFactory
 } from './explorer';
 import { TRANSACTION_APIS } from '../constants/api';
-import { ExplorerAPI } from '../models/Explorers';
+import { ExplorerAPI, TExplorerFunctionsArray } from '../models/Explorers';
 import { ethereumRPCParsingFunction } from './rpc/ethereum';
 import { bitcoinRPCParsingFunction } from './rpc/bitcoin';
 

@@ -4,9 +4,8 @@ import { buildTransactionServiceUrl } from '../../services/transaction-apis';
 import { BLOCKCHAINS, isTestChain, SupportedChains } from '../../constants/blockchains';
 import { TransactionData } from '../../models/TransactionData';
 import { TRANSACTION_APIS, TRANSACTION_ID_PLACEHOLDER } from '../../constants/api';
-import { ExplorerAPI, ExplorerURLs } from '../../models/Explorers';
+import { ExplorerAPI, ExplorerURLs, IParsingFunctionAPI } from '../../models/Explorers';
 import CONFIG from '../../constants/config';
-import { IParsingFunctionAPI } from '../explorer';
 
 const MAIN_API_BASE_URL = 'https://api.etherscan.io/api?module=proxy';
 const TEST_API_BASE_URL = 'https://api-ropsten.etherscan.io/api?module=proxy';

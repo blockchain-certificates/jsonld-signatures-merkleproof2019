@@ -10,12 +10,15 @@ export default {
     {
       file: 'dist/MerkleProof2019.js',
       format: 'cjs',
-      name: 'MerkleProof2019'
+      name: 'MerkleProof2019',
+      exports: 'named',
+      sourcemap: true
     },
     {
       file: 'dist/MerkleProof2019-es.js',
       format: 'es',
-      name: 'MerkleProof2019'
+      name: 'MerkleProof2019',
+      sourcemap: true
     }
   ],
   plugins: [
