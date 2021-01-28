@@ -6,11 +6,6 @@ export interface ExplorerURLs {
   main: string;
   test: string;
 }
-
-export type TExplorerFunctionsArray = Array<{
-  getTxData: (transactionId: string, chain?: SupportedChains) => Promise<TransactionData>;
-  priority?: number;
-}>;
 export interface IParsingFunctionAPI {
   jsonResponse?: any; // the response from the service when called as rest
   chain?: SupportedChains; // TODO: look at how to deprecate this. Only used in etherscan
