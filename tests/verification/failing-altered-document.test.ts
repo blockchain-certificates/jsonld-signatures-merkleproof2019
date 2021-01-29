@@ -1,5 +1,5 @@
 import sinon from 'sinon';
-import * as explorerLookup from '@blockcerts/explorer-lookup/src';
+import * as explorerLookup from '@blockcerts/explorer-lookup';
 import alteredBlockcertsV3Fixture from '../fixtures/altered-blockcerts-v3';
 import { MerkleProof2019, MerkleProof2019VerificationResult } from '../../src/MerkleProof2019';
 import fixtureTransactionData from '../fixtures/transactionData';

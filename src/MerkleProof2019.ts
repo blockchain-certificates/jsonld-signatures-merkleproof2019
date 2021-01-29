@@ -1,6 +1,6 @@
 import { Decoder } from '@vaultie/lds-merkle-proof-2019';
 import jsigs from 'jsonld-signatures';
-import { lookForTx } from '@blockcerts/explorer-lookup/src';
+import { lookForTx } from '@blockcerts/explorer-lookup';
 import { DecodedProof, JSONLDProof } from './models/Proof';
 import getTransactionId from './helpers/getTransactionId';
 import isTransactionIdValid from './inspectors/isTransactionIdValid';
