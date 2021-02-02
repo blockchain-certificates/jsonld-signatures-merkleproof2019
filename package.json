@@ -2,10 +2,11 @@
   "name": "jsonld-signatures-merkleproof2019",
   "version": "0.1.0",
   "description": "A jsonld signature implementation to support MerkleProof2019 verification in Verifiable Credential context",
-  "main": "dist/MerkleProof2019.js",
-  "module": "dist/MerkleProof2019-es.js",
+  "main": "lib/cjs/MerkleProof2019.js",
+  "module": "lib/esm/MerkleProof2019.js",
   "typings": "dist/index.d.ts",
   "dependencies": {
+    "@blockcerts/explorer-lookup": "^1.0.0",
     "@vaultie/lds-merkle-proof-2019": "0.0.8",
     "core-js": "^3.7.0",
     "jsonld": "^1.8.1",
@@ -44,13 +45,10 @@
   },
   "scripts": {
     "copy:declaration": "cp src/index.d.ts dist/index.d.ts",
-    "build": "rollup -c && npm run transpile:node && npm run copy:declaration",
+    "build": "tsc -p tsconfig.json && tsc -p tsconfig.cjs.json",
     "lint": "eslint . --ext .ts",
     "test": "jest",
     "test:watch": "jest --watch",
-    "transpile:node": "npm run transpile:node:ts && npm run clean:lib:ts",
-    "transpile:node:ts": "npx babel src -d lib --copy-files --extensions '.ts'",
-    "clean:lib:ts": "rimraf lib/\"**\"/*.ts",
     "semantic-release": "semantic-release"
   },
   "husky": {

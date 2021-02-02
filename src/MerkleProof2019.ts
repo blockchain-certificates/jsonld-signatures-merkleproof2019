@@ -34,7 +34,7 @@ export interface MerkleProof2019VerificationResult {
   error?: string;
 }
 
-export class MerkleProof2019 extends LinkedDataProof {
+export class MerkleProof2019 extends (LinkedDataProof as any) {
   /**
    * @param type {string} Provided by subclass.
    * @param [issuer] {string} A key id URL to the paired public key.
@@ -129,7 +129,7 @@ export class MerkleProof2019 extends LinkedDataProof {
   }
 
   private setOptions (options: MerkleProof2019Options): void {
-    this.explorerAPIs = options.explorerAPIs || [];
+    this.explorerAPIs = options.explorerAPIs ?? [];
   }
 
   private validateTransactionId (): string {
