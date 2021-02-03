@@ -4,6 +4,7 @@
 .nvmrc
 .github/
 .eslintrc.js
+.eslintignore
 tsconfig.*
 
 .idea
