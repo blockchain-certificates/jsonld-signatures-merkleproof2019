@@ -37,6 +37,8 @@ export default async function computeLocalHash (document: any): Promise<string> 
 
   const jsonldDocumentLoader = setJsonLdDocumentLoader();
   const customLoader = function (url, callback): any { // Not typed by JSONLD
+    console.log(url);
+
     if (url in CONTEXTS) {
       return callback(null, {
         contextUrl: null,
@@ -57,6 +59,7 @@ export default async function computeLocalHash (document: any): Promise<string> 
 
   return new Promise((resolve, reject) => {
     jsonld.normalize(theDocument, normalizeArgs, (err, normalized) => {
+      console.log('normalize error:', err);
       const isErr = !!err;
       if (isErr) {
         reject(
