@@ -4,7 +4,7 @@
   "description": "A jsonld signature implementation to support MerkleProof2019 verification in Verifiable Credential context",
   "main": "lib/cjs/MerkleProof2019.js",
   "module": "lib/esm/MerkleProof2019.js",
-  "typings": "dist/index.d.ts",
+  "typings": "lib/index.d.ts",
   "dependencies": {
     "@blockcerts/explorer-lookup": "^1.0.1",
     "@vaultie/lds-merkle-proof-2019": "0.0.8",
@@ -34,8 +34,8 @@
     "typescript": "^4.0.5"
   },
   "scripts": {
-    "copy:declaration": "cp src/index.d.ts dist/index.d.ts",
-    "compile": "tsc -p tsconfig.json && tsc -p tsconfig.cjs.json",
+    "copy:declaration": "cp src/index.d.ts lib/index.d.ts",
+    "compile": "tsc -p tsconfig.json && tsc -p tsconfig.cjs.json && npm run copy:declaration",
     "lint": "eslint . --ext .ts",
     "test": "jest",
     "test:watch": "jest --watch",
