@@ -35,7 +35,7 @@
   },
   "scripts": {
     "copy:declaration": "cp src/index.d.ts dist/index.d.ts",
-    "build": "tsc -p tsconfig.json && tsc -p tsconfig.cjs.json",
+    "compile": "tsc -p tsconfig.json && tsc -p tsconfig.cjs.json",
     "lint": "eslint . --ext .ts",
     "test": "jest",
     "test:watch": "jest --watch",
