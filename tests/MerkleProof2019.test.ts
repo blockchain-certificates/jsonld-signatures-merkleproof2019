@@ -1,9 +1,9 @@
 import sinon from 'sinon';
+import * as explorerLookup from '@blockcerts/explorer-lookup';
 import { MerkleProof2019, MerkleProof2019Options, MerkleProof2019VerificationResult } from '../src/MerkleProof2019';
 import decodedProof, { assertionTransactionId } from './assertions/proof';
 import { TransactionData } from '../src/models/TransactionData';
 import { BLOCKCHAINS } from '../src/constants/blockchains';
-import * as lookForTxFunctions from '../src/helpers/lookForTx';
 import blockcertsV3Fixture, { documentHash } from './fixtures/blockcerts-v3';
 import fixtureTransactionData from './fixtures/transactionData';
 
@@ -78,7 +78,7 @@ describe('MerkleProof2019 test suite', function () {
         let result: MerkleProof2019VerificationResult;
 
         beforeEach(async function () {
-          sinon.stub(lookForTxFunctions, 'default').resolves(fixtureTransactionData);
+          sinon.stub(explorerLookup, 'lookForTx').resolves(fixtureTransactionData);
           result = await instance.verifyProof();
         });
 

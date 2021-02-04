@@ -2,10 +2,11 @@
   "name": "jsonld-signatures-merkleproof2019",
   "version": "0.1.0",
   "description": "A jsonld signature implementation to support MerkleProof2019 verification in Verifiable Credential context",
-  "main": "dist/MerkleProof2019.js",
-  "module": "dist/MerkleProof2019-es.js",
-  "typings": "dist/index.d.ts",
+  "main": "lib/cjs/MerkleProof2019.js",
+  "module": "lib/esm/MerkleProof2019.js",
+  "typings": "lib/index.d.ts",
   "dependencies": {
+    "@blockcerts/explorer-lookup": "^1.0.1",
     "@vaultie/lds-merkle-proof-2019": "0.0.8",
     "core-js": "^3.7.0",
     "jsonld": "^1.8.1",
@@ -14,13 +15,6 @@
     "xmlhttprequest": "^1.8.0"
   },
   "devDependencies": {
-    "@babel/cli": "^7.12.1",
-    "@babel/preset-env": "^7.12.1",
-    "@babel/preset-typescript": "^7.12.1",
-    "@rollup/plugin-commonjs": "^16.0.0",
-    "@rollup/plugin-json": "^4.1.0",
-    "@rollup/plugin-node-resolve": "^10.0.0",
-    "@rollup/plugin-typescript": "^6.1.0",
     "@types/jest": "^26.0.15",
     "@types/sinon": "^9.0.8",
     "@typescript-eslint/eslint-plugin": "^4.6.1",
@@ -33,9 +27,6 @@
     "eslint-plugin-standard": "^4.0.2",
     "husky": "^4.3.0",
     "jest": "^26.6.3",
-    "rollup": "^2.33.1",
-    "rollup-plugin-node-builtins": "^2.1.2",
-    "rollup-plugin-node-globals": "^1.4.0",
     "semantic-release": "^17.3.0",
     "sinon": "^9.2.1",
     "ts-jest": "^26.4.4",
@@ -43,14 +34,11 @@
     "typescript": "^4.0.5"
   },
   "scripts": {
-    "copy:declaration": "cp src/index.d.ts dist/index.d.ts",
-    "build": "rollup -c && npm run transpile:node && npm run copy:declaration",
+    "copy:declaration": "cp src/index.d.ts lib/index.d.ts",
+    "compile": "tsc -p tsconfig.json && tsc -p tsconfig.cjs.json && npm run copy:declaration",
     "lint": "eslint . --ext .ts",
     "test": "jest",
     "test:watch": "jest --watch",
-    "transpile:node": "npm run transpile:node:ts && npm run clean:lib:ts",
-    "transpile:node:ts": "npx babel src -d lib --copy-files --extensions '.ts'",
-    "clean:lib:ts": "rimraf lib/\"**\"/*.ts",
     "semantic-release": "semantic-release"
   },
   "husky": {

@@ -1,9 +1,9 @@
 import { Decoder } from '@vaultie/lds-merkle-proof-2019';
 import jsigs from 'jsonld-signatures';
+import { lookForTx } from '@blockcerts/explorer-lookup';
 import { DecodedProof, JSONLDProof } from './models/Proof';
 import getTransactionId from './helpers/getTransactionId';
 import isTransactionIdValid from './inspectors/isTransactionIdValid';
-import lookForTx from './helpers/lookForTx';
 import { ExplorerAPI } from './models/Explorers';
 import { IBlockchainObject } from './constants/blockchains';
 import getChain from './helpers/getChain';
@@ -11,7 +11,6 @@ import { TransactionData } from './models/TransactionData';
 import computeLocalHash from './inspectors/computeLocalHash';
 import ensureHashesEqual from './inspectors/ensureHashesEqual';
 import ensureMerkleRootEqual from './inspectors/ensureMerkleRootEqual';
-import { prepareExplorerAPIs } from './explorers';
 const { LinkedDataProof } = jsigs.suites;
 
 export interface MerkleProof2019Options {
@@ -35,7 +34,7 @@ export interface MerkleProof2019VerificationResult {
   error?: string;
 }
 
-export class MerkleProof2019 extends LinkedDataProof {
+export class MerkleProof2019 extends (LinkedDataProof as any) {
   /**
    * @param type {string} Provided by subclass.
    * @param [issuer] {string} A key id URL to the paired public key.
@@ -130,7 +129,7 @@ export class MerkleProof2019 extends LinkedDataProof {
   }
 
   private setOptions (options: MerkleProof2019Options): void {
-    this.explorerAPIs = options.explorerAPIs || [];
+    this.explorerAPIs = options.explorerAPIs ?? [];
   }
 
   private validateTransactionId (): string {
@@ -142,7 +141,7 @@ export class MerkleProof2019 extends LinkedDataProof {
     this.txData = await lookForTx({
       transactionId: this.transactionId,
       chain: this.chain?.code,
-      explorerAPIs: prepareExplorerAPIs(this.explorerAPIs)
+      explorerAPIs: this.explorerAPIs
     });
   }
 }

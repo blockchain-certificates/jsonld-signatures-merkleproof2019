@@ -7,7 +7,8 @@ const {
   blockcertsV3: BLOCKCERTSV3_CONTEXT,
   verifiableCredential: VERIFIABLE_CREDENTIAL_CONTEXT,
   verifiableCredentialExample: VERIFIABLE_CREDENTIAL_EXAMPLE,
-  merkleProof2019: MERKLE_PROOF_2019
+  merkleProof2019: MERKLE_PROOF_2019,
+  odrl: OPEN_DIGITALS_RIGHTS_LANGUAGE
 } = ContextsMap;
 const CONTEXTS = {};
 
@@ -17,6 +18,7 @@ CONTEXTS['https://www.w3.org/2018/credentials/v1'] = VERIFIABLE_CREDENTIAL_CONTE
 CONTEXTS['https://www.w3.org/2018/credentials/examples/v1'] = VERIFIABLE_CREDENTIAL_EXAMPLE;
 CONTEXTS['https://www.w3id.org/blockcerts/schema/3.0-alpha/merkleProof2019Context.json'] = MERKLE_PROOF_2019;
 CONTEXTS['https://www.blockcerts.org/schema/3.0-alpha/merkleProof2019Context.json'] = MERKLE_PROOF_2019;
+CONTEXTS['https://www.w3.org/ns/odrl.jsonld'] = OPEN_DIGITALS_RIGHTS_LANGUAGE;
 
 function setJsonLdDocumentLoader (): any { // not typed by jsonld
   if (typeof window !== 'undefined' && typeof window.XMLHttpRequest !== 'undefined') {

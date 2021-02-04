@@ -1,7 +1,7 @@
 import sinon from 'sinon';
+import * as explorerLookup from '@blockcerts/explorer-lookup';
 import alteredBlockcertsV3Fixture from '../fixtures/altered-blockcerts-v3';
 import { MerkleProof2019, MerkleProof2019VerificationResult } from '../../src/MerkleProof2019';
-import * as lookForTxFunctions from '../../src/helpers/lookForTx';
 import fixtureTransactionData from '../fixtures/transactionData';
 
 describe('when the process fails', function () {
@@ -9,7 +9,7 @@ describe('when the process fails', function () {
 
   beforeEach(function () {
     instance = new MerkleProof2019({ document: alteredBlockcertsV3Fixture });
-    sinon.stub(lookForTxFunctions, 'default').resolves(fixtureTransactionData);
+    sinon.stub(explorerLookup, 'lookForTx').resolves(fixtureTransactionData);
   });
 
   afterEach(function () {
