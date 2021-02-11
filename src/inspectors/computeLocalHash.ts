@@ -1,4 +1,5 @@
 import jsonld from 'jsonld';
+import JsonLdError from 'jsonld/lib/JsonLdError';
 import sha256 from 'sha256';
 import { CONTEXTS as ContextsMap } from '../constants/contexts';
 import { toUTF8Data } from '../utils/data';
@@ -58,11 +59,15 @@ export default async function computeLocalHash (document: any): Promise<string> 
   }
 
   return new Promise((resolve, reject) => {
-    jsonld.normalize(theDocument, normalizeArgs, (err, normalized) => {
+    jsonld.normalize(theDocument, normalizeArgs, (err: JsonLdError, normalized) => {
       const isErr = !!err;
       if (isErr) {
         reject(
-          new Error(`Failed to normalize document: ${err as string}`)
+          new JsonLdError(
+            'Failed to normalize document',
+            err.name,
+            err.details
+          )
         );
       } else {
         resolve(sha256(toUTF8Data(normalized)));
