@@ -62,7 +62,7 @@ export default async function computeLocalHash (document: any): Promise<string> 
       const isErr = !!err;
       if (isErr) {
         reject(
-          new Error('Failed to normalize document.')
+          new Error(`Failed to normalize document: ${err as string}`)
         );
       } else {
         resolve(sha256(toUTF8Data(normalized)));
