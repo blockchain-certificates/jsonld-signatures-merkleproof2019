@@ -1,4 +1,5 @@
 import jsonld from 'jsonld';
+import JsonLdError from 'jsonld/lib/JsonLdError';
 import sha256 from 'sha256';
 import { CONTEXTS as ContextsMap } from '../constants/contexts';
 import { toUTF8Data } from '../utils/data';
@@ -28,7 +29,7 @@ function setJsonLdDocumentLoader (): any { // not typed by jsonld
   return jsonld.documentLoaders.node();
 }
 
-export default async function computeLocalHash (document: any): Promise<string> { // TODO: define VC type
+export default async function computeLocalHash (document: any, documentLoader = (url: string): any => null): Promise<string> { // TODO: define VC type
   const expandContext = document['@context'];
   const theDocument = JSON.parse(JSON.stringify(document));
 
@@ -38,7 +39,12 @@ export default async function computeLocalHash (document: any): Promise<string> 
   }
 
   const jsonldDocumentLoader = setJsonLdDocumentLoader();
-  const customLoader = function (url, callback): any { // Not typed by JSONLD
+  const customLoader = async function (url, callback): Promise<any> { // Not typed by JSONLD
+    const context = await documentLoader(url);
+    if (context) {
+      return callback(null, context);
+    }
+
     if (url in CONTEXTS) {
       return callback(null, {
         contextUrl: null,
@@ -57,12 +63,17 @@ export default async function computeLocalHash (document: any): Promise<string> 
     normalizeArgs.expandContext = expandContext;
   }
 
-  return new Promise((resolve, reject) => {
-    jsonld.normalize(theDocument, normalizeArgs, (err, normalized) => {
+  return await new Promise((resolve, reject) => {
+    jsonld.normalize(theDocument, normalizeArgs, (err: JsonLdError, normalized) => {
       const isErr = !!err;
       if (isErr) {
+        console.log('error', err);
         reject(
-          new Error(`Failed to normalize document: ${err as string}`)
+          new JsonLdError(
+            'Failed to normalize document',
+            err.name,
+            err.details
+          )
         );
       } else {
         resolve(sha256(toUTF8Data(normalized)));

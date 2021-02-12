@@ -73,6 +73,14 @@ describe('MerkleProof2019 test suite', function () {
       });
     });
 
+    describe('given the type is passed', function () {
+      it('should register the type', function () {
+        const fixtureType: string = 'fixtureType';
+        const instance = new MerkleProof2019({ type: fixtureType, document: blockcertsV3Fixture });
+        expect(instance.type).toBe(fixtureType);
+      });
+    });
+
     describe('verifyProof method', function () {
       describe('when the process is successful', function () {
         let result: MerkleProof2019VerificationResult;
@@ -103,6 +111,14 @@ describe('MerkleProof2019 test suite', function () {
           expect(result).toEqual({
             verified: true,
             error: ''
+          });
+        });
+
+        describe('and it is called with a documentLoader', function () {
+          it('should call the documentLoader method', async function () {
+            const stubLoader: sinon.SinonStub = sinon.stub().resolves(null);
+            await instance.verifyProof({ documentLoader: stubLoader });
+            expect(stubLoader.callCount > 0).toBe(true);
           });
         });
       });

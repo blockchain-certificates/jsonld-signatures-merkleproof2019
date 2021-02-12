@@ -23,7 +23,7 @@ export interface VCDocument {
 
 export interface MerkleProof2019API {
   options?: MerkleProof2019Options;
-  type?: 'MerkleProof2019';
+  type?: 'MerkleProof2019' | string;
   issuer?: any; // TODO: define issuer type
   verificationMethod?: string;
   document: VCDocument;
@@ -74,6 +74,7 @@ export class MerkleProof2019 extends (LinkedDataProof as any) {
       throw new Error('A document signed by MerkleProof2019 is required for the verification process.');
     }
 
+    this.type = type;
     this.issuer = issuer;
     this.verificationMethod = verificationMethod;
     this.document = document;
@@ -92,12 +93,12 @@ export class MerkleProof2019 extends (LinkedDataProof as any) {
     this.proof = base58Decoder.decode();
   }
 
-  async verifyProof (): Promise<MerkleProof2019VerificationResult> {
+  async verifyProof ({ documentLoader } = { documentLoader: (url): any => {} }): Promise<MerkleProof2019VerificationResult> {
     let verified: boolean;
     let error: string = '';
     try {
       this.validateTransactionId();
-      await this.computeLocalHash();
+      await this.computeLocalHash(documentLoader);
       await this.fetchTransactionData();
       this.compareHashes();
       this.confirmMerkleRoot();
@@ -120,8 +121,8 @@ export class MerkleProof2019 extends (LinkedDataProof as any) {
     ensureHashesEqual(this.localDocumentHash, this.proof.targetHash);
   }
 
-  private async computeLocalHash (): Promise<void> {
-    this.localDocumentHash = await computeLocalHash(this.document);
+  private async computeLocalHash (documentLoader): Promise<void> {
+    this.localDocumentHash = await computeLocalHash(this.document, documentLoader);
   }
 
   private getChain (): void {
