@@ -23,7 +23,7 @@ export interface VCDocument {
 
 export interface MerkleProof2019API {
   options?: MerkleProof2019Options;
-  type?: 'MerkleProof2019';
+  type?: 'MerkleProof2019' | string;
   issuer?: any; // TODO: define issuer type
   verificationMethod?: string;
   document: VCDocument;
@@ -74,6 +74,7 @@ export class MerkleProof2019 extends (LinkedDataProof as any) {
       throw new Error('A document signed by MerkleProof2019 is required for the verification process.');
     }
 
+    this.type = type;
     this.issuer = issuer;
     this.verificationMethod = verificationMethod;
     this.document = document;
