@@ -93,7 +93,7 @@ export class MerkleProof2019 extends (LinkedDataProof as any) {
     this.proof = base58Decoder.decode();
   }
 
-  async verifyProof ({ documentLoader = null }): Promise<MerkleProof2019VerificationResult> {
+  async verifyProof ({ documentLoader } = { documentLoader: (url): any => {} }): Promise<MerkleProof2019VerificationResult> {
     let verified: boolean;
     let error: string = '';
     try {

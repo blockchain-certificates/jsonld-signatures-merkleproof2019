@@ -29,7 +29,7 @@ function setJsonLdDocumentLoader (): any { // not typed by jsonld
   return jsonld.documentLoaders.node();
 }
 
-export default async function computeLocalHash (document: any, documentLoader?: any): Promise<string> { // TODO: define VC type
+export default async function computeLocalHash (document: any, documentLoader = (url: string): any => null): Promise<string> { // TODO: define VC type
   const expandContext = document['@context'];
   const theDocument = JSON.parse(JSON.stringify(document));
 

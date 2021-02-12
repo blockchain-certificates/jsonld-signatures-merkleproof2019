@@ -12,6 +12,14 @@ describe('computeLocalHash test suite', function () {
     });
   });
 
+  describe('given it is provided with a documentLoader', function () {
+    it('should call the documentLoader', async function () {
+      const stubLoader = sinon.stub().resolves(null);
+      await computeLocalHash(blockcertsV3Fixture, stubLoader);
+      expect(stubLoader.callCount > 0).toBe(true);
+    });
+  });
+
   describe('given the normalization of the document fails', function () {
     it('should reject with an error', async function () {
       const mockJsonLdError: JsonLdError = {
