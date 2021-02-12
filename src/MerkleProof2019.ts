@@ -92,12 +92,12 @@ export class MerkleProof2019 extends (LinkedDataProof as any) {
     this.proof = base58Decoder.decode();
   }
 
-  async verifyProof (): Promise<MerkleProof2019VerificationResult> {
+  async verifyProof ({ documentLoader = null }): Promise<MerkleProof2019VerificationResult> {
     let verified: boolean;
     let error: string = '';
     try {
       this.validateTransactionId();
-      await this.computeLocalHash();
+      await this.computeLocalHash(documentLoader);
       await this.fetchTransactionData();
       this.compareHashes();
       this.confirmMerkleRoot();
@@ -120,8 +120,8 @@ export class MerkleProof2019 extends (LinkedDataProof as any) {
     ensureHashesEqual(this.localDocumentHash, this.proof.targetHash);
   }
 
-  private async computeLocalHash (): Promise<void> {
-    this.localDocumentHash = await computeLocalHash(this.document);
+  private async computeLocalHash (documentLoader): Promise<void> {
+    this.localDocumentHash = await computeLocalHash(this.document, documentLoader);
   }
 
   private getChain (): void {
