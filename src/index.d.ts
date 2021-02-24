@@ -1,7 +1,5 @@
-import { ExplorerAPI } from './models/Explorers';
 import { DecodedProof, JSONLDProof } from './models/Proof';
-import { TransactionData } from './models/TransactionData';
-import { IParsingFunctionAPI } from './explorers/explorer';
+import { ExplorerAPI, TransactionData, IParsingFunctionAPI } from '@blockcerts/explorer-lookup';
 import { IBlockchainObject } from './constants/blockchains';
 
 export interface MerkleProof2019Options {
@@ -25,7 +23,7 @@ export interface MerkleProof2019VerificationResult {
   error?: string;
 }
 
-declare class MerkleProof2019 {
+export declare class MerkleProof2019 {
   /* eslint-disable @typescript-eslint/no-empty-function, @typescript-eslint/no-useless-constructor */
   public type: string;
   public issuer: any; // TODO: define issuer type
@@ -51,7 +49,6 @@ declare class MerkleProof2019 {
 
 export {
   ExplorerAPI,
-  TransactionData,
   IParsingFunctionAPI,
-  MerkleProof2019
+  TransactionData
 };

@@ -1,5 +1,4 @@
-import { ExplorerAPI } from '../../src/models/Explorers';
-import { TransactionData } from '../../src/models/TransactionData';
+import { ExplorerAPI, TransactionData } from '@blockcerts/explorer-lookup';
 import ensureExplorerAPIValidity from '../../src/utils/ensureExplorerAPIValidity';
 
 describe('ensureExplorerAPIValidity test suite', function () {

@@ -1,4 +1,4 @@
-import { TransactionData } from '../../src/models/TransactionData';
+import { TransactionData } from '@blockcerts/explorer-lookup';
 
 const fixtureTransactionData: TransactionData = {
   remoteHash: '2b065c69c70432e9f082629939733afd2343e83f45939519986e9a09cf8ccd08',

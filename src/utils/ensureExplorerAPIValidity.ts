@@ -1,4 +1,4 @@
-import { ExplorerAPI } from '../models/Explorers';
+import { ExplorerAPI } from '@blockcerts/explorer-lookup';
 
 function isPriorityValid (explorerAPI: ExplorerAPI): boolean {
   return explorerAPI.priority >= 0;
