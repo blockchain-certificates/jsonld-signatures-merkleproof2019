@@ -11,6 +11,7 @@
     "core-js": "^3.7.0",
     "jsonld": "5.2",
     "jsonld-signatures": "^6.0.0",
+    "lodash.clonedeep": "^4.5.0",
     "sha256": "^0.2.0",
     "xmlhttprequest": "^1.8.0"
   },

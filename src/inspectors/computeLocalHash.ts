@@ -2,6 +2,7 @@ import jsonld from 'jsonld';
 import sha256 from 'sha256';
 import preloadedContexts from '../constants/contexts/preloadedContexts';
 import { toUTF8Data } from '../utils/data';
+import { isObject } from '../utils/object';
 
 // function setJsonLdDocumentLoader (): any { // not typed by jsonld
 //   if (typeof window !== 'undefined' && typeof window.XMLHttpRequest !== 'undefined') {
@@ -26,7 +27,12 @@ export function getUnmappedFields (normalized: string): string[] | null {
 }
 
 export default async function computeLocalHash (document: any, documentLoader = (url: string): any => null): Promise<string> { // TODO: define VC type
-  const expandContext = document['@context'];
+  // the previous implementation was using a reference of @context, thus always adding @vocab to @context,
+  // thus passing the information down to jsonld regardless of the configuration option. We explicitly do that now,
+  // since we want to make sure unmapped fields are detected.
+  if (!document['@context'].find((context: any) => isObject(context) && '@vocab' in context)) {
+    document['@context'].push({ '@vocab': 'http://fallback.org/' });
+  }
   const theDocument = JSON.parse(JSON.stringify(document));
 
   if (theDocument.proof) {
