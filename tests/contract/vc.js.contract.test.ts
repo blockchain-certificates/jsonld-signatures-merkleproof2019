@@ -53,22 +53,19 @@ describe('Contract test suite', function () {
           Headers
         }
       });
-      const presentation = vcjs.createPresentation({
-        verifiableCredential: [blockcertsDocument]
-      });
       const suite = [new MerkleProof2019({
         document: blockcertsDocument,
         verificationMethod: didDocument.verificationMethod[0]
       })];
-      const verificationStatus = await vcjs.verify({
-        presentation,
+      const verificationStatus = await vcjs.verifyCredential({
+        credential: blockcertsDocument,
         suite,
         documentLoader: generateDocumentLoader(),
         presentationPurpose: new AuthenticationProofPurpose({
           challenge: Math.random().toString().substr(2, 8)
         })
       });
-      console.log(JSON.stringify(verificationStatus, null, 2));
+
       expect(verificationStatus.verified).toBe(true);
     }, 60000);
   });
