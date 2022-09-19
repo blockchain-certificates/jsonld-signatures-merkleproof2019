@@ -1,13 +1,10 @@
 import { preloadedContexts } from '@blockcerts/schemas';
 import jsonld from 'jsonld';
 import { Headers } from 'node-fetch';
-import jsigs from 'jsonld-signatures';
 import { MerkleProof2019 } from '../../src/MerkleProof2019';
 import blockcertsDocument from '../fixtures/testnet-v3-did.json';
 import didDocument from '../fixtures/did:ion:EiA_Z6LQILbB2zj_eVrqfQ2xDm4HNqeJUw5Kj2Z7bFOOeQ.json';
 import precompileEsmModuleToCjs from './helpers/precompileEsmModuleToCjs';
-
-const { purposes: { AuthenticationProofPurpose } } = jsigs;
 
 function generateDocumentLoader (): any {
   preloadedContexts[blockcertsDocument.issuer.id] = didDocument;
@@ -43,10 +40,7 @@ describe('Contract test suite', function () {
       const verificationStatus = await vcjs.verifyCredential({
         credential: blockcertsDocument,
         suite,
-        documentLoader: generateDocumentLoader(),
-        presentationPurpose: new AuthenticationProofPurpose({
-          challenge: Math.random().toString().substr(2, 8)
-        })
+        documentLoader: generateDocumentLoader()
       });
 
       expect(verificationStatus.verified).toBe(true);
