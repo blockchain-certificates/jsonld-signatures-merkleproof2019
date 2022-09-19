@@ -24,12 +24,14 @@ function generateDocumentLoader (): any {
 describe('Contract test suite', function () {
   describe('vc.js compatibility', function () {
     it('should verify a MerkleProof2019 signed document', async function () {
+      // jest requirement to prevent ESM issues
       const vcjs = await precompileEsmModuleToCjs('node_modules/@digitalbazaar/vc/lib/index.js', {
         globalThis: {
           Headers
         }
       });
 
+      // actual test suite starts here
       const suite = [new MerkleProof2019({
         document: blockcertsDocument,
         verificationMethod: didDocument.verificationMethod[0]
