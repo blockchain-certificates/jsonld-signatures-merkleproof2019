@@ -37,6 +37,8 @@ function generateDocumentLoader (): any {
   return customLoader;
 }
 
+jest.useRealTimers();
+
 describe('Contract test suite', function () {
   describe('vc.js compatibility', function () {
     it('should verify a MerkleProof2019 signed document', async function () {
@@ -58,6 +60,6 @@ describe('Contract test suite', function () {
       });
       console.log(verificationStatus);
       expect(verificationStatus.verified).toBe(true);
-    });
+    }, 60000);
   });
 });

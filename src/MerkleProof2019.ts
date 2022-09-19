@@ -102,6 +102,7 @@ export class MerkleProof2019 extends (LinkedDataProof as any) {
       this.confirmMerkleRoot();
       verified = true;
     } catch (e) {
+      console.error(e);
       verified = false;
       error = e.message;
     }

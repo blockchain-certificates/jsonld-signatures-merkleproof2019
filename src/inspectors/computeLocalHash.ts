@@ -1,32 +1,28 @@
 import jsonld from 'jsonld';
-import JsonLdError from 'jsonld/lib/JsonLdError';
 import sha256 from 'sha256';
-import { CONTEXTS as ContextsMap } from '../constants/contexts';
+import preloadedContexts from '../constants/contexts/preloadedContexts';
 import { toUTF8Data } from '../utils/data';
 
-const {
-  blockcertsV3: BLOCKCERTSV3_CONTEXT,
-  verifiableCredential: VERIFIABLE_CREDENTIAL_CONTEXT,
-  verifiableCredentialExample: VERIFIABLE_CREDENTIAL_EXAMPLE,
-  merkleProof2019: MERKLE_PROOF_2019,
-  odrl: OPEN_DIGITALS_RIGHTS_LANGUAGE
-} = ContextsMap;
-const CONTEXTS = {};
+// function setJsonLdDocumentLoader (): any { // not typed by jsonld
+//   if (typeof window !== 'undefined' && typeof window.XMLHttpRequest !== 'undefined') {
+//     return jsonld.documentLoaders.xhr();
+//   }
+//
+//   return jsonld.documentLoaders.node();
+// }
 
-CONTEXTS['https://www.blockcerts.org/schema/3.0-alpha/context.json'] = BLOCKCERTSV3_CONTEXT;
-CONTEXTS['https://www.w3id.org/blockcerts/schema/3.0-alpha/context.json'] = BLOCKCERTSV3_CONTEXT;
-CONTEXTS['https://www.w3.org/2018/credentials/v1'] = VERIFIABLE_CREDENTIAL_CONTEXT;
-CONTEXTS['https://www.w3.org/2018/credentials/examples/v1'] = VERIFIABLE_CREDENTIAL_EXAMPLE;
-CONTEXTS['https://www.w3id.org/blockcerts/schema/3.0-alpha/merkleProof2019Context.json'] = MERKLE_PROOF_2019;
-CONTEXTS['https://www.blockcerts.org/schema/3.0-alpha/merkleProof2019Context.json'] = MERKLE_PROOF_2019;
-CONTEXTS['https://www.w3.org/ns/odrl.jsonld'] = OPEN_DIGITALS_RIGHTS_LANGUAGE;
-
-function setJsonLdDocumentLoader (): any { // not typed by jsonld
-  if (typeof window !== 'undefined' && typeof window.XMLHttpRequest !== 'undefined') {
-    return jsonld.documentLoaders.xhr();
+export function getUnmappedFields (normalized: string): string[] | null {
+  const normalizedArray = normalized.split('\n');
+  const myRegexp = /<http:\/\/fallback\.org\/(.*)>/;
+  const matches = normalizedArray
+    .map(normalizedString => myRegexp.exec(normalizedString))
+    .filter(match => match != null);
+  if (matches.length > 0) {
+    // eslint-disable-next-line @typescript-eslint/require-array-sort-compare
+    const unmappedFields = matches.map(match => match[1]).sort(); // only return name of unmapped key
+    return Array.from(new Set(unmappedFields)); // dedup
   }
-
-  return jsonld.documentLoaders.node();
+  return null;
 }
 
 export default async function computeLocalHash (document: any, documentLoader = (url: string): any => null): Promise<string> { // TODO: define VC type
@@ -38,46 +34,38 @@ export default async function computeLocalHash (document: any, documentLoader = 
     delete theDocument.proof;
   }
 
-  const jsonldDocumentLoader = setJsonLdDocumentLoader();
-  const customLoader = async function (url, callback): Promise<any> { // Not typed by JSONLD
-    const context = await documentLoader(url);
-    if (context) {
-      return callback(null, context);
-    }
-
-    if (url in CONTEXTS) {
-      return callback(null, {
+  const customLoader = function (url): any {
+    if (url in preloadedContexts) {
+      return {
         contextUrl: null,
-        document: CONTEXTS[url],
+        document: preloadedContexts[url],
         documentUrl: url
-      });
+      };
     }
-    return jsonldDocumentLoader(url, callback);
+    return jsonld.documentLoader(url);
   };
-  jsonld.documentLoader = customLoader;
+
   const normalizeArgs: any = {
     algorithm: 'URDNA2015',
-    format: 'application/nquads'
+    format: 'application/nquads',
+    documentLoader: customLoader
   };
-  if (expandContext) {
-    normalizeArgs.expandContext = expandContext;
+
+  let normalizedDocument;
+
+  try {
+    normalizedDocument = await jsonld.normalize(theDocument, normalizeArgs);
+  } catch (e) {
+    console.error(e);
+    throw new Error('computeLocalHash - JSONLD normalization failed');
   }
 
-  return await new Promise((resolve, reject) => {
-    jsonld.normalize(theDocument, normalizeArgs, (err: JsonLdError, normalized) => {
-      const isErr = !!err;
-      if (isErr) {
-        console.log('error', err);
-        reject(
-          new JsonLdError(
-            'Failed to normalize document',
-            err.name,
-            err.details
-          )
-        );
-      } else {
-        resolve(sha256(toUTF8Data(normalized)));
-      }
-    });
-  });
+  const unmappedFields: string[] = getUnmappedFields(normalizedDocument);
+  if (unmappedFields) {
+    throw new Error(
+      `computeLocalHash - found unmapped fields: ${unmappedFields.join(', ')}`
+    );
+  } else {
+    return sha256(toUTF8Data(normalizedDocument));
+  }
 }
