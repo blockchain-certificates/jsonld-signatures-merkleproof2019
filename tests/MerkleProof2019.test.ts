@@ -3,7 +3,7 @@ import * as explorerLookup from '@blockcerts/explorer-lookup';
 import { MerkleProof2019, MerkleProof2019Options, MerkleProof2019VerificationResult } from '../src/MerkleProof2019';
 import decodedProof, { assertionTransactionId } from './assertions/proof';
 import { BLOCKCHAINS } from '../src/constants/blockchains';
-import blockcertsV3Fixture, { documentHash } from './fixtures/blockcerts-v3';
+import blockcertsV3Fixture, { documentHash } from './fixtures/blockcerts-v3-alpha';
 import fixtureTransactionData from './fixtures/transactionData';
 
 describe('MerkleProof2019 test suite', function () {

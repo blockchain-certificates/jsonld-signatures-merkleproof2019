@@ -4,6 +4,9 @@ module.exports = {
     '<rootDir>/node_modules'
   ],
   transform: {
-    '^.+\\.(ts)$': 'ts-jest'
-  }
+    '^.+\\.(js|ts)$': 'ts-jest'
+  },
+  transformIgnorePatterns: [
+    'node_modules/@digitalbazaar/'
+  ]
 };

@@ -1,7 +1,7 @@
 import sinon from 'sinon';
 import jsonld from 'jsonld';
 import JsonLdError from 'jsonld/lib/JsonLdError';
-import blockcertsV3Fixture, { documentHash } from '../fixtures/blockcerts-v3';
+import blockcertsV3Fixture, { documentHash } from '../fixtures/blockcerts-v3-alpha';
 import computeLocalHash from '../../src/inspectors/computeLocalHash';
 
 describe('computeLocalHash test suite', function () {
