@@ -5,8 +5,12 @@ import resolve from '@rollup/plugin-node-resolve';
 import jsonld from 'jsonld';
 import { Headers } from 'node-fetch';
 import nodeEval from 'node-eval';
+import jsigs from 'jsonld-signatures';
 import { MerkleProof2019 } from '../../src/MerkleProof2019';
 import blockcertsDocument from '../fixtures/testnet-v3-did.json';
+import didDocument from '../fixtures/did:ion:EiA_Z6LQILbB2zj_eVrqfQ2xDm4HNqeJUw5Kj2Z7bFOOeQ.json';
+
+const { purposes: { AuthenticationProofPurpose } } = jsigs;
 
 async function precompileVc (): Promise<string> {
   return await rollup({
@@ -24,6 +28,7 @@ async function precompileVc (): Promise<string> {
 }
 
 function generateDocumentLoader (): any {
+  preloadedContexts[blockcertsDocument.issuer.id] = didDocument;
   const customLoader = function (url): any {
     if (url in preloadedContexts) {
       return {
@@ -51,14 +56,19 @@ describe('Contract test suite', function () {
       const presentation = vcjs.createPresentation({
         verifiableCredential: [blockcertsDocument]
       });
-      const suite = [new MerkleProof2019({ document: blockcertsDocument })];
+      const suite = [new MerkleProof2019({
+        document: blockcertsDocument,
+        verificationMethod: didDocument.verificationMethod[0]
+      })];
       const verificationStatus = await vcjs.verify({
         presentation,
         suite,
         documentLoader: generateDocumentLoader(),
-        challenge: Math.random().toString().substr(2, 8)
+        presentationPurpose: new AuthenticationProofPurpose({
+          challenge: Math.random().toString().substr(2, 8)
+        })
       });
-      console.log(verificationStatus);
+      console.log(JSON.stringify(verificationStatus, null, 2));
       expect(verificationStatus.verified).toBe(true);
     }, 60000);
   });

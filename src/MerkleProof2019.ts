@@ -21,20 +21,19 @@ export interface VCDocument {
 
 export interface MerkleProof2019API {
   options?: MerkleProof2019Options;
-  type?: 'MerkleProof2019' | string;
   issuer?: any; // TODO: define issuer type
-  verificationMethod?: string;
+  verificationMethod?: any;
   document: VCDocument;
 }
 
 export interface MerkleProof2019VerificationResult {
   verified: boolean;
   error?: string;
+  verificationMethod: any;
 }
 
-export class MerkleProof2019 extends (LinkedDataProof as any) {
+export class MerkleProof2019 extends LinkedDataProof {
   /**
-   * @param type {string} Provided by subclass.
    * @param [issuer] {string} A key id URL to the paired public key.
    * @param [verificationMethod] {string} A key id URL to the paired public key.
    * @param [proof] {object} a JSON-LD document with options to use for
@@ -44,7 +43,7 @@ export class MerkleProof2019 extends (LinkedDataProof as any) {
    */
   public type: string = 'MerkleProof2019';
   public issuer: any = null; // TODO: define issuer type
-  public verificationMethod: string = '';
+  public verificationMethod: any = null;
   public proof: DecodedProof = null;
   public document: VCDocument = null;
   public explorerAPIs: ExplorerAPI[] = [];
@@ -55,24 +54,17 @@ export class MerkleProof2019 extends (LinkedDataProof as any) {
   private transactionId: string = '';
 
   constructor ({
-    type = 'MerkleProof2019',
     issuer = null,
-    verificationMethod = '',
+    verificationMethod = null,
     document = null,
     options = {}
   }: MerkleProof2019API) {
-    super({ type });
-    // validate common options
-    if (verificationMethod !== undefined &&
-      typeof verificationMethod !== 'string') {
-      throw new TypeError('"verificationMethod" must be a URL string.');
-    }
+    super({ type: 'MerkleProof2019' });
 
     if (!document) {
       throw new Error('A document signed by MerkleProof2019 is required for the verification process.');
     }
 
-    this.type = type;
     this.issuer = issuer;
     this.verificationMethod = verificationMethod;
     this.document = document;
@@ -107,6 +99,7 @@ export class MerkleProof2019 extends (LinkedDataProof as any) {
       error = e.message;
     }
     return {
+      verificationMethod: this.verificationMethod,
       verified,
       error
     };
