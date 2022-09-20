@@ -14,7 +14,7 @@ export interface MerkleProof2019API {
   options?: MerkleProof2019Options;
   type?: 'MerkleProof2019';
   issuer?: any; // TODO: define issuer type
-  verificationMethod?: string;
+  verificationMethod?: IDidDocumentPublicKey;
   document: VCDocument;
 }
 
@@ -23,11 +23,11 @@ export interface MerkleProof2019VerificationResult {
   error?: string;
 }
 
-export declare class MerkleProof2019 {
+export declare class LDMerkleProof2019 {
   /* eslint-disable @typescript-eslint/no-empty-function, @typescript-eslint/no-useless-constructor */
   public type: string;
   public issuer: any; // TODO: define issuer type
-  public verificationMethod: string;
+  public verificationMethod: IDidDocumentPublicKey;
   public proof: DecodedProof;
   public document: VCDocument;
   public explorerAPIs: ExplorerAPI[];
@@ -38,7 +38,7 @@ export declare class MerkleProof2019 {
   constructor ({
     type = 'MerkleProof2019',
     issuer = null,
-    verificationMethod = '',
+    verificationMethod = null,
     document = null,
     options = {}
   }: MerkleProof2019API) {}

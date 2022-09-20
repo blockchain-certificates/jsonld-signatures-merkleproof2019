@@ -9,6 +9,7 @@ import getChain from './helpers/getChain';
 import computeLocalHash from './inspectors/computeLocalHash';
 import ensureHashesEqual from './inspectors/ensureHashesEqual';
 import ensureMerkleRootEqual from './inspectors/ensureMerkleRootEqual';
+import type { IDidDocumentPublicKey } from '@decentralized-identity/did-common-typescript';
 const { LinkedDataProof } = jsigs.suites;
 
 export interface MerkleProof2019Options {
@@ -22,17 +23,17 @@ export interface VCDocument {
 export interface MerkleProof2019API {
   options?: MerkleProof2019Options;
   issuer?: any; // TODO: define issuer type
-  verificationMethod?: any;
+  verificationMethod?: IDidDocumentPublicKey;
   document: VCDocument;
 }
 
 export interface MerkleProof2019VerificationResult {
   verified: boolean;
   error?: string;
-  verificationMethod: any;
+  verificationMethod: IDidDocumentPublicKey;
 }
 
-export class MerkleProof2019 extends LinkedDataProof {
+export class LDMerkleProof2019 extends LinkedDataProof {
   /**
    * @param [issuer] {string} A key id URL to the paired public key.
    * @param [verificationMethod] {string} A key id URL to the paired public key.
@@ -43,7 +44,7 @@ export class MerkleProof2019 extends LinkedDataProof {
    */
   public type: string = 'MerkleProof2019';
   public issuer: any = null; // TODO: define issuer type
-  public verificationMethod: any = null;
+  public verificationMethod: IDidDocumentPublicKey = null;
   public proof: DecodedProof = null;
   public document: VCDocument = null;
   public explorerAPIs: ExplorerAPI[] = [];

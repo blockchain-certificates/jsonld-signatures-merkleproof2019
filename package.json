@@ -17,6 +17,7 @@
   },
   "devDependencies": {
     "@blockcerts/schemas": "^3.2.1",
+    "@decentralized-identity/did-common-typescript": "^0.1.19",
     "@digitalbazaar/vc": "^5.0.0",
     "@rollup/plugin-commonjs": "^22.0.2",
     "@rollup/plugin-node-resolve": "^14.1.0",

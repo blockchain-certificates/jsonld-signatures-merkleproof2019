@@ -1,6 +1,6 @@
 import sinon from 'sinon';
 import * as explorerLookup from '@blockcerts/explorer-lookup';
-import { MerkleProof2019, MerkleProof2019Options, MerkleProof2019VerificationResult } from '../src/MerkleProof2019';
+import { LDMerkleProof2019, MerkleProof2019Options, MerkleProof2019VerificationResult } from '../src/LDMerkleProof2019';
 import decodedProof, { assertionTransactionId } from './assertions/proof';
 import { BLOCKCHAINS } from '../src/constants/blockchains';
 import blockcertsV3Fixture, { documentHash } from './fixtures/blockcerts-v3-alpha';
@@ -11,7 +11,7 @@ describe('MerkleProof2019 test suite', function () {
     it('should throw', function () {
       expect(() => {
         // eslint-disable-next-line no-new
-        new MerkleProof2019({} as any);
+        new LDMerkleProof2019({} as any);
       }).toThrow('A document signed by MerkleProof2019 is required for the verification process.');
     });
   });
@@ -22,7 +22,7 @@ describe('MerkleProof2019 test suite', function () {
       delete unsignedDocument.proof;
       expect(() => {
         // eslint-disable-next-line no-new
-        new MerkleProof2019({ document: unsignedDocument });
+        new LDMerkleProof2019({ document: unsignedDocument });
       }).toThrow('The passed document is not signed.');
     });
   });
@@ -31,7 +31,7 @@ describe('MerkleProof2019 test suite', function () {
     let instance;
 
     beforeEach(function () {
-      instance = new MerkleProof2019({ document: blockcertsV3Fixture });
+      instance = new LDMerkleProof2019({ document: blockcertsV3Fixture });
     });
 
     afterEach(function () {
@@ -67,7 +67,7 @@ describe('MerkleProof2019 test suite', function () {
             parsingFunction: (): explorerLookup.TransactionData => fixtureTransactionData
           }]
         };
-        const instance = new MerkleProof2019({ options: fixtureOptions, document: blockcertsV3Fixture });
+        const instance = new LDMerkleProof2019({ options: fixtureOptions, document: blockcertsV3Fixture });
         expect(instance.explorerAPIs).toEqual(fixtureOptions.explorerAPIs);
       });
     });
@@ -75,7 +75,7 @@ describe('MerkleProof2019 test suite', function () {
     describe('given the type is passed', function () {
       it('should register the type', function () {
         const fixtureType: string = 'fixtureType';
-        const instance = new MerkleProof2019({ type: fixtureType, document: blockcertsV3Fixture });
+        const instance = new LDMerkleProof2019({ type: fixtureType, document: blockcertsV3Fixture });
         expect(instance.type).toBe(fixtureType);
       });
     });

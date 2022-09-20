@@ -1,7 +1,7 @@
 import { preloadedContexts } from '@blockcerts/schemas';
 import jsonld from 'jsonld';
 import { Headers } from 'node-fetch';
-import { MerkleProof2019 } from '../../src/MerkleProof2019';
+import { LDMerkleProof2019 } from '../../src/LDMerkleProof2019';
 import blockcertsDocument from '../fixtures/testnet-v3-did.json';
 import didDocument from '../fixtures/did:ion:EiA_Z6LQILbB2zj_eVrqfQ2xDm4HNqeJUw5Kj2Z7bFOOeQ.json';
 import precompileEsmModuleToCjs from './helpers/precompileEsmModuleToCjs';
@@ -32,7 +32,7 @@ describe('Contract test suite', function () {
       });
 
       // actual test suite starts here
-      const suite = [new MerkleProof2019({
+      const suite = [new LDMerkleProof2019({
         document: blockcertsDocument,
         verificationMethod: didDocument.verificationMethod[0]
       })];
