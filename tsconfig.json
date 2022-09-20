@@ -16,6 +16,7 @@
     "outDir": "lib/esm"
   },
   "compileOnSave": false,
+  "include": ["src"],
   "exclude": [
     "node_modules",
     "tests",

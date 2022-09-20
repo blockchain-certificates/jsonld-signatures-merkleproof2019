@@ -1,7 +1,7 @@
 import { preloadedContexts } from '@blockcerts/schemas';
 import jsonld from 'jsonld';
 import { Headers } from 'node-fetch';
-import { LDMerkleProof2019 } from '../../src/LDMerkleProof2019';
+import { LDMerkleProof2019 } from '../../src';
 import blockcertsDocument from '../fixtures/testnet-v3-did.json';
 import didDocument from '../fixtures/did:ion:EiA_Z6LQILbB2zj_eVrqfQ2xDm4HNqeJUw5Kj2Z7bFOOeQ.json';
 import precompileEsmModuleToCjs from './helpers/precompileEsmModuleToCjs';

@@ -1,6 +1,6 @@
 import sinon from 'sinon';
 import * as explorerLookup from '@blockcerts/explorer-lookup';
-import { LDMerkleProof2019, MerkleProof2019Options, MerkleProof2019VerificationResult } from '../src/LDMerkleProof2019';
+import { LDMerkleProof2019, MerkleProof2019Options, MerkleProof2019VerificationResult } from '../src';
 import decodedProof, { assertionTransactionId } from './assertions/proof';
 import { BLOCKCHAINS } from '../src/constants/blockchains';
 import blockcertsV3Fixture, { documentHash } from './fixtures/blockcerts-v3-alpha';
