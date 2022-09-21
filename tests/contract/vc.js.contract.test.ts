@@ -43,6 +43,10 @@ describe('Contract test suite', function () {
         documentLoader: generateDocumentLoader()
       });
 
+      if (verificationStatus.verified === false) {
+        console.log(JSON.stringify(verificationStatus, null, 2));
+      }
+
       expect(verificationStatus.verified).toBe(true);
     });
   });
