@@ -4,14 +4,6 @@ import preloadedContexts from '../constants/contexts/preloadedContexts';
 import { toUTF8Data } from '../utils/data';
 import { isObject } from '../utils/object';
 
-// function setJsonLdDocumentLoader (): any { // not typed by jsonld
-//   if (typeof window !== 'undefined' && typeof window.XMLHttpRequest !== 'undefined') {
-//     return jsonld.documentLoaders.xhr();
-//   }
-//
-//   return jsonld.documentLoaders.node();
-// }
-
 export function getUnmappedFields (normalized: string): string[] | null {
   const normalizedArray = normalized.split('\n');
   const myRegexp = /<http:\/\/fallback\.org\/(.*)>/;
@@ -48,7 +40,7 @@ export default async function computeLocalHash (document: any, documentLoader = 
         documentUrl: url
       };
     }
-    return jsonld.documentLoader(url);
+    return (jsonld as any).documentLoader(url);
   };
 
   const normalizeArgs: any = {
@@ -60,7 +52,7 @@ export default async function computeLocalHash (document: any, documentLoader = 
   let normalizedDocument;
 
   try {
-    normalizedDocument = await jsonld.normalize(theDocument, normalizeArgs);
+    normalizedDocument = await (jsonld as any).normalize(theDocument, normalizeArgs);
   } catch (e) {
     console.error(e);
     throw new Error('computeLocalHash - JSONLD normalization failed');
