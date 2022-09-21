@@ -17,7 +17,7 @@ export interface MerkleProof2019Options {
 }
 
 export interface VCDocument {
-  proof: JSONLDProof;
+  proof: JSONLDProof | JSONLDProof[];
 }
 
 export interface MerkleProof2019API {
@@ -80,7 +80,7 @@ export class LDMerkleProof2019 extends LinkedDataProof {
       throw new Error('The passed document is not signed.');
     }
 
-    const base58Decoder = new Decoder(proof.proofValue);
+    const base58Decoder = new Decoder((proof as JSONLDProof).proofValue); // TODO: support multisigned
     this.proof = base58Decoder.decode();
   }
 
