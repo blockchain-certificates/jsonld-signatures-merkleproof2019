@@ -106,6 +106,14 @@ export class LDMerkleProof2019 extends LinkedDataProof {
     };
   }
 
+  getIssuerPublicKey (): string {
+    if (!this.txData) {
+      console.error('Trying to access issuing address when txData not available yet. Did you run the `verify` method yet?');
+      return '';
+    }
+    return this.txData.issuingAddress;
+  }
+
   private confirmMerkleRoot (): void {
     ensureMerkleRootEqual(this.proof.merkleRoot, this.txData.remoteHash);
   }
