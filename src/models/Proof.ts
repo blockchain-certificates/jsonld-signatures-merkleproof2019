@@ -6,9 +6,12 @@ interface PathDefinition {
 export interface JSONLDProof {
   type: string;
   created: string;
-  proofValue: string;
+  proofValue?: string;
+  jws?: string;
   proofPurpose: string;
   verificationMethod: string;
+  chainedProofType?: string;
+  previousProof?: JSONLDProof;
 }
 
 export interface DecodedProof {
