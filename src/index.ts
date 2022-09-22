@@ -14,6 +14,7 @@ const { LinkedDataProof } = jsigs.suites;
 
 export interface MerkleProof2019Options {
   explorerAPIs?: ExplorerAPI[];
+  executeStepMethod?: (step: string, action: () => any, verificationSuite?: string, type?: string) => Promise<any>;
 }
 
 export interface VCDocument {
@@ -88,11 +89,11 @@ export class LDMerkleProof2019 extends LinkedDataProof {
     let verified: boolean;
     let error: string = '';
     try {
-      this.validateTransactionId();
+      await this.getTransactionId();
       await this.computeLocalHash(documentLoader);
-      await this.fetchTransactionData();
-      this.compareHashes();
-      this.confirmMerkleRoot();
+      await this.fetchRemoteHash();
+      await this.compareHashes();
+      await this.checkMerkleRoot();
       verified = true;
     } catch (e) {
       console.error(e);
@@ -114,16 +115,33 @@ export class LDMerkleProof2019 extends LinkedDataProof {
     return this.txData.issuingAddress;
   }
 
-  private confirmMerkleRoot (): void {
-    ensureMerkleRootEqual(this.proof.merkleRoot, this.txData.remoteHash);
+  private async executeStep (step: string, action, verificationSuite = ''): Promise<any> {
+    const res: any = await action();
+    return res;
   }
 
-  private compareHashes (): void {
-    ensureHashesEqual(this.localDocumentHash, this.proof.targetHash);
+  private async checkMerkleRoot (): Promise<void> {
+    await this.executeStep(
+      'checkMerkleRoot',
+      () => ensureMerkleRootEqual(this.proof.merkleRoot, this.txData.remoteHash),
+      this.type // do not remove here or it will break CVJS
+    );
+  }
+
+  private async compareHashes (): Promise<void> {
+    await this.executeStep(
+      'compareHashes',
+      () => ensureHashesEqual(this.localDocumentHash, this.proof.targetHash),
+      this.type // do not remove here or it will break CVJS
+    );
   }
 
   private async computeLocalHash (documentLoader): Promise<void> {
-    this.localDocumentHash = await computeLocalHash(this.document, documentLoader);
+    this.localDocumentHash = await this.executeStep(
+      'computeLocalHash',
+      async () => await computeLocalHash(this.document, documentLoader),
+      this.type // do not remove here or it will break CVJS
+    );
   }
 
   private getChain (): void {
@@ -132,18 +150,30 @@ export class LDMerkleProof2019 extends LinkedDataProof {
 
   private setOptions (options: MerkleProof2019Options): void {
     this.explorerAPIs = options.explorerAPIs ?? [];
+    if (options.executeStepMethod && typeof options.executeStepMethod === 'function') {
+      this.executeStep = options.executeStepMethod;
+    }
   }
 
-  private validateTransactionId (): string {
+  private async getTransactionId (): Promise<string> {
     this.transactionId = getTransactionId(this.proof);
-    return isTransactionIdValid(this.transactionId);
+    const transactionId: string = await this.executeStep(
+      'getTransactionId',
+      () => isTransactionIdValid(this.transactionId),
+      this.type // do not remove here or it will break CVJS
+    );
+    return transactionId;
   }
 
-  private async fetchTransactionData (): Promise<void> {
-    this.txData = await lookForTx({
-      transactionId: this.transactionId,
-      chain: this.chain?.code,
-      explorerAPIs: this.explorerAPIs
-    });
+  private async fetchRemoteHash (): Promise<void> {
+    this.txData = await this.executeStep(
+      'fetchRemoteHash',
+      async () => await lookForTx({
+        transactionId: this.transactionId,
+        chain: this.chain?.code,
+        explorerAPIs: this.explorerAPIs
+      }),
+      this.type // do not remove here or it will break CVJS
+    );
   }
 }

@@ -16,7 +16,7 @@ function generateDocumentLoader (): any {
         documentUrl: url
       };
     }
-    return jsonld.documentLoader(url);
+    return (jsonld as any).documentLoader(url);
   };
   return customLoader;
 }
