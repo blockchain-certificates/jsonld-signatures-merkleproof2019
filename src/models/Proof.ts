@@ -3,7 +3,7 @@ interface PathDefinition {
   right?: string;
 }
 
-export interface JSONLDProof {
+export interface VCProof {
   type: string;
   created: string;
   proofValue?: string;
@@ -11,7 +11,7 @@ export interface JSONLDProof {
   proofPurpose: string;
   verificationMethod: string;
   chainedProofType?: string;
-  previousProof?: JSONLDProof;
+  previousProof?: VCProof;
 }
 
 export interface DecodedProof {
