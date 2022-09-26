@@ -3,6 +3,7 @@ import sha256 from 'sha256';
 import preloadedContexts from '../constants/contexts/preloadedContexts';
 import { toUTF8Data } from '../utils/data';
 import { isObject } from '../utils/object';
+import type JsonLdError from 'jsonld/lib/JsonLdError';
 
 export function getUnmappedFields (normalized: string): string[] | null {
   const normalizedArray = normalized.split('\n');
@@ -42,8 +43,8 @@ export default async function computeLocalHash (
     theDocument.proof = theDocument.proof.slice(0, proofIndex);
   }
 
-  const customLoader = function (url: string): any {
-    const tryFromExternalDocumentLoader = documentLoader(url);
+  const customLoader = async function (url: string): Promise<any> {
+    const tryFromExternalDocumentLoader = await documentLoader(url);
     if (tryFromExternalDocumentLoader) {
       return tryFromExternalDocumentLoader;
     }
@@ -67,7 +68,7 @@ export default async function computeLocalHash (
 
   try {
     normalizedDocument = await (jsonld as any).normalize(theDocument, normalizeArgs);
-  } catch (e) {
+  } catch (e: JsonLdError) {
     console.error(e);
     throw new Error('computeLocalHash - JSONLD normalization failed');
   }
