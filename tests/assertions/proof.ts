@@ -1,12 +1,12 @@
 import { DecodedProof } from '../../src/models/Proof';
 
-export const assertionTransactionId = '0xfdc9956953feee55a356b828a81791c6b8f1c743cc918457b7dc6ccf810544a1';
+export const assertionTransactionId = '140ee9382a5c84433b9c89a5d9fea26c47415838b5841deb0c36a8a4b9121f2e';
 
 const decodedProof: DecodedProof = {
-  anchors: [`blink:eth:ropsten:${assertionTransactionId}`],
-  merkleRoot: '2b065c69c70432e9f082629939733afd2343e83f45939519986e9a09cf8ccd08',
-  path: [{ left: '6ad52e9db922e0c2648ce8f88f94b7e376daf9af60a7c782db75011f3783ea0a' }],
-  targetHash: '5a44e794431569f4b50a44336c3d445085f09ac5785e38e133385fb486ada9c5'
+  anchors: [`blink:btc:testnet:${assertionTransactionId}`],
+  merkleRoot: '68df661ae14f926878aabbe5ca33e46376e8bfb397c1364c2f1fa653ecd8b4b6',
+  path: [{ left: '78e670a04db3cf419fff5fb1b11a420a34e5eeae14cc68476dcb84883b5cdb64' }],
+  targetHash: 'eca54e560dd43cccd900fa4bb9221f144d4c451c24beeddfd82e31db842bced1'
 };
 
 export default decodedProof;

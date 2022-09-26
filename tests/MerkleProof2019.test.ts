@@ -3,7 +3,7 @@ import * as explorerLookup from '@blockcerts/explorer-lookup';
 import { LDMerkleProof2019, MerkleProof2019Options, MerkleProof2019VerificationResult } from '../src';
 import decodedProof, { assertionTransactionId } from './assertions/proof';
 import { BLOCKCHAINS } from '../src/constants/blockchains';
-import blockcertsV3Fixture, { documentHash } from './fixtures/blockcerts-v3-alpha';
+import blockcertsV3Fixture, { documentHash } from './fixtures/testnet-v3-did';
 import fixtureTransactionData from './fixtures/transactionData';
 
 describe('MerkleProof2019 test suite', function () {
@@ -44,7 +44,7 @@ describe('MerkleProof2019 test suite', function () {
 
     describe('given the proof is set on the document', function () {
       it('decodes the CBOR encoded proofValue', function () {
-        expect(instance.proof).toEqual(decodedProof);
+        expect(instance.proofValue).toEqual(decodedProof);
       });
     });
 
@@ -55,7 +55,7 @@ describe('MerkleProof2019 test suite', function () {
     });
 
     it('should retrieve the chain', function () {
-      expect(instance.chain).toEqual(BLOCKCHAINS.ethropst);
+      expect(instance.chain).toEqual(BLOCKCHAINS.testnet);
     });
 
     describe('given the options explorerAPIs is set', function () {
@@ -69,14 +69,6 @@ describe('MerkleProof2019 test suite', function () {
         };
         const instance = new LDMerkleProof2019({ options: fixtureOptions, document: blockcertsV3Fixture });
         expect(instance.explorerAPIs).toEqual(fixtureOptions.explorerAPIs);
-      });
-    });
-
-    describe('given the type is passed', function () {
-      it('should register the type', function () {
-        const fixtureType: string = 'fixtureType';
-        const instance = new LDMerkleProof2019({ type: fixtureType, document: blockcertsV3Fixture });
-        expect(instance.type).toBe(fixtureType);
       });
     });
 
@@ -109,6 +101,7 @@ describe('MerkleProof2019 test suite', function () {
         it('should return the result object', function () {
           expect(result).toEqual({
             verified: true,
+            verificationMethod: null,
             error: ''
           });
         });
@@ -126,19 +119,19 @@ describe('MerkleProof2019 test suite', function () {
     describe('validateTransactionId method', function () {
       describe('given the transaction id is valid', function () {
         it('should set the assertionTransactionId property', function () {
-          instance.validateTransactionId();
+          instance.getTransactionId();
           expect(instance.transactionId).toBe(assertionTransactionId);
         });
       });
 
       describe('given the transaction id is invalid', function () {
-        it('should throw', function () {
-          instance.proof = {
+        it('should throw', async function () {
+          instance.proofValue = {
             anchors: [{ target: 'invalidDataFormat' }]
           };
-          expect(() => {
-            instance.validateTransactionId();
-          }).toThrow('Could not retrieve transaction id as was provided an unexpected format');
+          await expect(async () => {
+            await instance.getTransactionId();
+          }).rejects.toThrow('Could not retrieve transaction id as was provided an unexpected format');
         });
       });
     });

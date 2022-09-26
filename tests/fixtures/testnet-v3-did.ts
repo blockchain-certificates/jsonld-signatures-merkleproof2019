@@ -1,4 +1,4 @@
-const alteredBlockcertsV3Fixture = {
+const blockcertsV3Fixture = {
   '@context': [
     'https://www.w3.org/2018/credentials/v1',
     {
@@ -15,7 +15,7 @@ const alteredBlockcertsV3Fixture = {
     'BlockcertsCredential'
   ],
   issuer: {
-    id: 'https://www.blockcerts.org/samples/3.0/issuer-blockcerts.json',
+    id: 'did:ion:EiA_Z6LQILbB2zj_eVrqfQ2xDm4HNqeJUw5Kj2Z7bFOOeQ',
     name: 'Hyland Innovation Team',
     url: 'https://www.hyland.com',
     description: '',
@@ -24,7 +24,7 @@ const alteredBlockcertsV3Fixture = {
   },
   issuanceDate: '2022-02-02T15:00:00Z',
   credentialSubject: {
-    name: 'Biggus Dickus',
+    name: 'Julien Fraichot',
     claim: {
       type: 'Blockcerts',
       id: 'urn:uuid:41015b98-fc99-447c-b211-ef6782147fb3',
@@ -47,5 +47,5 @@ const alteredBlockcertsV3Fixture = {
   }
 };
 
-export const documentHash = '5a44e794431569f4b50a44336c3d445085f09ac5785e38e133385fb486ada9c5';
-export default alteredBlockcertsV3Fixture;
+export const documentHash = 'eca54e560dd43cccd900fa4bb9221f144d4c451c24beeddfd82e31db842bced1';
+export default blockcertsV3Fixture;

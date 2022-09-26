@@ -2,7 +2,7 @@ import ensureHashesEqual from '../../src/inspectors/ensureHashesEqual';
 
 describe('Inspectors test suite', function () {
   describe('ensureHashesEqual method', function () {
-    const errorMessage = 'Remote hash does not match verified document.';
+    const errorMessage = 'Computed hash does not match remote hash';
 
     describe('given it is called with two similar hashes', function () {
       it('should not throw an error', function () {

@@ -1,7 +1,7 @@
 import sinon from 'sinon';
 import jsonld from 'jsonld';
 import JsonLdError from 'jsonld/lib/JsonLdError';
-import blockcertsV3Fixture, { documentHash } from '../fixtures/blockcerts-v3-alpha';
+import blockcertsV3Fixture, { documentHash } from '../fixtures/testnet-v3-did';
 import computeLocalHash from '../../src/inspectors/computeLocalHash';
 
 describe('computeLocalHash test suite', function () {
@@ -15,7 +15,7 @@ describe('computeLocalHash test suite', function () {
   describe('given it is provided with a documentLoader', function () {
     it('should call the documentLoader', async function () {
       const stubLoader = sinon.stub().resolves(null);
-      await computeLocalHash(blockcertsV3Fixture, stubLoader);
+      await computeLocalHash(blockcertsV3Fixture, null, stubLoader);
       expect(stubLoader.callCount > 0).toBe(true);
     });
   });
@@ -33,19 +33,15 @@ describe('computeLocalHash test suite', function () {
       };
       const normalizeStub: sinon.SinonStub = sinon.stub(jsonld, 'normalize')
         .callsFake(
-          function (fakeDoc: any, fakeArgs: any, cb: (err: JsonLdError, document: any) => any) {
-            // https://github.com/standard/standard/issues/1352 silly people trying to be too smart
-            // eslint-disable-next-line standard/no-callback-literal
-            cb(mockJsonLdError, {});
+          async function (fakeDoc: any, fakeArgs: any) {
+            throw new JsonLdError(mockJsonLdError.message, mockJsonLdError.name, mockJsonLdError.details);
           }
         );
 
       try {
         await computeLocalHash(blockcertsV3Fixture);
       } catch (e) {
-        expect(e.message).toBe('Failed to normalize document');
-        expect(e.name).toBe(mockJsonLdError.name);
-        expect(e.details).toEqual(mockJsonLdError.details);
+        expect(e.message).toBe('computeLocalHash - JSONLD normalization failed');
       }
       normalizeStub.restore();
     });

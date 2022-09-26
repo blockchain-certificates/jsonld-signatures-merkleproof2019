@@ -22,7 +22,8 @@ describe('when the process fails', function () {
       const result: MerkleProof2019VerificationResult = await instance.verifyProof();
       expect(result).toEqual({
         verified: false,
-        error: 'Remote hash does not match verified document.'
+        verificationMethod: null,
+        error: 'Computed hash does not match remote hash'
       });
     });
   });
