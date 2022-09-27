@@ -1,4 +1,4 @@
-interface PathDefinition {
+export interface PathDefinition {
   left?: string;
   right?: string;
 }

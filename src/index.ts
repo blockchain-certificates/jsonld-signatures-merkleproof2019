@@ -3,13 +3,19 @@ import jsigs from 'jsonld-signatures';
 import { lookForTx, ExplorerAPI, TransactionData } from '@blockcerts/explorer-lookup';
 import { DecodedProof, VCProof } from './models/Proof';
 import getTransactionId from './helpers/getTransactionId';
-import isTransactionIdValid from './inspectors/isTransactionIdValid';
-import { IBlockchainObject } from './constants/blockchains';
+import parseIssuerKeys from './helpers/parseIssuerKeys';
 import getChain from './helpers/getChain';
-import computeLocalHash from './inspectors/computeLocalHash';
-import ensureHashesEqual from './inspectors/ensureHashesEqual';
-import ensureMerkleRootEqual from './inspectors/ensureMerkleRootEqual';
+import {
+  ensureValidIssuingKey,
+  isTransactionIdValid,
+  computeLocalHash,
+  ensureHashesEqual,
+  ensureMerkleRootEqual, ensureValidReceipt
+} from './inspectors';
 import type { IDidDocumentPublicKey } from '@decentralized-identity/did-common-typescript';
+import type { IBlockchainObject } from './constants/blockchains';
+import type { IssuerPublicKeyList } from './models/Issuer';
+
 const { LinkedDataProof } = jsigs.suites;
 
 export interface MerkleProof2019Options {
@@ -54,6 +60,7 @@ export class LDMerkleProof2019 extends LinkedDataProof {
   public chain: IBlockchainObject;
   public txData: TransactionData;
   public localDocumentHash: string;
+  public issuerPublicKeyList: IssuerPublicKeyList;
 
   private transactionId: string = '';
 
@@ -85,7 +92,6 @@ export class LDMerkleProof2019 extends LinkedDataProof {
     }
 
     this.proof = proof as any; // TODO: might be an error if externalProof is not defined and document has multiproof
-
     const base58Decoder = new Decoder((proof as any).proofValue); // TODO: support multisigned
     this.proofValue = base58Decoder.decode();
   }
@@ -99,6 +105,9 @@ export class LDMerkleProof2019 extends LinkedDataProof {
       await this.fetchRemoteHash();
       await this.compareHashes();
       await this.checkMerkleRoot();
+      await this.checkReceipt();
+      await this.parseIssuerKeys();
+      await this.checkAuthenticity();
       verified = true;
     } catch (e) {
       console.error(e);
@@ -118,6 +127,17 @@ export class LDMerkleProof2019 extends LinkedDataProof {
       return '';
     }
     return this.txData.issuingAddress;
+  }
+
+  private getChain (): void {
+    this.chain = getChain(this.proofValue);
+  }
+
+  private setOptions (options: MerkleProof2019Options): void {
+    this.explorerAPIs = options.explorerAPIs ?? [];
+    if (options.executeStepMethod && typeof options.executeStepMethod === 'function') {
+      this.executeStep = options.executeStepMethod;
+    }
   }
 
   private async executeStep (step: string, action, verificationSuite = ''): Promise<any> {
@@ -149,15 +169,28 @@ export class LDMerkleProof2019 extends LinkedDataProof {
     );
   }
 
-  private getChain (): void {
-    this.chain = getChain(this.proofValue);
+  private async checkAuthenticity (): Promise<void> {
+    await this.executeStep(
+      'checkAuthenticity',
+      () => ensureValidIssuingKey(this.issuerPublicKeyList, this.txData.issuingAddress, this.txData.time),
+      this.type
+    );
   }
 
-  private setOptions (options: MerkleProof2019Options): void {
-    this.explorerAPIs = options.explorerAPIs ?? [];
-    if (options.executeStepMethod && typeof options.executeStepMethod === 'function') {
-      this.executeStep = options.executeStepMethod;
-    }
+  private async parseIssuerKeys (): Promise<void> {
+    this.issuerPublicKeyList = await this.executeStep(
+      'parseIssuerKeys',
+      () => parseIssuerKeys(this.issuer),
+      this.type
+    );
+  }
+
+  private async checkReceipt (): Promise<void> {
+    await this.executeStep(
+      'checkReceipt',
+      () => ensureValidReceipt(this.proofValue),
+      this.type
+    );
   }
 
   private async getTransactionId (): Promise<string> {
