@@ -1,5 +1,6 @@
 import { dateToUnixTimestamp } from '../utils/date';
 import getText from '../helpers/getText';
+import VerifierError from '../models/VerifierError';
 import type { IssuerPublicKeyList, ParsedKeyObjectV2 } from '../models/Issuer';
 
 function getCaseInsensitiveKey (obj: IssuerPublicKeyList, value: string): ParsedKeyObjectV2 {
@@ -33,8 +34,9 @@ export default function ensureValidIssuingKey (keyMap: IssuerPublicKeyList, txIs
   }
 
   if (errorMessage) {
-    throw new Error(
-      `checkAuthenticity - ${getText('errors', errorMessage)}`
+    throw new VerifierError(
+      'checkAuthenticity',
+      getText('errors', errorMessage)
     );
   }
 }

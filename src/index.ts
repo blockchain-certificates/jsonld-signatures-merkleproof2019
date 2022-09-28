@@ -92,7 +92,7 @@ export class LDMerkleProof2019 extends LinkedDataProof {
     }
 
     this.proof = proof as any; // TODO: might be an error if externalProof is not defined and document has multiproof
-    const base58Decoder = new Decoder((proof as any).proofValue); // TODO: support multisigned
+    const base58Decoder = new Decoder((proof as any).proofValue);
     this.proofValue = base58Decoder.decode();
   }
 

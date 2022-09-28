@@ -4,6 +4,8 @@ import preloadedContexts from '../constants/contexts/preloadedContexts';
 import { toUTF8Data } from '../utils/data';
 import { isObject } from '../utils/object';
 import type JsonLdError from 'jsonld/lib/JsonLdError';
+import VerifierError from '../models/VerifierError';
+import getText from '../helpers/getText';
 
 export function getUnmappedFields (normalized: string): string[] | null {
   const normalizedArray = normalized.split('\n');
@@ -37,7 +39,10 @@ export default async function computeLocalHash (
     delete theDocument.proof;
   } else {
     if (!targetProof) {
-      throw new Error('Document proof is an array but no target proof to define what was signed.');
+      throw new VerifierError(
+        'computeLocalHash',
+        getText('errors', 'noProofSpecified')
+      );
     }
     const proofIndex = theDocument.proof.findIndex(proof => proof.proofValue === targetProof.proofValue);
     theDocument.proof = theDocument.proof.slice(0, proofIndex);
@@ -70,13 +75,14 @@ export default async function computeLocalHash (
     normalizedDocument = await (jsonld as any).normalize(theDocument, normalizeArgs);
   } catch (e: JsonLdError) {
     console.error(e);
-    throw new Error('computeLocalHash - JSONLD normalization failed');
+    throw new VerifierError('computeLocalHash', getText('errors', 'failedJsonLdNormalization'));
   }
 
   const unmappedFields: string[] = getUnmappedFields(normalizedDocument);
   if (unmappedFields) {
-    throw new Error(
-      `computeLocalHash - found unmapped fields: ${unmappedFields.join(', ')}`
+    throw new VerifierError(
+      'computeLocalHash',
+      `${getText('errors', 'foundUnmappedFields')}: ${unmappedFields.join(', ')}`
     );
   } else {
     return sha256(toUTF8Data(normalizedDocument));

@@ -41,7 +41,7 @@ describe('computeLocalHash test suite', function () {
       try {
         await computeLocalHash(blockcertsV3Fixture);
       } catch (e) {
-        expect(e.message).toBe('computeLocalHash - JSONLD normalization failed');
+        expect(e.message).toBe('Failed JSON-LD normalization');
       }
       normalizeStub.restore();
     });
