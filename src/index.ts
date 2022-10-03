@@ -106,10 +106,6 @@ export class LDMerkleProof2019 extends LinkedDataProof {
       await this.compareHashes();
       await this.checkMerkleRoot();
       await this.checkReceipt();
-      if (this.issuer) { // turn off check until we figure out if a blockcerts concern or a MKPRF19 one
-        await this.parseIssuerKeys();
-        await this.checkAuthenticity();
-      }
       verified = true;
     } catch (e) {
       console.error(e);
