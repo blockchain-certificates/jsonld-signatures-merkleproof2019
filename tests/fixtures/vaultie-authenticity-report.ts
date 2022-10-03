@@ -1,4 +1,4 @@
-const fixtureVaultiePresentation = {
+export const vaultiePresentation = {
   '@context': [
     'https://www.w3.org/2018/credentials/v1',
     'https://www.vaultie.io/credentials/v1'
