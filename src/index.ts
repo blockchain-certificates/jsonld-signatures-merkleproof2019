@@ -61,6 +61,15 @@ export class LDMerkleProof2019 extends LinkedDataProof {
   public txData: TransactionData;
   public localDocumentHash: string;
   public issuerPublicKeyList: IssuerPublicKeyList;
+  public documentLoader = null;
+  public proofVerificationProcess = [
+    'getTransactionId',
+    'computeLocalHash',
+    'fetchRemoteHash',
+    'compareHashes',
+    'checkMerkleRoot',
+    'checkReceipt'
+  ];
 
   private transactionId: string = '';
 
@@ -97,15 +106,17 @@ export class LDMerkleProof2019 extends LinkedDataProof {
   }
 
   async verifyProof ({ documentLoader } = { documentLoader: (url): any => {} }): Promise<MerkleProof2019VerificationResult> {
+    this.documentLoader = documentLoader;
     let verified: boolean;
     let error: string = '';
     try {
-      await this.getTransactionId();
-      await this.computeLocalHash(documentLoader);
-      await this.fetchRemoteHash();
-      await this.compareHashes();
-      await this.checkMerkleRoot();
-      await this.checkReceipt();
+      for (const verificationStep of this.proofVerificationProcess) {
+        if (!this[verificationStep]) {
+          console.error('verification logic for', verificationStep, 'not implemented');
+          return;
+        }
+        await this[verificationStep]();
+      }
       verified = true;
     } catch (e) {
       console.error(e);
@@ -119,12 +130,25 @@ export class LDMerkleProof2019 extends LinkedDataProof {
     };
   }
 
+  getProofVerificationProcess (): string[] {
+    return this.proofVerificationProcess;
+  }
+
   getIssuerPublicKey (): string {
+    return this.getTxData()?.issuingAddress ?? '';
+  }
+
+  getIssuanceTime (): string {
+    return this.getTxData()?.time as string ?? '';
+  }
+
+  private getTxData (): TransactionData {
     if (!this.txData) {
       console.error('Trying to access issuing address when txData not available yet. Did you run the `verify` method yet?');
-      return '';
+      return null;
     }
-    return this.txData.issuingAddress;
+
+    return this.txData;
   }
 
   private getChain (): void {
@@ -159,10 +183,10 @@ export class LDMerkleProof2019 extends LinkedDataProof {
     );
   }
 
-  private async computeLocalHash (documentLoader): Promise<void> {
+  private async computeLocalHash (): Promise<void> {
     this.localDocumentHash = await this.executeStep(
       'computeLocalHash',
-      async () => await computeLocalHash(this.document, this.proof, documentLoader),
+      async () => await computeLocalHash(this.document, this.proof, this.documentLoader),
       this.type // do not remove here or it will break CVJS
     );
   }

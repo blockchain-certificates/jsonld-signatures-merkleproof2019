@@ -49,9 +49,8 @@ export default async function computeLocalHash (
   }
 
   const customLoader = async function (url: string): Promise<any> {
-    const tryFromExternalDocumentLoader = await documentLoader(url);
-    if (tryFromExternalDocumentLoader) {
-      return tryFromExternalDocumentLoader;
+    if (documentLoader != null) {
+      await documentLoader(url);
     }
     if (url in preloadedContexts) {
       return {
