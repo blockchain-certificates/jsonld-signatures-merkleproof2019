@@ -3,14 +3,13 @@ import jsigs from 'jsonld-signatures';
 import { lookForTx, ExplorerAPI, TransactionData } from '@blockcerts/explorer-lookup';
 import { DecodedProof, VCProof } from './models/Proof';
 import getTransactionId from './helpers/getTransactionId';
-import parseIssuerKeys from './helpers/parseIssuerKeys';
 import getChain from './helpers/getChain';
 import {
-  ensureValidIssuingKey,
   isTransactionIdValid,
   computeLocalHash,
   ensureHashesEqual,
-  ensureMerkleRootEqual, ensureValidReceipt
+  ensureMerkleRootEqual,
+  ensureValidReceipt
 } from './inspectors';
 import type { IDidDocumentPublicKey } from '@decentralized-identity/did-common-typescript';
 import type { IBlockchainObject } from './constants/blockchains';
@@ -188,22 +187,6 @@ export class LDMerkleProof2019 extends LinkedDataProof {
       'computeLocalHash',
       async () => await computeLocalHash(this.document, this.proof, this.documentLoader),
       this.type // do not remove here or it will break CVJS
-    );
-  }
-
-  private async checkAuthenticity (): Promise<void> {
-    await this.executeStep(
-      'checkAuthenticity',
-      () => ensureValidIssuingKey(this.issuerPublicKeyList, this.txData.issuingAddress, this.txData.time),
-      this.type
-    );
-  }
-
-  private async parseIssuerKeys (): Promise<void> {
-    this.issuerPublicKeyList = await this.executeStep(
-      'parseIssuerKeys',
-      () => parseIssuerKeys(this.issuer),
-      this.type
     );
   }
 
