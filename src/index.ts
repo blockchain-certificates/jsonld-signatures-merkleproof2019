@@ -13,7 +13,7 @@ import {
 } from './inspectors';
 import type { IDidDocumentPublicKey } from '@decentralized-identity/did-common-typescript';
 import type { IBlockchainObject } from './constants/blockchains';
-import type { IssuerPublicKeyList } from './models/Issuer';
+import deriveIssuingAddressFromPublicKey from './inspectors/deriveIssuingAddressFromPublicKey';
 
 const { LinkedDataProof } = jsigs.suites;
 
@@ -59,7 +59,8 @@ export class LDMerkleProof2019 extends LinkedDataProof {
   public chain: IBlockchainObject;
   public txData: TransactionData;
   public localDocumentHash: string;
-  public issuerPublicKeyList: IssuerPublicKeyList;
+  public verificationMethodPublicKey: IDidDocumentPublicKey;
+  public derivedIssuingAddress: string;
   public documentLoader = null;
   public proofVerificationProcess = [
     'getTransactionId',
@@ -220,6 +221,23 @@ export class LDMerkleProof2019 extends LinkedDataProof {
         return txData;
       },
       this.type // do not remove here or it will break CVJS
+    );
+  }
+
+  // ##### DID CORRELATION #####
+  private async deriveIssuingAddressFromPublicKey (): Promise<void> {
+    this.derivedIssuingAddress = await this.executeStep(
+      'deriveIssuingAddressFromPublicKey',
+      () => deriveIssuingAddressFromPublicKey(this.verificationMethodPublicKey, this.chain),
+      this.type
+    );
+  }
+
+  private async compareIssuingAddress (): Promise<void> {
+    await this.executeStep(
+      'compareIssuingAddress',
+      () => compareIssuingAddress(this.getIssuerPublicKey(), this.derivedIssuingAddress),
+      this.type
     );
   }
 }
