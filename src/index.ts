@@ -9,11 +9,12 @@ import {
   computeLocalHash,
   ensureHashesEqual,
   ensureMerkleRootEqual,
-  ensureValidReceipt
+  ensureValidReceipt,
+  deriveIssuingAddressFromPublicKey,
+  compareIssuingAddress
 } from './inspectors';
 import type { IDidDocumentPublicKey } from '@decentralized-identity/did-common-typescript';
 import type { IBlockchainObject } from './constants/blockchains';
-import deriveIssuingAddressFromPublicKey from './inspectors/deriveIssuingAddressFromPublicKey';
 
 const { LinkedDataProof } = jsigs.suites;
 
@@ -40,6 +41,11 @@ export interface MerkleProof2019VerificationResult {
   verificationMethod: IDidDocumentPublicKey;
 }
 
+export interface MerkleProof2019VerifyProofAPI {
+  documentLoader?: (url: string) => any; // jsonld document loader hook
+  verifyIdentity?: boolean; // allow splitting verification process for more control
+}
+
 export class LDMerkleProof2019 extends LinkedDataProof {
   /**
    * @param [issuer] {string} A key id URL to the paired public key.
@@ -59,7 +65,6 @@ export class LDMerkleProof2019 extends LinkedDataProof {
   public chain: IBlockchainObject;
   public txData: TransactionData;
   public localDocumentHash: string;
-  public verificationMethodPublicKey: IDidDocumentPublicKey;
   public derivedIssuingAddress: string;
   public documentLoader = null;
   public proofVerificationProcess = [
@@ -69,6 +74,11 @@ export class LDMerkleProof2019 extends LinkedDataProof {
     'compareHashes',
     'checkMerkleRoot',
     'checkReceipt'
+  ];
+
+  public identityVerificationProcess = [
+    'deriveIssuingAddressFromPublicKey',
+    'compareIssuingAddress'
   ];
 
   private transactionId: string = '';
@@ -105,18 +115,19 @@ export class LDMerkleProof2019 extends LinkedDataProof {
     this.proofValue = base58Decoder.decode();
   }
 
-  async verifyProof ({ documentLoader } = { documentLoader: (url): any => {} }): Promise<MerkleProof2019VerificationResult> {
+  async verifyProof ({ documentLoader, verifyIdentity }: MerkleProof2019VerifyProofAPI = {
+    documentLoader: (url): any => {},
+    verifyIdentity: true
+  }): Promise<MerkleProof2019VerificationResult> {
     this.documentLoader = documentLoader;
     let verified: boolean;
     let error: string = '';
     try {
-      for (const verificationStep of this.proofVerificationProcess) {
-        if (!this[verificationStep]) {
-          console.error('verification logic for', verificationStep, 'not implemented');
-          return;
-        }
-        await this[verificationStep]();
+      await this.verifyProcess(this.proofVerificationProcess);
+      if (verifyIdentity) {
+        await this.verifyIdentity();
       }
+
       verified = true;
     } catch (e) {
       console.error(e);
@@ -130,8 +141,22 @@ export class LDMerkleProof2019 extends LinkedDataProof {
     };
   }
 
+  async verifyIdentity (): Promise<void> {
+    if (this.verificationMethod != null) {
+      try {
+        await this.verifyProcess(this.identityVerificationProcess);
+      } catch (e) {
+        throw new Error(e);
+      }
+    }
+  }
+
   getProofVerificationProcess (): string[] {
     return this.proofVerificationProcess;
+  }
+
+  getIdentityVerificationProcess (): string[] {
+    return this.identityVerificationProcess;
   }
 
   getIssuerPublicKey (): string {
@@ -165,6 +190,16 @@ export class LDMerkleProof2019 extends LinkedDataProof {
   private async executeStep (step: string, action, verificationSuite = ''): Promise<any> {
     const res: any = await action();
     return res;
+  }
+
+  private async verifyProcess (process: string[]): Promise<void> {
+    for (const verificationStep of process) {
+      if (!this[verificationStep]) {
+        console.error('verification logic for', verificationStep, 'not implemented');
+        return;
+      }
+      await this[verificationStep]();
+    }
   }
 
   private async checkMerkleRoot (): Promise<void> {
@@ -228,7 +263,7 @@ export class LDMerkleProof2019 extends LinkedDataProof {
   private async deriveIssuingAddressFromPublicKey (): Promise<void> {
     this.derivedIssuingAddress = await this.executeStep(
       'deriveIssuingAddressFromPublicKey',
-      () => deriveIssuingAddressFromPublicKey(this.verificationMethodPublicKey, this.chain),
+      () => deriveIssuingAddressFromPublicKey(this.verificationMethod, this.chain),
       this.type
     );
   }

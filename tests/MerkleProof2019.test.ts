@@ -113,6 +113,50 @@ describe('MerkleProof2019 test suite', function () {
             expect(stubLoader.callCount > 0).toBe(true);
           });
         });
+
+        describe('verifyIdentity flag', function () {
+          let calledSteps = [];
+
+          beforeEach(function () {
+            const executeStepStub = async function (step, action): Promise<void> {
+              calledSteps.push(step);
+            };
+            instance = new LDMerkleProof2019({
+              document: blockcertsV3Fixture,
+              verificationMethod: {
+                id: 'did:example:1234#key',
+                controller: 'did:example:1234',
+                type: 'exampleMethod'
+              },
+              options: {
+                executeStepMethod: executeStepStub
+              }
+            });
+          });
+
+          afterEach(function () {
+            calledSteps = [];
+          });
+
+          describe('and the verifyIdentity flag is not specified', function () {
+            it('should verify the identity by default', async function () {
+              await instance.verifyProof();
+              expect(calledSteps).toEqual([
+                ...instance.getProofVerificationProcess(),
+                ...instance.getIdentityVerificationProcess()
+              ]);
+            });
+          });
+
+          describe('and the verifyIdentity flag is set to false', function () {
+            it('should not verify the identity automatically', async function () {
+              await instance.verifyProof({ verifyIdentity: false });
+              expect(calledSteps).toEqual([
+                ...instance.getProofVerificationProcess()
+              ]);
+            });
+          });
+        });
       });
     });
 

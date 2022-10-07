@@ -1,27 +1,17 @@
 import computeLocalHash from './computeLocalHash';
-// import confirmDidSignature from './confirmDidSignature';
 import ensureHashesEqual from './ensureHashesEqual';
 import ensureMerkleRootEqual from './ensureMerkleRootEqual';
-// import ensureNotExpired from './ensureNotExpired';
-// import ensureNotRevoked from './ensureNotRevoked';
 import ensureValidReceipt from './ensureValidReceipt';
 import isTransactionIdValid from './isTransactionIdValid';
-// import compareIssuingAddress from './did/compareIssuingAddress';
-// import controlVerificationMethod from './did/controlVerificationMethod';
-// import deriveIssuingAddressFromPublicKey from './did/deriveIssuingAddressFromPublicKey';
-// import retrieveVerificationMethodPublicKey from './did/retrieveVerificationMethodPublicKey';
+import compareIssuingAddress from './compareIssuingAddress';
+import deriveIssuingAddressFromPublicKey from './deriveIssuingAddressFromPublicKey';
 
 export {
-  // compareIssuingAddress,
+  compareIssuingAddress,
   computeLocalHash,
-  // confirmDidSignature,
-  // controlVerificationMethod,
-  // deriveIssuingAddressFromPublicKey,
+  deriveIssuingAddressFromPublicKey,
   ensureHashesEqual,
   ensureMerkleRootEqual,
-  // ensureNotExpired,
-  // ensureNotRevoked,
   ensureValidReceipt,
   isTransactionIdValid
-  // retrieveVerificationMethodPublicKey
 };
