@@ -8,22 +8,11 @@
       "foundUnmappedFields": "Found unmapped fields during JSON-LD normalization",
       "identityErrorBaseMessage":"Issuer identity mismatch",
       "deriveIssuingAddressFromPublicKey": "Unsupported blockchain for DID verification",
-      "controlVerificationMethod":"The identity document provided by the issuer does not match the verification method",
-      "retrieveVerificationMethodPublicKey":"The identity document provided by the issuer does not reference the verification method",
       "compareIssuingAddress": "The provided verification method does not match the issuer identity",
-      "invalidIssuingAddressCreationTime": "The specified issuing address was created after the transaction occurred.",
-      "invalidIssuingAddressRevoked": "The specified issuing address was revoked by the issuer before the transaction occurred.",
-      "invalidIssuingAddressExpired": "The specified issuing address expired before the transaction occurred.",
-      "invalidIssuingAddressUnknown": "The address used to issue this Blockcerts does not belong to the claimed issuer.",
-      "getRevokedAssertions": "Unable to get revocation assertions",
       "getTransactionId": "Cannot verify this certificate without a transaction ID to compare against.",
       "invalidMerkleReceipt": "Invalid Merkle Receipt. Proof hash did not match Merkle root",
-      "invalidMerkleVersion": "Merkle version used for signature is incompatible with Blockcerts version.",
       "isTransactionIdValid": "Cannot verify this certificate without a transaction ID to compare against.",
-      "issuerProfileNotSet": "no issuer address given",
-      "issuerProfileInvalid": "retrieved file does not seem to be a valid profile",
-      "noProofSpecified":"Document proof is an array but no target proof was specified to know what to verify.",
-      "parseIssuerKeys": "Unable to parse JSON out of issuer identification data."
+      "noProofSpecified":"Document proof is an array but no target proof was specified to know what to verify."
     }
   },
   "fr": {
@@ -35,22 +24,11 @@
       "foundUnmappedFields": "Champs non liés découverts durant la normalisation JSON-LD",
       "identityErrorBaseMessage": "Identité de l'émetteur invalide",
       "deriveIssuingAddressFromPublicKey":  "Cette blockchain n'est pas supportée pour la vérification de l'identité décentralisée.",
-      "controlVerificationMethod": "Le document d'identité de l'émetteur ne correspond pas à la méthode de vérification.",
-      "retrieveVerificationMethodPublicKey": "Le document d'identité de l'émetteur ne fait pas mention de la méthode de vérification.",
       "compareIssuingAddress": "La méthode de vérification n'a pas permis d'établir l'identité de l'émetteur.",
-      "invalidIssuingAddressCreationTime": "L'adresse d'émission utilisée a été créée après la transaction d'enregistrement.",
-      "invalidIssuingAddressRevoked": "L'adresse d'émission utilisée a été décommissionnée par l'émetteur avant la transaction d'enregistrement.",
-      "invalidIssuingAddressExpired": "L'adresse d'émission utilisée a expiré avant la transaction.",
-      "invalidIssuingAddressUnknown": "L'adresse utilisée pour émettre ce Blockcerts n'appartient à l'émetteur déclaré.",
-      "getRevokedAssertions": "Impossible d'obtenir les raisons de revocation",
       "getTransactionId": "Impossible de vérifier ce certificat sans un identifiant de transaction valide",
       "invalidMerkleReceipt": "Reçu Merkle invalide. Hash de preuve différent du Merkle root",
-      "invalidMerkleVersion": "La version du Merkle utilisé est incompatible avec la version Blockcerts.",
       "isTransactionIdValid": "Impossible de vérifier ce certificat sans un identifiant de transaction valide",
-      "issuerProfileNotSet": "l'URL de l'émetteur n'est pas définie",
-      "issuerProfileInvalid": "le document distant ne semble pas être un profil d'émetteur valide",
-      "noProofSpecified": "La propriété 'proof' du document est un tableau mais aucune preuve n'a été passée pour savoir ce qu'il faut vérifier",
-      "parseIssuerKeys": "Impossible de lire le JSON d'identification de l'émetteur"
+      "noProofSpecified": "La propriété 'proof' du document est un tableau mais aucune preuve n'a été passée pour savoir ce qu'il faut vérifier"
     }
   },
   "es": {
@@ -62,22 +40,11 @@
       "foundUnmappedFields": "Se han encontrado campos no mapeados durante la normalización de JSON-LD",
       "identityErrorBaseMessage": "Identitad del emisor inválida",
       "deriveIssuingAddressFromPublicKey":  "No se puede validar la identitad decentalisada con esta cadena binaria.",
-      "controlVerificationMethod": "El documento de identitad del emisor no corresponde al metodo de verificación.",
-      "retrieveVerificationMethodPublicKey": "El documento de identitad del emisor no hace constar al metodo de verificación.",
       "compareIssuingAddress": "El metodo de verificación no corresponde a la identitad del emisor.",
-      "invalidIssuingAddressCreationTime": "The specified issuing address was created after the transaction occurred.",
-      "invalidIssuingAddressRevoked": "The specified issuing address was revoked by the issuer before the transaction occurred.",
-      "invalidIssuingAddressExpired": "The specified issuing address expired before the transaction occurred.",
-      "invalidIssuingAddressUnknown": "The address used to issue this Blockcerts does not belong to the claimed issuer.",
-      "getRevokedAssertions": "No se ha podido obtener aseveraciones de revocación",
       "getTransactionId": "No se puede verificar este certificado sin una identificación de transacción que sirva como comparación",
       "invalidMerkleReceipt": "Recibo Merkle inválido. La cadena binaria de prueba no corresponde con la raíz Merkle",
-      "invalidMerkleVersion": "Merkle version used for signature is incompatible with Blockcerts version.",
       "isTransactionIdValid": "No se puede verificar este certificado sin una identificación de transacción que sirva como comparación",
-      "issuerProfileNotSet": "URL del emisor no definido",
-      "issuerProfileInvalid": "el documento recogido no parece ser un perfil de emisor valido",
-      "noProofSpecified": "La propiedad 'proof' del documento es una lista, pero no prueba especifica ha sido declarada para conocer el punto de verificación",
-      "parseIssuerKeys": "No se ha podido analizar el JSON de la información de identificación del emisor"
+      "noProofSpecified": "La propiedad 'proof' del documento es una lista, pero no prueba especifica ha sido declarada para conocer el punto de verificación"
     }
   },
   "mt": {
@@ -89,22 +56,11 @@
       "foundUnmappedFields": "Instabu unmapped fields matul in-normalizzazzjoni JSON-LD",
       "identityErrorBaseMessage": "Issuer identity mismatch",
       "deriveIssuingAddressFromPublicKey":  "Unsupported blockchain for DID verification",
-      "controlVerificationMethod": "The identity document provided by the issuer does not match the verification method",
-      "retrieveVerificationMethodPublicKey": "The identity document provided by the issuer does not reference the verification method",
       "compareIssuingAddress": "The provided verification method does not match the issuer identity",
-      "invalidIssuingAddressCreationTime": "L-indirizz elettroniku tal-ħruġ speċifikat inħoloq wara li seħħet it-tranżazzjoni.",
-      "invalidIssuingAddressRevoked": "L-indirizz elettroniku tal-ħruġ speċifikat ġie revokat mill-emittent qabel ma seħħet it-tranżazzjoni.",
-      "invalidIssuingAddressExpired": "L-indirizz elettroniku tal-ħruġ speċifikat skada qabel ma seħħet it-tranżazzjoni.",
-      "invalidIssuingAddressUnknown": "L-indirizz elettroniku użat biex jinħarġu dawn il-Blockcerts ma jappartjenix għall-emittent mitlub.",
-      "getRevokedAssertions": "Mhux possibbli jinkisbu dikjarazzjonijiet revokati",
       "getTransactionId": "Dan iċ-ċertifikat ma jistax jiġi vverifikat mingħajr ID ta' tranżazzjoni mqabbla miegħu",
       "invalidMerkleReceipt": "Irċevuta Merkle invalida. Il-proof hash ma kienx jaqbel mal-Merkle root",
-      "invalidMerkleVersion": "Merkle version used for signature is incompatible with Blockcerts version.",
       "isTransactionIdValid": "Dan iċ-ċertifikat ma jistax jiġi vverifikat mingħajr ID ta' tranżazzjoni mqabbla miegħu",
-      "issuerProfileNotSet": "no issuer address given",
-      "issuerProfileInvalid": "retrieved file does not seem to be a valid profile",
-      "noProofSpecified": "Document proof is an array but no target proof was specified to know what to verify.",
-      "parseIssuerKeys": "Ma jistax jiġi estratt JSON mid-data tal-identifikazzjoni tal-emittent"
+      "noProofSpecified": "Document proof is an array but no target proof was specified to know what to verify."
     }
   },
   "it-IT": {
@@ -116,22 +72,11 @@
       "foundUnmappedFields": "Campi non mappati trovati durante la normalizzazione JSON-LD",
       "identityErrorBaseMessage": "Issuer identity mismatch",
       "deriveIssuingAddressFromPublicKey":  "Unsupported blockchain for DID verification",
-      "controlVerificationMethod": "The identity document provided by the issuer does not match the verification method",
-      "retrieveVerificationMethodPublicKey": "The identity document provided by the issuer does not reference the verification method",
       "compareIssuingAddress": "The provided verification method does not match the issuer identity",
-      "invalidIssuingAddressCreationTime": "The specified issuing address was created after the transaction occurred.",
-      "invalidIssuingAddressRevoked": "The specified issuing address was revoked by the issuer before the transaction occurred.",
-      "invalidIssuingAddressExpired": "The specified issuing address expired before the transaction occurred.",
-      "invalidIssuingAddressUnknown": "The address used to issue this Blockcerts does not belong to the claimed issuer.",
-      "getRevokedAssertions": "Impossibile ottenere le asserzioni di revoca",
       "getTransactionId": "Impossibile verificare questo certificato senza un ID transazione da confrontare.",
       "invalidMerkleReceipt": "Ricevuta Merkle non valida. L'hash di prova non corrisponde alla radice di Merkle",
-      "invalidMerkleVersion": "Merkle version used for signature is incompatible with Blockcerts version.",
       "isTransactionIdValid": "Impossibile verificare questo certificato senza un ID transazione da confrontare.",
-      "issuerProfileNotSet": "no issuer address given",
-      "issuerProfileInvalid": "retrieved file does not seem to be a valid profile",
-      "noProofSpecified": "Document proof is an array but no target proof was specified to know what to verify.",
-      "parseIssuerKeys": "Impossibile analizzare JSON dai dati di identificazione dell'emittente."
+      "noProofSpecified": "Document proof is an array but no target proof was specified to know what to verify."
     }
   },
   "ja": {
@@ -143,22 +88,11 @@
       "foundUnmappedFields": "JSON-LDの正規化時にマップされていないフィールドを検出しました",
       "identityErrorBaseMessage": "Issuer identity mismatch",
       "deriveIssuingAddressFromPublicKey":  "Unsupported blockchain for DID verification",
-      "controlVerificationMethod": "The identity document provided by the issuer does not match the verification method",
-      "retrieveVerificationMethodPublicKey": "The identity document provided by the issuer does not reference the verification method",
       "compareIssuingAddress": "The provided verification method does not match the issuer identity",
-      "invalidIssuingAddressCreationTime": "The specified issuing address was created after the transaction occurred.",
-      "invalidIssuingAddressRevoked": "The specified issuing address was revoked by the issuer before the transaction occurred.",
-      "invalidIssuingAddressExpired": "The specified issuing address expired before the transaction occurred.",
-      "invalidIssuingAddressUnknown": "The address used to issue this Blockcerts does not belong to the claimed issuer.",
-      "getRevokedAssertions": "取消assertionsを取得できません",
       "getTransactionId": "照合のための取引IDがないため、この証明書を認証できません。",
       "invalidMerkleReceipt": "Merkleレシートが無効です。証明ハッシュがMerkle rootと一致しませんでした。",
-      "invalidMerkleVersion": "Merkle version used for signature is incompatible with Blockcerts version.",
       "isTransactionIdValid": "照合するための取引IDがないため、この証明書を認証できません。",
-      "issuerProfileNotSet": "no issuer address given",
-      "issuerProfileInvalid": "retrieved file does not seem to be a valid profile",
-      "noProofSpecified": "Document proof is an array but no target proof was specified to know what to verify.",
-      "parseIssuerKeys": "発行者識別データからJSONをパースできません"
+      "noProofSpecified": "Document proof is an array but no target proof was specified to know what to verify."
     }
   }
 }
