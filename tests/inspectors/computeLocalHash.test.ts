@@ -31,7 +31,7 @@ describe('computeLocalHash test suite', function () {
           httpStatusCode: 404
         }
       };
-      const normalizeStub: sinon.SinonStub = sinon.stub(jsonld, 'normalize')
+      const normalizeStub: sinon.SinonStub = sinon.stub((jsonld as any), 'normalize')
         .callsFake(
           async function (fakeDoc: any, fakeArgs: any) {
             throw new JsonLdError(mockJsonLdError.message, mockJsonLdError.name, mockJsonLdError.details);
