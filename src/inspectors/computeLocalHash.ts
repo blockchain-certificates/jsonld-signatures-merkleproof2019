@@ -3,7 +3,6 @@ import sha256 from 'sha256';
 import preloadedContexts from '../constants/contexts/preloadedContexts';
 import { toUTF8Data } from '../utils/data';
 import { isObject } from '../utils/object';
-import type JsonLdError from 'jsonld/lib/JsonLdError';
 import VerifierError from '../models/VerifierError';
 import getText from '../helpers/getText';
 
@@ -72,7 +71,7 @@ export default async function computeLocalHash (
 
   try {
     normalizedDocument = await (jsonld as any).normalize(theDocument, normalizeArgs);
-  } catch (e: JsonLdError) {
+  } catch (e: any) {
     console.error(e);
     throw new VerifierError('computeLocalHash', getText('errors', 'failedJsonLdNormalization'));
   }
