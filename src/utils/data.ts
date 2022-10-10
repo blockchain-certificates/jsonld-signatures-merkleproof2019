@@ -1,3 +1,13 @@
+export function toByteArray (hexString: string): number[] {
+  hexString = hexString.trim(); // blockcerts-verifier #577 - strange bug where iOS on first load prepends a space...
+  const outArray = [];
+  const byteSize = 2;
+  for (let i = 0; i < hexString.length; i += byteSize) {
+    outArray.push(parseInt(hexString.substring(i, i + byteSize), 16));
+  }
+  return outArray;
+}
+
 export function toUTF8Data (str: string): number[] {
   const utf8 = [];
   for (let i = 0; i < str.length; i++) {

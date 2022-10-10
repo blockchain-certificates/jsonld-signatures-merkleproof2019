@@ -1,10 +1,10 @@
 import { TransactionData } from '@blockcerts/explorer-lookup';
 
 const fixtureTransactionData: TransactionData = {
-  remoteHash: '2b065c69c70432e9f082629939733afd2343e83f45939519986e9a09cf8ccd08',
-  issuingAddress: '0x7e30a37763e6ba1ffede1750bbefb4c60b17a1b3',
-  time: '2020-03-11T14:48:23.000Z',
-  revokedAddresses: []
+  issuingAddress: 'mgdWjvq4RYAAP5goUNagTRMx7Xw534S5am',
+  remoteHash: '68df661ae14f926878aabbe5ca33e46376e8bfb397c1364c2f1fa653ecd8b4b6',
+  revokedAddresses: [],
+  time: '2022-04-05T18:45:30.000Z'
 };
 
 export default fixtureTransactionData;

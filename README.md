@@ -15,10 +15,10 @@ You will need to wrap the certificate with the Signature Suite:
 
 ```js
     const myBlockcertsV3Definition = {
-        ...
-    };
+  ...
+};
 
-    const verificationSuite = new MerkleProof2019({ document: myBlockcertsV3Definition });
+const verificationSuite = new LDMerkleProof2019({document: myBlockcertsV3Definition});
 ```
 
 In the case of vc.js, you would then pass this suite to the `verify` method, through the `suite` parameter.
@@ -47,29 +47,30 @@ You may provide your own explorer or even overwrite the existing ones. This is u
 or if you'd like to provide identification keys to the ones provided by default.
 
 Here is an example of how you would provide such service:
+
 ```js
     const myBlockcertsV3Definition = {
-        ...
-    };
+  ...
+};
 
-    const myOwnExplorerAPI: ExplorerAPI = {
-      serviceURL: 'path/to/distant/api', // you may need to provide identification details here according to your service pattern
-      priority: 0, // this is to decide if this gets called before the out-of-the-box services. 0 means your custom service is going to be called first, use 1 if you prefer the default explorers to be called first.
-      parsingFunction: function ({ jsonResponse: serviceReponse }: IParsingFunctionAPI): TransactionData { // only define this function when referring to a custom explorer
-        // parse your service response in order to return the following information:
-        return {
-          remoteHash,
-          issuingAddress,
-          time,
-          revokedAddresses
-        }
-      }   
-    };
-    const options = {
-      explorerAPIs: [myOwnExplorerAPI]
-    };
+const myOwnExplorerAPI: ExplorerAPI = {
+  serviceURL: 'path/to/distant/api', // you may need to provide identification details here according to your service pattern
+  priority: 0, // this is to decide if this gets called before the out-of-the-box services. 0 means your custom service is going to be called first, use 1 if you prefer the default explorers to be called first.
+  parsingFunction: function ({jsonResponse: serviceReponse}: IParsingFunctionAPI): TransactionData { // only define this function when referring to a custom explorer
+    // parse your service response in order to return the following information:
+    return {
+      remoteHash,
+      issuingAddress,
+      time,
+      revokedAddresses
+    }
+  }
+};
+const options = {
+  explorerAPIs: [myOwnExplorerAPI]
+};
 
-    const verificationSuite = new MerkleProof2019({ document: myBlockcertsV3Definition, options });
+const verificationSuite = new LDMerkleProof2019({document: myBlockcertsV3Definition, options});
 ```
 
 ## RPCs
@@ -82,47 +83,47 @@ lookup function to use:
 
 ```js
     const myBlockcertsV3Definition = {
-        ...
-    };
+  ...
+};
 
-    const options = {
-        explorerAPIs: [{
-          serviceURL: 'https://rpc-mumbai.maticvigil.com/',
-          priority: 0,
-          apiType: 'rpc',
-          chainType: 'evm'
-        }]
-      };
-    const verificationSuite = new MerkleProof2019({ document: myBlockcertsV3Definition, options });
+const options = {
+  explorerAPIs: [{
+    serviceURL: 'https://rpc-mumbai.maticvigil.com/',
+    priority: 0,
+    apiType: 'rpc',
+    chainType: 'evm'
+  }]
+};
+const verificationSuite = new LDMerkleProof2019({document: myBlockcertsV3Definition, options});
 ```
 
 #### Your chain is not compatible with EVM or BTC
 NOTE: you can use this approach to modify the provided RPC lookup functions.
 
-You will need to additionally provide your own lookup function. Contrary to rest APIs in this package, the parsing function needs to make the calls to the RPC service by itself.  
+You will need to additionally provide your own lookup function. Contrary to rest APIs in this package, the parsing function needs to make the calls to the RPC service by itself.
 
 ```js
     const myBlockcertsV3Definition = {
-        ...
-    };
+  ...
+};
 
-    const options = {
-        explorerAPIs: [{
-          serviceURL: 'https://rpc-mumbai.maticvigil.com/',
-          priority: 0,
-          apiType: 'rpc',
-          chainType: 'evm',
-          parsingFunction: function ({ serverUrl, transactionId }: IParsingFunctionAPI): TransactionData { // note that function signature is different than for REST parsingFunctions
-            // your call to the `serverUrl` with the `transaction` id
-            // parse your service response in order to return the following information:
-            return {
-              remoteHash,
-              issuingAddress,
-              time,
-              revokedAddresses
-            }
-          }
-        }]
-      };
-    const verificationSuite = new MerkleProof2019({ document: myBlockcertsV3Definition, options });
+const options = {
+  explorerAPIs: [{
+    serviceURL: 'https://rpc-mumbai.maticvigil.com/',
+    priority: 0,
+    apiType: 'rpc',
+    chainType: 'evm',
+    parsingFunction: function ({serverUrl, transactionId}: IParsingFunctionAPI): TransactionData { // note that function signature is different than for REST parsingFunctions
+      // your call to the `serverUrl` with the `transaction` id
+      // parse your service response in order to return the following information:
+      return {
+        remoteHash,
+        issuingAddress,
+        time,
+        revokedAddresses
+      }
+    }
+  }]
+};
+const verificationSuite = new LDMerkleProof2019({document: myBlockcertsV3Definition, options});
 ```

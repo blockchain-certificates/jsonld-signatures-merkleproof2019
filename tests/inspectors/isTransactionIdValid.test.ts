@@ -2,7 +2,7 @@ import isTransactionIdValid from '../../src/inspectors/isTransactionIdValid';
 
 describe('Inspectors test suite', function () {
   describe('isTransactionIdValid method', function () {
-    const errorMessage = 'Transaction id is invalid';
+    const errorMessage = 'Cannot verify this certificate without a transaction ID to compare against.';
 
     describe('given assertionTransactionId is a string with characters', function () {
       it('should return the assertionTransactionId', function () {

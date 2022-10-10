@@ -1,6 +1,8 @@
 {
   "compilerOptions": {
     "allowSyntheticDefaultImports": true,
+    "allowJs": true,
+    "checkJs": false,
     "noImplicitAny": false,
     "target": "es6",
     "lib": ["es2018", "dom"],
@@ -15,6 +17,7 @@
     "outDir": "lib/esm"
   },
   "compileOnSave": false,
+  "include": ["src"],
   "exclude": [
     "node_modules",
     "tests",

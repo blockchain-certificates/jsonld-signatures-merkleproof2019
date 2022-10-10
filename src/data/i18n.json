@@ -1,0 +1,98 @@
+{
+  "en-US": {
+    "errors": {
+      "ensureHashesEqual": "Computed hash does not match remote hash",
+      "ensureMerkleRootEqual": "Merkle root does not match remote hash.",
+      "ensureValidReceipt": "The receipt is malformed. There was a problem navigating the merkle tree in the receipt.",
+      "failedJsonLdNormalization": "Failed JSON-LD normalization",
+      "foundUnmappedFields": "Found unmapped fields during JSON-LD normalization",
+      "identityErrorBaseMessage":"Issuer identity mismatch",
+      "deriveIssuingAddressFromPublicKey": "Unsupported blockchain for DID verification",
+      "compareIssuingAddress": "The provided verification method does not match the issuer identity",
+      "getTransactionId": "Cannot verify this certificate without a transaction ID to compare against.",
+      "invalidMerkleReceipt": "Invalid Merkle Receipt. Proof hash did not match Merkle root",
+      "isTransactionIdValid": "Cannot verify this certificate without a transaction ID to compare against.",
+      "noProofSpecified":"Document proof is an array but no target proof was specified to know what to verify."
+    }
+  },
+  "fr": {
+    "errors": {
+      "ensureHashesEqual": "Calcul du hash local différent du hash distant",
+      "ensureMerkleRootEqual": "Le Merkle root ne correspond pas au hash distant",
+      "ensureValidReceipt": "Erreur d'écriture du reçu. Un problème est survenu lors de la navigation de l'arbre Merkle du reçu.",
+      "failedJsonLdNormalization": "Erreur de normalisation JSON-LD",
+      "foundUnmappedFields": "Champs non liés découverts durant la normalisation JSON-LD",
+      "identityErrorBaseMessage": "Identité de l'émetteur invalide",
+      "deriveIssuingAddressFromPublicKey":  "Cette blockchain n'est pas supportée pour la vérification de l'identité décentralisée.",
+      "compareIssuingAddress": "La méthode de vérification n'a pas permis d'établir l'identité de l'émetteur.",
+      "getTransactionId": "Impossible de vérifier ce certificat sans un identifiant de transaction valide",
+      "invalidMerkleReceipt": "Reçu Merkle invalide. Hash de preuve différent du Merkle root",
+      "isTransactionIdValid": "Impossible de vérifier ce certificat sans un identifiant de transaction valide",
+      "noProofSpecified": "La propriété 'proof' du document est un tableau mais aucune preuve n'a été passée pour savoir ce qu'il faut vérifier"
+    }
+  },
+  "es": {
+    "errors": {
+      "ensureHashesEqual": "La cadena binaria calculada no corresponde con la cadena binaria remota",
+      "ensureMerkleRootEqual": "La raíz Merkle no corresponde con la cadena binaria remota",
+      "ensureValidReceipt": "El recibo está malformado. Hubo un problema navegando el árbol Merkle en el recibo",
+      "failedJsonLdNormalization": "La normalización del JSON-LD ha fallado",
+      "foundUnmappedFields": "Se han encontrado campos no mapeados durante la normalización de JSON-LD",
+      "identityErrorBaseMessage": "Identitad del emisor inválida",
+      "deriveIssuingAddressFromPublicKey":  "No se puede validar la identitad decentalisada con esta cadena binaria.",
+      "compareIssuingAddress": "El metodo de verificación no corresponde a la identitad del emisor.",
+      "getTransactionId": "No se puede verificar este certificado sin una identificación de transacción que sirva como comparación",
+      "invalidMerkleReceipt": "Recibo Merkle inválido. La cadena binaria de prueba no corresponde con la raíz Merkle",
+      "isTransactionIdValid": "No se puede verificar este certificado sin una identificación de transacción que sirva como comparación",
+      "noProofSpecified": "La propiedad 'proof' del documento es una lista, pero no prueba especifica ha sido declarada para conocer el punto de verificación"
+    }
+  },
+  "mt": {
+    "errors": {
+      "ensureHashesEqual": "Il-hash ikkalkulat ma jikkorrispondix mar-remote hash",
+      "ensureMerkleRootEqual": "Merkle root ma taqbilx mar-remote hash",
+      "ensureValidReceipt": "L-irċevuta hija malformata. Kien hemm problema fin-navigazzjoni tal-merkle tree fl-irċevuta",
+      "failedJsonLdNormalization": "In-normalizzazzjoni ta' JSON-LD ma rnexxietx",
+      "foundUnmappedFields": "Instabu unmapped fields matul in-normalizzazzjoni JSON-LD",
+      "identityErrorBaseMessage": "Issuer identity mismatch",
+      "deriveIssuingAddressFromPublicKey":  "Unsupported blockchain for DID verification",
+      "compareIssuingAddress": "The provided verification method does not match the issuer identity",
+      "getTransactionId": "Dan iċ-ċertifikat ma jistax jiġi vverifikat mingħajr ID ta' tranżazzjoni mqabbla miegħu",
+      "invalidMerkleReceipt": "Irċevuta Merkle invalida. Il-proof hash ma kienx jaqbel mal-Merkle root",
+      "isTransactionIdValid": "Dan iċ-ċertifikat ma jistax jiġi vverifikat mingħajr ID ta' tranżazzjoni mqabbla miegħu",
+      "noProofSpecified": "Document proof is an array but no target proof was specified to know what to verify."
+    }
+  },
+  "it-IT": {
+    "errors": {
+      "ensureHashesEqual": "L'hash calcolato non corrisponde all'hash remoto",
+      "ensureMerkleRootEqual": "La radice di Merkle non corrisponde all'hash remoto.",
+      "ensureValidReceipt": "La ricevuta è malformata. C'è stato un problema nella navigazione dell'albero di Merkle nella ricevuta.",
+      "failedJsonLdNormalization": "Normalizzazione JSON-LD fallita",
+      "foundUnmappedFields": "Campi non mappati trovati durante la normalizzazione JSON-LD",
+      "identityErrorBaseMessage": "Issuer identity mismatch",
+      "deriveIssuingAddressFromPublicKey":  "Unsupported blockchain for DID verification",
+      "compareIssuingAddress": "The provided verification method does not match the issuer identity",
+      "getTransactionId": "Impossibile verificare questo certificato senza un ID transazione da confrontare.",
+      "invalidMerkleReceipt": "Ricevuta Merkle non valida. L'hash di prova non corrisponde alla radice di Merkle",
+      "isTransactionIdValid": "Impossibile verificare questo certificato senza un ID transazione da confrontare.",
+      "noProofSpecified": "Document proof is an array but no target proof was specified to know what to verify."
+    }
+  },
+  "ja": {
+    "errors": {
+      "ensureHashesEqual": "算出されたハッシュがリモートハッシュと一致しませんでした",
+      "ensureMerkleRootEqual": "Merkle rootがリモートハッシュと一致しませんでした",
+      "ensureValidReceipt": "レシートが異常です。レシート内のMerkle treeを辿る際に問題が発生しました。",
+      "failedJsonLdNormalization": "JSON-LDの正規化に失敗しました",
+      "foundUnmappedFields": "JSON-LDの正規化時にマップされていないフィールドを検出しました",
+      "identityErrorBaseMessage": "Issuer identity mismatch",
+      "deriveIssuingAddressFromPublicKey":  "Unsupported blockchain for DID verification",
+      "compareIssuingAddress": "The provided verification method does not match the issuer identity",
+      "getTransactionId": "照合のための取引IDがないため、この証明書を認証できません。",
+      "invalidMerkleReceipt": "Merkleレシートが無効です。証明ハッシュがMerkle rootと一致しませんでした。",
+      "isTransactionIdValid": "照合するための取引IDがないため、この証明書を認証できません。",
+      "noProofSpecified": "Document proof is an array but no target proof was specified to know what to verify."
+    }
+  }
+}

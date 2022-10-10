@@ -1,14 +1,17 @@
-interface PathDefinition {
+export interface PathDefinition {
   left?: string;
   right?: string;
 }
 
-export interface JSONLDProof {
+export interface VCProof {
   type: string;
   created: string;
-  proofValue: string;
+  proofValue?: string;
+  jws?: string;
   proofPurpose: string;
   verificationMethod: string;
+  chainedProofType?: string;
+  previousProof?: VCProof;
 }
 
 export interface DecodedProof {
