@@ -4,6 +4,7 @@ import { lookForTx, ExplorerAPI, TransactionData } from '@blockcerts/explorer-lo
 import { DecodedProof, VCProof } from './models/Proof';
 import getTransactionId from './helpers/getTransactionId';
 import getChain from './helpers/getChain';
+import { removeEntry } from './utils/array';
 import {
   isTransactionIdValid,
   computeLocalHash,
@@ -44,6 +45,7 @@ export interface MerkleProof2019VerificationResult {
 export interface MerkleProof2019VerifyProofAPI {
   documentLoader?: (url: string) => any; // jsonld document loader hook
   verifyIdentity?: boolean; // allow splitting verification process for more control
+  isMocknet?: boolean; // limit amount of checks for mocknet specificity
 }
 
 export class LDMerkleProof2019 extends LinkedDataProof {
@@ -115,13 +117,17 @@ export class LDMerkleProof2019 extends LinkedDataProof {
     this.proofValue = base58Decoder.decode();
   }
 
-  async verifyProof ({ documentLoader, verifyIdentity }: MerkleProof2019VerifyProofAPI = {
+  async verifyProof ({ documentLoader, verifyIdentity, isMocknet }: MerkleProof2019VerifyProofAPI = {
     documentLoader: (url): any => {},
-    verifyIdentity: true
+    verifyIdentity: true,
+    isMocknet: false
   }): Promise<MerkleProof2019VerificationResult> {
     this.documentLoader = documentLoader;
     let verified: boolean;
     let error: string = '';
+    if (isMocknet) {
+      this.adaptProofVerificationProcessToMocknet();
+    }
     try {
       await this.verifyProcess(this.proofVerificationProcess);
       if (verifyIdentity) {
@@ -178,6 +184,12 @@ export class LDMerkleProof2019 extends LinkedDataProof {
 
   private getChain (): void {
     this.chain = getChain(this.proofValue);
+  }
+
+  private adaptProofVerificationProcessToMocknet (): void {
+    removeEntry(this.proofVerificationProcess, 'getTransactionId');
+    removeEntry(this.proofVerificationProcess, 'fetchRemoteHash');
+    removeEntry(this.proofVerificationProcess, 'checkMerkleRoot');
   }
 
   private setOptions (options: MerkleProof2019Options): void {
