@@ -16,7 +16,7 @@ import {
 } from './inspectors';
 import isMockChain from './helpers/isMockChain';
 import type { IDidDocumentPublicKey } from '@decentralized-identity/did-common-typescript';
-import type { IBlockchainObject } from './constants/blockchains';
+import type { IBlockchainObject } from '@blockcerts/explorer-lookup';
 
 const { LinkedDataProof } = jsigs.suites;
 

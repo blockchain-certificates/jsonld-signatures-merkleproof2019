@@ -1,5 +1,5 @@
 import isMockChain from '../../src/helpers/isMockChain';
-import { BLOCKCHAINS } from '../../src/constants/blockchains';
+import { BLOCKCHAINS } from '@blockcerts/explorer-lookup';
 
 describe('domain chains isMockChain use case test suite', function () {
   describe('given it is called with a chain parameter', function () {

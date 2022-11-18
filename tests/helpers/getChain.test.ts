@@ -1,4 +1,4 @@
-import { BLOCKCHAINS } from '../../src/constants/blockchains';
+import { BLOCKCHAINS } from '@blockcerts/explorer-lookup';
 import getChain from '../../src/helpers/getChain';
 import { DecodedProof } from '../../src/models/Proof';
 

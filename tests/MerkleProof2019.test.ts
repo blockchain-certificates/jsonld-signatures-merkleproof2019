@@ -2,7 +2,7 @@ import sinon from 'sinon';
 import * as explorerLookup from '@blockcerts/explorer-lookup';
 import { LDMerkleProof2019, MerkleProof2019Options, MerkleProof2019VerificationResult } from '../src';
 import decodedProof, { assertionTransactionId } from './assertions/proof';
-import { BLOCKCHAINS } from '../src/constants/blockchains';
+import { BLOCKCHAINS } from '@blockcerts/explorer-lookup';
 import blockcertsV3Fixture, { documentHash } from './fixtures/testnet-v3-did';
 import fixtureTransactionData from './fixtures/transactionData';
 
