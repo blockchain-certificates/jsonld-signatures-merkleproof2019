@@ -14,6 +14,7 @@ import {
   deriveIssuingAddressFromPublicKey,
   compareIssuingAddress
 } from './inspectors';
+import isMockChain from './helpers/isMockChain';
 import type { IDidDocumentPublicKey } from '@decentralized-identity/did-common-typescript';
 import type { IBlockchainObject } from './constants/blockchains';
 
@@ -45,7 +46,6 @@ export interface MerkleProof2019VerificationResult {
 export interface MerkleProof2019VerifyProofAPI {
   documentLoader?: (url: string) => any; // jsonld document loader hook
   verifyIdentity?: boolean; // allow splitting verification process for more control
-  isMocknet?: boolean; // limit amount of checks for mocknet specificity
 }
 
 export class LDMerkleProof2019 extends LinkedDataProof {
@@ -106,6 +106,11 @@ export class LDMerkleProof2019 extends LinkedDataProof {
     this.getChain();
   }
 
+  static decodeMerkleProof2019 (proof: VCProof): DecodedProof {
+    const base58Decoder = new Decoder(proof.proofValue);
+    return base58Decoder.decode();
+  }
+
   setProof (externalProof: VCProof = null): void {
     const proof = externalProof ?? this.document.proof;
     if (!proof) {
@@ -113,20 +118,19 @@ export class LDMerkleProof2019 extends LinkedDataProof {
     }
 
     this.proof = proof as any; // TODO: might be an error if externalProof is not defined and document has multiproof
-    const base58Decoder = new Decoder((proof as any).proofValue);
-    this.proofValue = base58Decoder.decode();
+    this.proofValue = LDMerkleProof2019.decodeMerkleProof2019(this.proof);
   }
 
-  async verifyProof ({ documentLoader, verifyIdentity, isMocknet }: MerkleProof2019VerifyProofAPI = {
+  async verifyProof ({ documentLoader, verifyIdentity }: MerkleProof2019VerifyProofAPI = {
     documentLoader: (url): any => {},
-    verifyIdentity: true,
-    isMocknet: false
+    verifyIdentity: true
   }): Promise<MerkleProof2019VerificationResult> {
     this.documentLoader = documentLoader;
     let verified: boolean;
     let error: string = '';
-    if (isMocknet) {
+    if (isMockChain(this.chain)) {
       this.adaptProofVerificationProcessToMocknet();
+      this.adaptIdentityVerificationProcessToMocknet();
     }
     try {
       await this.verifyProcess(this.proofVerificationProcess);
@@ -166,11 +170,21 @@ export class LDMerkleProof2019 extends LinkedDataProof {
   }
 
   getIssuerPublicKey (): string {
+    if (isMockChain(this.chain)) {
+      return 'This mock chain does not support issuing addresses';
+    }
     return this.getTxData()?.issuingAddress ?? '';
   }
 
   getIssuanceTime (): string {
     return this.getTxData()?.time as string ?? '';
+  }
+
+  getChain (): IBlockchainObject {
+    if (!this.chain) {
+      this.chain = getChain(this.proofValue);
+    }
+    return this.chain;
   }
 
   private getTxData (): TransactionData {
@@ -182,14 +196,14 @@ export class LDMerkleProof2019 extends LinkedDataProof {
     return this.txData;
   }
 
-  private getChain (): void {
-    this.chain = getChain(this.proofValue);
-  }
-
   private adaptProofVerificationProcessToMocknet (): void {
     removeEntry(this.proofVerificationProcess, 'getTransactionId');
     removeEntry(this.proofVerificationProcess, 'fetchRemoteHash');
     removeEntry(this.proofVerificationProcess, 'checkMerkleRoot');
+  }
+
+  private adaptIdentityVerificationProcessToMocknet (): void {
+    this.identityVerificationProcess = [];
   }
 
   private setOptions (options: MerkleProof2019Options): void {

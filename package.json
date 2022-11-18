@@ -1,6 +1,6 @@
 {
   "name": "jsonld-signatures-merkleproof2019",
-  "version": "0.1.0",
+  "version": "0.0.0-dev",
   "description": "A jsonld signature implementation to support MerkleProof2019 verification in Verifiable Credential context",
   "main": "lib/cjs/index.js",
   "module": "lib/esm/index.js",

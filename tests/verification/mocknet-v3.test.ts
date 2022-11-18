@@ -8,7 +8,7 @@ describe('Given the test chain is Mocknet', function () {
         document: fixture,
         proof: fixture.proof[1] // merkle proof
       });
-      const result = await instance.verifyProof({ isMocknet: true });
+      const result = await instance.verifyProof();
       expect(result).toEqual({
         verified: true,
         verificationMethod: null,

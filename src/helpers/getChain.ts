@@ -4,6 +4,7 @@ import { BLOCKCHAINS, IBlockchainObject } from '../constants/blockchains';
 
 // merkleRoot2019: see https://w3c-dvcg.github.io/lds-merkle-proof-2019/#blockchain-keymap
 function getMerkleRoot2019Chain (anchor): IBlockchainObject {
+  // TODO: refactor - list blink code in BLOCKCHAINS object
   const supportedChainsMap = {
     btc: {
       chainName: BLOCKCHAINS.bitcoin.name
@@ -12,7 +13,13 @@ function getMerkleRoot2019Chain (anchor): IBlockchainObject {
       chainName: BLOCKCHAINS.ethmain.name
     }
   };
+
   const dataArray = anchor.split(':');
+
+  if (dataArray[1] === BLOCKCHAINS.mocknet.code) {
+    return getChainObject(BLOCKCHAINS.mocknet.signatureValue);
+  }
+
   const chainIndex: number = dataArray.findIndex(data => Object.keys(supportedChainsMap).includes(data));
   if (chainIndex > -1) {
     const chainCode = dataArray[chainIndex];
