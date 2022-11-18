@@ -4,7 +4,7 @@ import { computeBitcoinAddressFromPublicKey, computeEthereumAddressFromPublicKey
 import getText from '../helpers/getText';
 import VerifierError from '../models/VerifierError';
 import { SupportedChains } from '../constants/blockchains';
-import type { IBlockchainObject } from '../constants/blockchains';
+import type { IBlockchainObject } from '@blockcerts/explorer-lookup';
 import type { ISecp256k1PublicKeyJwk } from '../utils/keyUtils';
 
 export default function deriveIssuingAddressFromPublicKey (verificationMethodPublicKey: IDidDocumentPublicKey, chain: IBlockchainObject): string {

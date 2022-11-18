@@ -1,4 +1,4 @@
-import { BLOCKCHAINS } from '../../src/constants/blockchains';
+import { BLOCKCHAINS } from '@blockcerts/explorer-lookup';
 import getChain from '../../src/helpers/getChain';
 import { DecodedProof } from '../../src/models/Proof';
 
@@ -85,6 +85,22 @@ describe('getChain test suite', function () {
           const chainAssertion = BLOCKCHAINS.ethrinkeby;
           expect(result).toEqual(chainAssertion);
         });
+      });
+    });
+
+    describe('and the chain is mocknet', function () {
+      it('should return the correct mocknet value', function () {
+        const fixtureSignature = {
+          anchors: [
+            'blink:mocknet:mocknet:abcdefghijkl'
+          ],
+          targetHash: 'a-target-hash',
+          path: [{ left: 'a-path' }],
+          merkleRoot: 'a-merkle-root'
+        };
+        const result = getChain(fixtureSignature);
+        const chainAssertion = BLOCKCHAINS.mocknet;
+        expect(result).toEqual(chainAssertion);
       });
     });
   });

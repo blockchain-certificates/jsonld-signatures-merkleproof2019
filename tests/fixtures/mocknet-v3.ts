@@ -26,9 +26,9 @@ export default {
     type: 'ChainedProof2021',
     verificationMethod: 'https://issuer.dev.hylandcredentials.com/61e6c3fc-5779-4a6d-b05f-fdd10fdac5f0/issuer_profile.json#mocknet-public-key',
     chainedProofType: 'MerkleProof2019',
-    created: '2022-11-15T13:57:49.216Z',
+    created: '2022-11-17T16:27:56.143Z',
     proofPurpose: 'assertionMethod',
-    proofValue: 'z52dKXiCeigz15WBp2vdftTWVgPqc33rrZDc7iVhzfhYh4y5irhV8AVPpGyP9BGZGCx7GDQKVBk8Lqj69tZKMHVGAmLtQ8qHkRBkxZsy8w4qBXgirTtNt56QWAJ7yzMmCDmtyWrbjvhZWd1fZn6SAtLbd5xn858tC3hvxLsrbnPhvtpCK1jiSCLfX2pBrqpLLNuKaP6PUVnEN2AkXwqv2gvkp35c',
+    proofValue: 'z3dYLXPQYDmAax7YA9ssTFUDKYLLSeSAvSETSrLPX5tAyVckkr2X8X3sgf5XF78Kqz8g5x9NJjXa9yd2fwey5kLoYuHpM7ZZZArfaWAeHDZAS9P28hc8yWffiAJi22voGj4G8S1zTeJgk96P6oHgkmSnKCRzuSxcMSv7UcpxMYBWNK5jHgjWCJJReckUtZhESVJuzpj7X1VGJJFg2evv7AukeezaSXiB4JWiMh5u2oYt3vRf5ruxjbjDm3BaF9ptyTxBwNGWnJDG4tBM',
     previousProof: {
       type: 'EcdsaSecp256k1Signature2019',
       created: '2022-11-03T17:12:32Z',

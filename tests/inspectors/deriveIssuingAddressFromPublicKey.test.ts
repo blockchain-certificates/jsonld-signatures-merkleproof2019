@@ -1,7 +1,7 @@
 import type { IDidDocumentPublicKey } from '@decentralized-identity/did-common-typescript';
 import didDocument from '../fixtures/did:ion:EiA_Z6LQILbB2zj_eVrqfQ2xDm4HNqeJUw5Kj2Z7bFOOeQ.json';
 import deriveIssuingAddressFromPublicKey from '../../src/inspectors/deriveIssuingAddressFromPublicKey';
-import { BLOCKCHAINS } from '../../src/constants/blockchains';
+import { BLOCKCHAINS } from '@blockcerts/explorer-lookup';
 
 describe('deriveIssuingAddressFromPublicKey test suite', function () {
   let publicKey: IDidDocumentPublicKey;

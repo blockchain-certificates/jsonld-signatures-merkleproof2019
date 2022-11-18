@@ -1,34 +1,34 @@
 import { DecodedProof } from '../models/Proof';
 import { capitalize } from '../utils/string';
-import { BLOCKCHAINS, IBlockchainObject } from '../constants/blockchains';
+import { BLOCKCHAINS, IBlockchainObject } from '@blockcerts/explorer-lookup';
 
 // merkleRoot2019: see https://w3c-dvcg.github.io/lds-merkle-proof-2019/#blockchain-keymap
 function getMerkleRoot2019Chain (anchor): IBlockchainObject {
-  const supportedChainsMap = {
-    btc: {
-      chainName: BLOCKCHAINS.bitcoin.name
-    },
-    eth: {
-      chainName: BLOCKCHAINS.ethmain.name
-    }
-  };
   const dataArray = anchor.split(':');
-  const chainIndex: number = dataArray.findIndex(data => Object.keys(supportedChainsMap).includes(data));
-  if (chainIndex > -1) {
-    const chainCode = dataArray[chainIndex];
-    const network = dataArray[chainIndex + 1];
-    const chainCodeProofValue = supportedChainsMap[chainCode].chainName.toLowerCase() + capitalize(network);
-    return getChainObject(chainCodeProofValue);
+
+  let mainChain;
+  switch (dataArray[1]) {
+    case BLOCKCHAINS.mocknet.blinkCode:
+      return getChainObject(BLOCKCHAINS.mocknet.signatureValue);
+    case BLOCKCHAINS.bitcoin.blinkCode:
+      mainChain = BLOCKCHAINS.bitcoin.name;
+      break;
+    case BLOCKCHAINS.ethmain.blinkCode:
+      mainChain = BLOCKCHAINS.ethmain.name;
+      break;
+    default:
+      throw new Error('Could not retrieve chain.');
   }
+
+  const network = dataArray[2];
+  const chainCodeSignatureValue = mainChain.toLowerCase() + capitalize(network);
+  return getChainObject(chainCodeSignatureValue);
 }
 
 function getChainObject (chainCodeProofValue): IBlockchainObject {
   const chainObject: IBlockchainObject = Object.keys(BLOCKCHAINS)
     .map(key => BLOCKCHAINS[key])
     .find((entry: IBlockchainObject) => entry.signatureValue === chainCodeProofValue);
-  if (typeof chainObject === 'undefined') {
-    throw new Error('Could not retrieve chain.');
-  }
   return chainObject;
 }
 
