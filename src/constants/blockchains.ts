@@ -12,8 +12,16 @@ export enum SupportedChains {
   Testnet = 'testnet'
 }
 
+// TODO: ideally this list comes from @vaultie/lds-merkle-proof-2019 from the Keymap definition
+enum BlinkCodes {
+  btc = 'btc',
+  eth = 'eth',
+  mocknet = 'mocknet'
+}
+
 export interface IBlockchainObject {
   code: SupportedChains;
+  blinkCode: BlinkCodes;
   name: string;
   prefixes?: string[];
   test?: boolean;
@@ -27,6 +35,7 @@ export interface IBlockchainObject {
 const BLOCKCHAINS: {[chain in SupportedChains]: IBlockchainObject} = {
   [SupportedChains.Bitcoin]: {
     code: SupportedChains.Bitcoin,
+    blinkCode: BlinkCodes.btc,
     name: 'Bitcoin',
     prefixes: ['6a20', 'OP_RETURN '],
     signatureValue: 'bitcoinMainnet',
@@ -37,6 +46,7 @@ const BLOCKCHAINS: {[chain in SupportedChains]: IBlockchainObject} = {
   },
   [SupportedChains.Ethmain]: {
     code: SupportedChains.Ethmain,
+    blinkCode: BlinkCodes.eth,
     name: 'Ethereum',
     prefixes: ['0x'],
     signatureValue: 'ethereumMainnet',
@@ -47,6 +57,7 @@ const BLOCKCHAINS: {[chain in SupportedChains]: IBlockchainObject} = {
   },
   [SupportedChains.Ethropst]: {
     code: SupportedChains.Ethropst,
+    blinkCode: BlinkCodes.eth,
     name: 'Ethereum Testnet',
     signatureValue: 'ethereumRopsten',
     transactionTemplates: {
@@ -56,6 +67,7 @@ const BLOCKCHAINS: {[chain in SupportedChains]: IBlockchainObject} = {
   },
   [SupportedChains.Ethrinkeby]: {
     code: SupportedChains.Ethrinkeby,
+    blinkCode: BlinkCodes.eth,
     name: 'Ethereum Testnet',
     signatureValue: 'ethereumRinkeby',
     transactionTemplates: {
@@ -65,6 +77,7 @@ const BLOCKCHAINS: {[chain in SupportedChains]: IBlockchainObject} = {
   },
   [SupportedChains.Ethgoerli]: {
     code: SupportedChains.Ethgoerli,
+    blinkCode: BlinkCodes.eth,
     name: 'Ethereum Testnet',
     signatureValue: 'ethereumGoerli',
     transactionTemplates: {
@@ -74,6 +87,7 @@ const BLOCKCHAINS: {[chain in SupportedChains]: IBlockchainObject} = {
   },
   [SupportedChains.Ethsepolia]: {
     code: SupportedChains.Ethsepolia,
+    blinkCode: BlinkCodes.eth,
     name: 'Ethereum Testnet',
     signatureValue: 'ethereumSepolia',
     transactionTemplates: {
@@ -83,6 +97,7 @@ const BLOCKCHAINS: {[chain in SupportedChains]: IBlockchainObject} = {
   },
   [SupportedChains.Mocknet]: {
     code: SupportedChains.Mocknet,
+    blinkCode: BlinkCodes.mocknet,
     name: 'Mocknet',
     test: true,
     signatureValue: 'mockchain',
@@ -93,6 +108,7 @@ const BLOCKCHAINS: {[chain in SupportedChains]: IBlockchainObject} = {
   },
   [SupportedChains.Regtest]: {
     code: SupportedChains.Regtest,
+    blinkCode: BlinkCodes.mocknet,
     name: 'Mocknet',
     test: true,
     signatureValue: 'bitcoinRegtest',
@@ -103,6 +119,7 @@ const BLOCKCHAINS: {[chain in SupportedChains]: IBlockchainObject} = {
   },
   [SupportedChains.Testnet]: {
     code: SupportedChains.Testnet,
+    blinkCode: BlinkCodes.btc,
     name: 'Bitcoin Testnet',
     signatureValue: 'bitcoinTestnet',
     transactionTemplates: {

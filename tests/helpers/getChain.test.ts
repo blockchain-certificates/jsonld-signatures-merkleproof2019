@@ -87,6 +87,22 @@ describe('getChain test suite', function () {
         });
       });
     });
+
+    describe('and the chain is mocknet', function () {
+      it('should return the correct mocknet value', function () {
+        const fixtureSignature = {
+          anchors: [
+            'blink:mocknet:mocknet:abcdefghijkl'
+          ],
+          targetHash: 'a-target-hash',
+          path: [{ left: 'a-path' }],
+          merkleRoot: 'a-merkle-root'
+        };
+        const result = getChain(fixtureSignature);
+        const chainAssertion = BLOCKCHAINS.mocknet;
+        expect(result).toEqual(chainAssertion);
+      });
+    });
   });
 
   describe('given it is called without a signature', function () {
