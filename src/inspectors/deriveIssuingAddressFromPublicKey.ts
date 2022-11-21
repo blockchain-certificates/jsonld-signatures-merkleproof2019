@@ -3,7 +3,7 @@ import { publicKeyUInt8ArrayFromJwk } from '../utils/keyUtils';
 import { computeBitcoinAddressFromPublicKey, computeEthereumAddressFromPublicKey } from '../utils/issuingAddress';
 import getText from '../helpers/getText';
 import VerifierError from '../models/VerifierError';
-import { SupportedChains } from '../constants/blockchains';
+import { SupportedChains } from '@blockcerts/explorer-lookup';
 import type { IBlockchainObject } from '@blockcerts/explorer-lookup';
 import type { ISecp256k1PublicKeyJwk } from '../utils/keyUtils';
 
