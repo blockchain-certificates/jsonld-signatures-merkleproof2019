@@ -104,6 +104,10 @@ export class LDMerkleProof2019 extends LinkedDataProof {
     this.setProof(proof);
     this.setOptions(options);
     this.getChain();
+    if (isMockChain(this.chain)) {
+      this.adaptProofVerificationProcessToMocknet();
+      this.adaptIdentityVerificationProcessToMocknet();
+    }
   }
 
   static decodeMerkleProof2019 (proof: VCProof): DecodedProof {
@@ -128,10 +132,6 @@ export class LDMerkleProof2019 extends LinkedDataProof {
     this.documentLoader = documentLoader;
     let verified: boolean;
     let error: string = '';
-    if (isMockChain(this.chain)) {
-      this.adaptProofVerificationProcessToMocknet();
-      this.adaptIdentityVerificationProcessToMocknet();
-    }
     try {
       await this.verifyProcess(this.proofVerificationProcess);
       if (verifyIdentity) {
