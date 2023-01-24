@@ -6,7 +6,7 @@
   "module": "lib/esm/index.js",
   "typings": "lib/index.d.ts",
   "dependencies": {
-    "@blockcerts/explorer-lookup": "^1.5.0",
+    "@blockcerts/explorer-lookup": "^1.5.1",
     "@trust/keyto": "^1.0.1",
     "@vaultie/lds-merkle-proof-2019": "^0.0.10",
     "bitcoinjs-lib": "^6.0.2",
