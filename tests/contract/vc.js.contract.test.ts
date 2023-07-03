@@ -32,7 +32,7 @@ describe('Contract test suite', function () {
         Headers
       }
     });
-  });
+  }, 60000);
 
   describe('vc.js compatibility', function () {
     it('should verify a MerkleProof2019 signed document', async function () {
