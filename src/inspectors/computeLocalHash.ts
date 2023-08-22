@@ -64,7 +64,8 @@ export default async function computeLocalHash (
   const normalizeArgs: any = {
     algorithm: 'URDNA2015',
     format: 'application/nquads',
-    documentLoader: customLoader
+    documentLoader: customLoader,
+    safe: false
   };
 
   let normalizedDocument;

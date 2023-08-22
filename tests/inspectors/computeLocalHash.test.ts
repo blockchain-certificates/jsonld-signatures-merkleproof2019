@@ -2,6 +2,7 @@ import sinon from 'sinon';
 import jsonld from 'jsonld';
 import JsonLdError from 'jsonld/lib/JsonLdError';
 import blockcertsV3Fixture, { documentHash } from '../fixtures/testnet-v3-did';
+import blockcertsV3CustomContextFixture, { blockcertsV3CustomContextHash } from '../fixtures/testnet-v3-custom-context';
 import computeLocalHash from '../../src/inspectors/computeLocalHash';
 
 describe('computeLocalHash test suite', function () {
@@ -44,6 +45,13 @@ describe('computeLocalHash test suite', function () {
         expect(e.message).toBe('Failed JSON-LD normalization');
       }
       normalizeStub.restore();
+    });
+  });
+
+  describe('given the document has a custom context', function () {
+    it('should normalize and hash the document as expected', async function () {
+      const output = await computeLocalHash(blockcertsV3CustomContextFixture);
+      expect(output).toBe(blockcertsV3CustomContextHash);
     });
   });
 });
