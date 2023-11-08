@@ -45,7 +45,7 @@
     "node-fetch": "^3.2.10",
     "rimraf": "^3.0.2",
     "rollup": "^2.79.0",
-    "semantic-release": "^17.3.0",
+    "semantic-release": "^22.0.7",
     "sinon": "^14.0.0",
     "ts-jest": "^29.0.1",
     "tslib": "^2.4.0",
