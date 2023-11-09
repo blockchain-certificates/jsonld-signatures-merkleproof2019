@@ -1,4 +1,4 @@
-import { DecodedProof } from '../../src/models/Proof';
+import { type DecodedProof } from '../../src/models/Proof';
 
 export const assertionTransactionId = '140ee9382a5c84433b9c89a5d9fea26c47415838b5841deb0c36a8a4b9121f2e';
 

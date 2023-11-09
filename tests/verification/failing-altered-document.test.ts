@@ -1,7 +1,7 @@
 import sinon from 'sinon';
 import * as explorerLookup from '@blockcerts/explorer-lookup';
 import alteredBlockcertsV3Fixture from '../fixtures/altered-blockcerts-v3';
-import { LDMerkleProof2019, MerkleProof2019VerificationResult } from '../../src';
+import { LDMerkleProof2019, type MerkleProof2019VerificationResult } from '../../src';
 import fixtureTransactionData from '../fixtures/transactionData';
 
 describe('when the process fails', function () {

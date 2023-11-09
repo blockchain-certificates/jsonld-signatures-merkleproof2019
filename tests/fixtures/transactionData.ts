@@ -1,4 +1,4 @@
-import { TransactionData } from '@blockcerts/explorer-lookup';
+import { type TransactionData } from '@blockcerts/explorer-lookup';
 
 const fixtureTransactionData: TransactionData = {
   issuingAddress: 'mgdWjvq4RYAAP5goUNagTRMx7Xw534S5am',
