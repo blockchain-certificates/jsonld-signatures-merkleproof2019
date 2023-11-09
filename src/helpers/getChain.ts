@@ -1,6 +1,6 @@
-import { DecodedProof } from '../models/Proof';
+import { type DecodedProof } from '../models/Proof';
 import { capitalize } from '../utils/string';
-import { BLOCKCHAINS, IBlockchainObject } from '@blockcerts/explorer-lookup';
+import { BLOCKCHAINS, type IBlockchainObject } from '@blockcerts/explorer-lookup';
 
 // merkleRoot2019: see https://w3c-dvcg.github.io/lds-merkle-proof-2019/#blockchain-keymap
 function getMerkleRoot2019Chain (anchor): IBlockchainObject {

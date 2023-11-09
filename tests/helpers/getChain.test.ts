@@ -1,6 +1,6 @@
 import { BLOCKCHAINS } from '@blockcerts/explorer-lookup';
 import getChain from '../../src/helpers/getChain';
-import { DecodedProof } from '../../src/models/Proof';
+import { type DecodedProof } from '../../src/models/Proof';
 
 describe('getChain test suite', function () {
   describe('given it is called with a MerkleProof2019 signature', function () {

@@ -1,4 +1,4 @@
-import { ExplorerAPI, TransactionData } from '@blockcerts/explorer-lookup';
+import { type ExplorerAPI, type TransactionData } from '@blockcerts/explorer-lookup';
 import ensureExplorerAPIValidity from '../../src/utils/ensureExplorerAPIValidity';
 
 describe('ensureExplorerAPIValidity test suite', function () {

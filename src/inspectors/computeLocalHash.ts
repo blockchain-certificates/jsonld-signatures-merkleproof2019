@@ -23,7 +23,7 @@ export function getUnmappedFields (normalized: string): string[] | null {
 export default async function computeLocalHash (
   document: any,
   targetProof = null,
-  documentLoader = (url: string) => undefined
+  documentLoader = async (url: string) => Promise<any>
 ): Promise<string> { // TODO: define VC type
   // the previous implementation was using a reference of @context, thus always adding @vocab to @context,
   // thus passing the information down to jsonld regardless of the configuration option. We explicitly do that now,

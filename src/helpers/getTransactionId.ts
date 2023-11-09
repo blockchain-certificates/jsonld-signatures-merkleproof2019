@@ -1,4 +1,4 @@
-import { DecodedProof } from '../models/Proof';
+import { type DecodedProof } from '../models/Proof';
 
 export default function getTransactionId (proof: DecodedProof = null): string {
   if (!proof) {

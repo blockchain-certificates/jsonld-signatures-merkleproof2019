@@ -1,7 +1,7 @@
 import { Decoder } from '@vaultie/lds-merkle-proof-2019';
 import jsigs from 'jsonld-signatures';
-import { lookForTx, ExplorerAPI, TransactionData } from '@blockcerts/explorer-lookup';
-import { DecodedProof, VCProof } from './models/Proof';
+import { lookForTx, type ExplorerAPI, type TransactionData, type IBlockchainObject } from '@blockcerts/explorer-lookup';
+import { type DecodedProof, type VCProof } from './models/Proof';
 import getTransactionId from './helpers/getTransactionId';
 import getChain from './helpers/getChain';
 import { removeEntry } from './utils/array';
@@ -16,7 +16,6 @@ import {
 } from './inspectors';
 import isMockChain from './helpers/isMockChain';
 import type { IDidDocumentPublicKey } from '@decentralized-identity/did-common-typescript';
-import type { IBlockchainObject } from '@blockcerts/explorer-lookup';
 
 const { LinkedDataProof } = jsigs.suites;
 
@@ -255,7 +254,7 @@ export class LDMerkleProof2019 extends LinkedDataProof {
   private async checkReceipt (): Promise<void> {
     await this.executeStep(
       'checkReceipt',
-      () => ensureValidReceipt(this.proofValue),
+      () => { ensureValidReceipt(this.proofValue); },
       this.type
     );
   }
@@ -297,7 +296,7 @@ export class LDMerkleProof2019 extends LinkedDataProof {
   private async compareIssuingAddress (): Promise<void> {
     await this.executeStep(
       'compareIssuingAddress',
-      () => compareIssuingAddress(this.getIssuerPublicKey(), this.derivedIssuingAddress),
+      () => { compareIssuingAddress(this.getIssuerPublicKey(), this.derivedIssuingAddress); },
       this.type
     );
   }
