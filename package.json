@@ -7,6 +7,7 @@
   "typings": "lib/index.d.ts",
   "dependencies": {
     "@blockcerts/explorer-lookup": "^1.5.1",
+    "@blockcerts/schemas": "^3.6.2",
     "@trust/keyto": "^1.0.1",
     "@vaultie/lds-merkle-proof-2019": "^0.0.12",
     "bitcoinjs-lib": "^6.0.2",
@@ -14,7 +15,7 @@
     "elliptic": "^6.5.4",
     "hash-base": "github:blockchain-certificates/hash-base",
     "js-sha3": "^0.8.0",
-    "jsonld": "^8.2.0",
+    "jsonld": "^8.3.2",
     "jsonld-signatures": "^11.2.1",
     "lodash.clonedeep": "^4.5.0",
     "secp256k1": "^5.0.0",
@@ -22,7 +23,6 @@
     "xmlhttprequest": "^1.8.0"
   },
   "devDependencies": {
-    "@blockcerts/schemas": "^3.2.1",
     "@decentralized-identity/did-common-typescript": "^0.1.19",
     "@digitalbazaar/vc": "^6.2.0",
     "@rollup/plugin-commonjs": "^25.0.7",
