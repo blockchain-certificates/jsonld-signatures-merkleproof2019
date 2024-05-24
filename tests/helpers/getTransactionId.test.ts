@@ -1,3 +1,4 @@
+import { describe, it, expect } from 'vitest';
 import getTransactionId from '../../src/helpers/getTransactionId';
 import decodedProof, { assertionTransactionId } from '../assertions/proof';
 

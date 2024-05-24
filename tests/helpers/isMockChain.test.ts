@@ -1,3 +1,4 @@
+import { describe, it, expect } from 'vitest';
 import isMockChain from '../../src/helpers/isMockChain';
 import { BLOCKCHAINS } from '@blockcerts/explorer-lookup';
 

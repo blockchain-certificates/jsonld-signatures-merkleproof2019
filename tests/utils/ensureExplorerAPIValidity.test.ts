@@ -1,3 +1,4 @@
+import { describe, it, expect } from 'vitest';
 import { type ExplorerAPI, type TransactionData } from '@blockcerts/explorer-lookup';
 import ensureExplorerAPIValidity from '../../src/utils/ensureExplorerAPIValidity';
 

@@ -1,3 +1,4 @@
+import { describe, it, expect, beforeEach, afterEach } from 'vitest';
 import type { IDidDocumentPublicKey } from '@decentralized-identity/did-common-typescript';
 import didDocument from '../fixtures/did:ion:EiA_Z6LQILbB2zj_eVrqfQ2xDm4HNqeJUw5Kj2Z7bFOOeQ.json';
 import { BLOCKCHAINS } from '@blockcerts/explorer-lookup';
@@ -8,6 +9,10 @@ describe('deriveIssuingAddressFromPublicKey test suite', function () {
 
   beforeEach(function () {
     publicKey = Object.assign({}, didDocument.verificationMethod[0]);
+  });
+
+  afterEach(function () {
+    publicKey = null;
   });
 
   describe('given the argument chain was Bitcoin', function () {
