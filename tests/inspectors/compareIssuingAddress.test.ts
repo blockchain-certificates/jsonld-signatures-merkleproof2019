@@ -1,3 +1,4 @@
+import { describe, it, expect } from 'vitest';
 import { compareIssuingAddress } from '../../src/inspectors';
 
 describe('compareIssuingAddress inspector test suite', function () {

@@ -1,5 +1,6 @@
+import { describe, it, expect, beforeEach, afterEach, beforeAll, afterAll, vi } from 'vitest';
 import sinon from 'sinon';
-import * as explorerLookup from '@blockcerts/explorer-lookup';
+import type * as explorerLookup from '@blockcerts/explorer-lookup';
 import { LDMerkleProof2019, type MerkleProof2019Options, type MerkleProof2019VerificationResult } from '../src';
 import decodedProof, { assertionTransactionId } from './assertions/proof';
 import { BLOCKCHAINS } from '@blockcerts/explorer-lookup';
@@ -30,12 +31,8 @@ describe('MerkleProof2019 test suite', function () {
   describe('given a MerkleProof2019 signed document is passed', function () {
     let instance;
 
-    beforeEach(function () {
+    beforeAll(function () {
       instance = new LDMerkleProof2019({ document: blockcertsV3Fixture });
-    });
-
-    afterEach(function () {
-      instance = null;
     });
 
     it('registers the type of the proof', function () {
@@ -76,14 +73,19 @@ describe('MerkleProof2019 test suite', function () {
       describe('when the process is successful', function () {
         let result: MerkleProof2019VerificationResult;
 
-        beforeEach(async function () {
-          sinon.stub(explorerLookup, 'lookForTx').resolves(fixtureTransactionData);
+        beforeAll(async function () {
+          vi.mock('@blockcerts/explorer-lookup', async (importOriginal) => {
+            const explorerLookup = await importOriginal();
+            return {
+              ...explorerLookup,
+              lookForTx: () => fixtureTransactionData
+            };
+          });
           result = await instance.verifyProof();
         });
 
-        afterEach(function () {
-          sinon.restore();
-          result = null;
+        afterAll(function () {
+          vi.restoreAllMocks();
         });
 
         it('should retrieve the transaction id', function () {

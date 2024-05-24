@@ -1,11 +1,11 @@
+import { describe, it, expect } from 'vitest';
 import { preloadedContexts } from '@blockcerts/schemas';
 import jsonld from 'jsonld';
-import { Headers } from 'node-fetch';
 import { LDMerkleProof2019 } from '../../src';
 import blockcertsDocument from '../fixtures/testnet-v3-did';
+import * as vcjs from '@digitalbazaar/vc';
 // import { vaultiePresentation } from '../fixtures/vaultie-authenticity-report';
 import didDocument from '../fixtures/did:ion:EiA_Z6LQILbB2zj_eVrqfQ2xDm4HNqeJUw5Kj2Z7bFOOeQ.json';
-import precompileEsmModuleToCjs from './helpers/precompileEsmModuleToCjs';
 
 function generateDocumentLoader (): any {
   preloadedContexts[blockcertsDocument.issuer.id] = didDocument;
@@ -23,17 +23,6 @@ function generateDocumentLoader (): any {
 }
 
 describe('Contract test suite', function () {
-  let vcjs;
-
-  beforeAll(async function () {
-    // jest requirement to prevent ESM issues
-    vcjs = await precompileEsmModuleToCjs('node_modules/@digitalbazaar/vc/lib/index.js', {
-      globalThis: {
-        Headers
-      }
-    });
-  }, 60000);
-
   describe('vc.js compatibility', function () {
     it('should verify a MerkleProof2019 signed document', async function () {
       const suite = [new LDMerkleProof2019({

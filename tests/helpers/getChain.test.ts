@@ -1,3 +1,4 @@
+import { describe, it, expect } from 'vitest';
 import { BLOCKCHAINS } from '@blockcerts/explorer-lookup';
 import getChain from '../../src/helpers/getChain';
 import { type DecodedProof } from '../../src/models/Proof';

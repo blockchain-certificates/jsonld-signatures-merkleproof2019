@@ -1,3 +1,4 @@
+import { describe, it, expect } from 'vitest';
 import sinon from 'sinon';
 import jsonld from 'jsonld';
 import JsonLdError from 'jsonld/lib/JsonLdError';

@@ -1,3 +1,4 @@
+import { describe, it, expect } from 'vitest';
 import fixture from '../fixtures/mocknet-vc-v2-data-integrity-proof.json';
 import { LDMerkleProof2019 } from '../../src';
 
