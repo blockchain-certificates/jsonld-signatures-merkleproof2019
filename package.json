@@ -8,8 +8,8 @@
   },
   "typings": "lib/index.d.ts",
   "dependencies": {
-    "@blockcerts/explorer-lookup": "^1.5.1",
-    "@blockcerts/schemas": "^3.6.2",
+    "@blockcerts/explorer-lookup": "^1.5.2",
+    "@blockcerts/schemas": "^3.6.4",
     "@trust/keyto": "^1.0.1",
     "@vaultie/lds-merkle-proof-2019": "^0.0.12",
     "bitcoinjs-lib": "^6.0.2",
