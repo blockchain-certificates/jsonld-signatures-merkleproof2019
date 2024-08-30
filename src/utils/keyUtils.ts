@@ -5,6 +5,7 @@ import bs58 from 'bs58';
 import secp256k1 from 'secp256k1';
 import { Buffer as BufferPolyfill } from 'buffer';
 import canonicalize from 'canonicalize';
+// @ts-expect-error not a TS package
 import * as multikey from '@digitalbazaar/ecdsa-multikey';
 
 const buffer = typeof Buffer === 'undefined' ? BufferPolyfill : Buffer;
