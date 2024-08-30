@@ -5,6 +5,7 @@ import bs58 from 'bs58';
 import secp256k1 from 'secp256k1';
 import { Buffer as BufferPolyfill } from 'buffer';
 import canonicalize from 'canonicalize';
+import * as multikey from '@digitalbazaar/ecdsa-multikey';
 
 const buffer = typeof Buffer === 'undefined' ? BufferPolyfill : Buffer;
 
@@ -195,6 +196,11 @@ export const publicKeyUInt8ArrayFromJwk = (jwk: ISecp256k1PublicKeyJwk): Buffer 
     padding--;
   }
   return asBuffer;
+};
+
+export const publicKeyUInt8ArrayFromMultibase = async (publicKeyMultibase): Promise<Buffer> => {
+  const pubKeyJwk = await multikey.toJwk({ keyPair: publicKeyMultibase });
+  return publicKeyUInt8ArrayFromJwk(pubKeyJwk);
 };
 
 /** convert publicKeyHex to base58 */

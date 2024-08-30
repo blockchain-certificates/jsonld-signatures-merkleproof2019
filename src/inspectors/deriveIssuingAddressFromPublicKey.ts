@@ -1,5 +1,5 @@
 import type { IDidDocumentPublicKey } from '@decentralized-identity/did-common-typescript';
-import { publicKeyUInt8ArrayFromJwk } from '../utils/keyUtils';
+import { publicKeyUInt8ArrayFromJwk, publicKeyUInt8ArrayFromMultibase } from '../utils/keyUtils';
 import { computeBitcoinAddressFromPublicKey, computeEthereumAddressFromPublicKey } from '../utils/issuingAddress';
 import getText from '../helpers/getText';
 import VerifierError from '../models/VerifierError';
@@ -7,8 +7,14 @@ import { SupportedChains } from '@blockcerts/explorer-lookup';
 import type { IBlockchainObject } from '@blockcerts/explorer-lookup';
 import type { ISecp256k1PublicKeyJwk } from '../utils/keyUtils';
 
-export default function deriveIssuingAddressFromPublicKey (verificationMethodPublicKey: IDidDocumentPublicKey, chain: IBlockchainObject): string {
-  const publicKey = publicKeyUInt8ArrayFromJwk(verificationMethodPublicKey.publicKeyJwk as ISecp256k1PublicKeyJwk);
+export default async function deriveIssuingAddressFromPublicKey (verificationMethodPublicKey: IDidDocumentPublicKey, chain: IBlockchainObject): Promise<string> {
+  let publicKey;
+  if ('publicKeyJwk' in verificationMethodPublicKey) {
+    publicKey = publicKeyUInt8ArrayFromJwk(verificationMethodPublicKey.publicKeyJwk as ISecp256k1PublicKeyJwk);
+  } else if ('publicKeyMultibase' in verificationMethodPublicKey) {
+    publicKey = await publicKeyUInt8ArrayFromMultibase(verificationMethodPublicKey);
+  }
+
   const baseError = getText('errors', 'identityErrorBaseMessage');
   let address: string = '';
   switch (chain.code) {
