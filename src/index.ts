@@ -288,7 +288,7 @@ export class LDMerkleProof2019 extends LinkedDataProof {
   private async deriveIssuingAddressFromPublicKey (): Promise<void> {
     this.derivedIssuingAddress = await this.executeStep(
       'deriveIssuingAddressFromPublicKey',
-      () => deriveIssuingAddressFromPublicKey(this.verificationMethod, this.chain),
+      async () => await deriveIssuingAddressFromPublicKey(this.verificationMethod, this.chain),
       this.type
     );
   }
