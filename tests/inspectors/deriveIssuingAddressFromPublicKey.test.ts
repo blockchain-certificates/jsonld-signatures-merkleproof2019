@@ -88,5 +88,23 @@ describe('deriveIssuingAddressFromPublicKey test suite', function () {
       const address = await deriveIssuingAddressFromPublicKey(publicKey, BLOCKCHAINS.bitcoin);
       expect(address).toBe('1862cjGVHodmYyvfumSgrgfnWcpCMHK9sq');
     });
+
+    it('should return the address of Bitcoin Testnet', async function () {
+      const publicKey = {
+        publicKeyMultibase: 'zQ3shvX9Dd7cAG7ZcJN4d9DksshpVYSGpqEyrLjopoGpk97CR'
+      };
+
+      const address = await deriveIssuingAddressFromPublicKey(publicKey, BLOCKCHAINS.testnet);
+      expect(address).toBe('mgdWjvq4RYAAP5goUNagTRMx7Xw534S5am');
+    });
+
+    it('should return the address of Ethereum', async function () {
+      const publicKey = {
+        publicKeyMultibase: 'zQ3shvX9Dd7cAG7ZcJN4d9DksshpVYSGpqEyrLjopoGpk97CR'
+      };
+
+      const address = await deriveIssuingAddressFromPublicKey(publicKey, BLOCKCHAINS.ethmain);
+      expect(address).toBe('0x40cf9b7db6fcc742ad0a76b8588c7f8de2b54a60');
+    });
   });
 });
