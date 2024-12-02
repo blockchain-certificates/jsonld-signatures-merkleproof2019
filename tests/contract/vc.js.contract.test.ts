@@ -44,6 +44,7 @@ describe('Contract test suite', function () {
     });
 
     // TODO: Access to DID document needed for verification
+    //
     // it('should verify a non Blockcerts document', async function () {
     //   const credential = vaultiePresentation.verifiableCredential[0];
     //   const suite = [new LDMerkleProof2019({
