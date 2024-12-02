@@ -34,6 +34,8 @@ export interface MerkleProof2019API {
   verificationMethod?: IDidDocumentPublicKey;
   document: VCDocument;
   proof?: VCProof;
+  // the purpose of proof that the verifier will be used for, defaults to assertionMethod
+  proofPurpose?: string;
 }
 
 export interface MerkleProof2019VerificationResult {
@@ -61,6 +63,7 @@ export class LDMerkleProof2019 extends LinkedDataProof {
   public verificationMethod: IDidDocumentPublicKey = null;
   public proof: VCProof = null;
   public proofValue: DecodedProof = null;
+  public proofPurpose: string;
   public document: VCDocument = null;
   public explorerAPIs: ExplorerAPI[] = [];
   public chain: IBlockchainObject;
@@ -89,7 +92,8 @@ export class LDMerkleProof2019 extends LinkedDataProof {
     verificationMethod = null,
     document = null,
     proof = null,
-    options = {}
+    options = {},
+    proofPurpose = 'assertionMethod'
   }: MerkleProof2019API) {
     super({ type: 'MerkleProof2019' });
 
@@ -100,6 +104,7 @@ export class LDMerkleProof2019 extends LinkedDataProof {
     this.issuer = issuer;
     this.verificationMethod = verificationMethod;
     this.document = document;
+    this.proofPurpose = proofPurpose;
     this.setProof(proof);
     this.setOptions(options);
     this.getChain();
@@ -131,6 +136,17 @@ export class LDMerkleProof2019 extends LinkedDataProof {
     this.documentLoader = documentLoader;
     let verified: boolean;
     let error: string = '';
+
+    if (this.proof.proofPurpose) {
+      if (this.proof.proofPurpose !== this.proofPurpose) {
+        throw new Error(`Invalid proof purpose. Expected ${this.proofPurpose} but received ${this.proof.proofPurpose}`);
+      }
+
+      if (this.issuer && !this.issuer[this.proofPurpose]?.includes(this.proof.verificationMethod)) {
+        throw new Error(`The verification method ${this.proof.verificationMethod} is not allowed for the proof purpose ${this.proofPurpose}`);
+      }
+    }
+
     try {
       await this.verifyProcess(this.proofVerificationProcess);
       if (verifyIdentity) {
