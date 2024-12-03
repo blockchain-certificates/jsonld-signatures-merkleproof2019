@@ -27,9 +27,12 @@ describe('given the document is signed following the DataIntegrityProof spec', f
         proofPurpose: 'authentication'
       });
 
-      await expect(async () => {
-        await instance.verifyProof();
-      }).rejects.toThrow('Invalid proof purpose. Expected authentication but received assertionMethod');
+      const result = await instance.verifyProof();
+      expect(result).toEqual({
+        verified: false,
+        verificationMethod: null,
+        error: 'Invalid proof purpose. Expected authentication but received assertionMethod'
+      });
     });
   });
 
@@ -45,9 +48,12 @@ describe('given the document is signed following the DataIntegrityProof spec', f
         issuer: fixtureIssuerProfile
       });
 
-      await expect(async () => {
-        await instance.verifyProof();
-      }).rejects.toThrow('The verification method https://www.blockcerts.org/samples/3.0/issuer-blockcerts.json#key-1 is not allowed for the proof purpose authentication');
+      const result = await instance.verifyProof();
+      expect(result).toEqual({
+        verified: false,
+        verificationMethod: null,
+        error: 'The verification method https://www.blockcerts.org/samples/3.0/issuer-blockcerts.json#key-1 is not allowed for the proof purpose authentication'
+      });
     });
   });
 });
