@@ -137,17 +137,16 @@ export class LDMerkleProof2019 extends LinkedDataProof {
     let verified: boolean;
     let error: string = '';
 
-    if (this.proof.proofPurpose) {
-      if (this.proof.proofPurpose !== this.proofPurpose) {
-        throw new Error(`Invalid proof purpose. Expected ${this.proofPurpose} but received ${this.proof.proofPurpose}`);
-      }
-
-      if (this.issuer && !this.issuer[this.proofPurpose]?.includes(this.proof.verificationMethod)) {
-        throw new Error(`The verification method ${this.proof.verificationMethod} is not allowed for the proof purpose ${this.proofPurpose}`);
-      }
-    }
-
     try {
+      if (this.proof.proofPurpose) {
+        if (this.proof.proofPurpose !== this.proofPurpose) {
+          throw new Error(`Invalid proof purpose. Expected ${this.proofPurpose} but received ${this.proof.proofPurpose}`);
+        }
+
+        if (this.issuer && !this.issuer[this.proofPurpose]?.includes(this.proof.verificationMethod)) {
+          throw new Error(`The verification method ${this.proof.verificationMethod} is not allowed for the proof purpose ${this.proofPurpose}`);
+        }
+      }
       await this.verifyProcess(this.proofVerificationProcess);
       if (verifyIdentity) {
         await this.verifyIdentity();
