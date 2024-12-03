@@ -16,6 +16,8 @@ import {
 } from './inspectors';
 import isMockChain from './helpers/isMockChain';
 import type { IDidDocumentPublicKey } from '@decentralized-identity/did-common-typescript';
+import VerifierError from './models/VerifierError';
+import getText from './helpers/getText';
 
 const { LinkedDataProof } = jsigs.suites;
 
@@ -72,6 +74,7 @@ export class LDMerkleProof2019 extends LinkedDataProof {
   public derivedIssuingAddress: string;
   public documentLoader = null;
   public proofVerificationProcess = [
+    'assertProofPurpose',
     'getTransactionId',
     'computeLocalHash',
     'fetchRemoteHash',
@@ -138,15 +141,6 @@ export class LDMerkleProof2019 extends LinkedDataProof {
     let error: string = '';
 
     try {
-      if (this.proof.proofPurpose) {
-        if (this.proof.proofPurpose !== this.proofPurpose) {
-          throw new Error(`Invalid proof purpose. Expected ${this.proofPurpose} but received ${this.proof.proofPurpose}`);
-        }
-
-        if (this.issuer && !this.issuer[this.proofPurpose]?.includes(this.proof.verificationMethod)) {
-          throw new Error(`The verification method ${this.proof.verificationMethod} is not allowed for the proof purpose ${this.proofPurpose}`);
-        }
-      }
       await this.verifyProcess(this.proofVerificationProcess);
       if (verifyIdentity) {
         await this.verifyIdentity();
@@ -240,6 +234,36 @@ export class LDMerkleProof2019 extends LinkedDataProof {
       }
       await this[verificationStep]();
     }
+  }
+
+  private async assertProofPurpose (): Promise<void> {
+    await this.executeStep(
+      'assertProofPurpose',
+      () => {
+        if (this.proof.proofPurpose) {
+          if (this.proof.proofPurpose !== this.proofPurpose) {
+            throw new VerifierError('assertProofPurpose',
+              getText('errors', 'assertProofPurposeVerifier')
+                // eslint-disable-next-line no-template-curly-in-string
+                .replace('${this.proofPurpose}', this.proofPurpose)
+                // eslint-disable-next-line no-template-curly-in-string
+                .replace('${this.proof.proofPurpose}', this.proof.proofPurpose)
+            );
+          }
+
+          if (this.issuer && !this.issuer[this.proofPurpose]?.includes(this.proof.verificationMethod)) {
+            throw new VerifierError('assertProofPurpose',
+              getText('errors', 'assertProofPurposeIssuerKey')
+                // eslint-disable-next-line no-template-curly-in-string
+                .replace('${this.proof.verificationMethod}', this.proof.verificationMethod)
+                // eslint-disable-next-line no-template-curly-in-string
+                .replace('${this.proofPurpose}', this.proofPurpose)
+            );
+          }
+        }
+      },
+      this.type // do not remove here or it will break CVJS
+    );
   }
 
   private async checkMerkleRoot (): Promise<void> {
