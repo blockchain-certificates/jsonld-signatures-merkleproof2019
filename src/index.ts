@@ -6,6 +6,7 @@ import getTransactionId from './helpers/getTransactionId';
 import getChain from './helpers/getChain';
 import { removeEntry } from './utils/array';
 import {
+  assertProofValidity,
   isTransactionIdValid,
   computeLocalHash,
   ensureHashesEqual,
@@ -16,8 +17,6 @@ import {
 } from './inspectors';
 import isMockChain from './helpers/isMockChain';
 import type { IDidDocumentPublicKey } from '@decentralized-identity/did-common-typescript';
-import VerifierError from './models/VerifierError';
-import getText from './helpers/getText';
 
 const { LinkedDataProof } = jsigs.suites;
 
@@ -38,6 +37,7 @@ export interface MerkleProof2019API {
   proof?: VCProof;
   // the purpose of proof that the verifier will be used for, defaults to assertionMethod
   proofPurpose?: string;
+  domain?: string | string[];
 }
 
 export interface MerkleProof2019VerificationResult {
@@ -60,6 +60,7 @@ export class LDMerkleProof2019 extends LinkedDataProof {
    *   using a context different from security-v2).
    * @param [document] {document} document used and signed by the MerkleProof2019 signature
    */
+  public domain: string[];
   public type: string = 'MerkleProof2019';
   public issuer: any = null; // TODO: define issuer type
   public verificationMethod: IDidDocumentPublicKey = null;
@@ -74,7 +75,7 @@ export class LDMerkleProof2019 extends LinkedDataProof {
   public derivedIssuingAddress: string;
   public documentLoader = null;
   public proofVerificationProcess = [
-    'assertProofPurpose',
+    'assertProofValidity',
     'getTransactionId',
     'computeLocalHash',
     'fetchRemoteHash',
@@ -96,7 +97,8 @@ export class LDMerkleProof2019 extends LinkedDataProof {
     document = null,
     proof = null,
     options = {},
-    proofPurpose = 'assertionMethod'
+    proofPurpose = 'assertionMethod',
+    domain = []
   }: MerkleProof2019API) {
     super({ type: 'MerkleProof2019' });
 
@@ -108,6 +110,7 @@ export class LDMerkleProof2019 extends LinkedDataProof {
     this.verificationMethod = verificationMethod;
     this.document = document;
     this.proofPurpose = proofPurpose;
+    this.domain = Array.isArray(domain) ? domain : [domain];
     this.setProof(proof);
     this.setOptions(options);
     this.getChain();
@@ -236,32 +239,15 @@ export class LDMerkleProof2019 extends LinkedDataProof {
     }
   }
 
-  private async assertProofPurpose (): Promise<void> {
+  private async assertProofValidity (): Promise<void> {
     await this.executeStep(
-      'assertProofPurpose',
-      () => {
-        if (this.proof.proofPurpose) {
-          if (this.proof.proofPurpose !== this.proofPurpose) {
-            throw new VerifierError('assertProofPurpose',
-              getText('errors', 'assertProofPurposeVerifier')
-                // eslint-disable-next-line no-template-curly-in-string
-                .replace('${this.proofPurpose}', this.proofPurpose)
-                // eslint-disable-next-line no-template-curly-in-string
-                .replace('${this.proof.proofPurpose}', this.proof.proofPurpose)
-            );
-          }
-
-          if (this.issuer && !this.issuer[this.proofPurpose]?.includes(this.proof.verificationMethod)) {
-            throw new VerifierError('assertProofPurpose',
-              getText('errors', 'assertProofPurposeIssuerKey')
-                // eslint-disable-next-line no-template-curly-in-string
-                .replace('${this.proof.verificationMethod}', this.proof.verificationMethod)
-                // eslint-disable-next-line no-template-curly-in-string
-                .replace('${this.proofPurpose}', this.proofPurpose)
-            );
-          }
-        }
-      },
+      'assertProofValidity',
+      () => assertProofValidity({
+        expectedProofPurpose: this.proofPurpose,
+        expectedDomain: this.domain,
+        proof: this.proof,
+        issuer: this.issuer
+      }),
       this.type // do not remove here or it will break CVJS
     );
   }

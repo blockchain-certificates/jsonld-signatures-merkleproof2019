@@ -12,6 +12,7 @@ export interface VCProof {
   verificationMethod: string;
   chainedProofType?: string;
   previousProof?: VCProof;
+  domain?: string;
 }
 
 export interface DecodedProof {

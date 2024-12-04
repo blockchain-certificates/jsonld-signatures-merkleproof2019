@@ -1,3 +1,4 @@
+import assertProofValidity from './assertProofValidity';
 import computeLocalHash from './computeLocalHash';
 import ensureHashesEqual from './ensureHashesEqual';
 import ensureMerkleRootEqual from './ensureMerkleRootEqual';
@@ -7,6 +8,7 @@ import compareIssuingAddress from './compareIssuingAddress';
 import deriveIssuingAddressFromPublicKey from './deriveIssuingAddressFromPublicKey';
 
 export {
+  assertProofValidity,
   compareIssuingAddress,
   computeLocalHash,
   deriveIssuingAddressFromPublicKey,
