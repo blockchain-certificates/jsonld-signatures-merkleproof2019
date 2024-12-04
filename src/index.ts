@@ -60,7 +60,7 @@ export class LDMerkleProof2019 extends LinkedDataProof {
    *   using a context different from security-v2).
    * @param [document] {document} document used and signed by the MerkleProof2019 signature
    */
-  public domain: string | string[];
+  public domain: string[];
   public type: string = 'MerkleProof2019';
   public issuer: any = null; // TODO: define issuer type
   public verificationMethod: IDidDocumentPublicKey = null;
