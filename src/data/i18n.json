@@ -3,6 +3,7 @@
     "errors": {
       "assertProofValidityPurposeVerifier": "Invalid proof purpose. Expected ${expectedProofPurpose} but received ${proof.proofPurpose}",
       "assertProofValidityPurposeIssuerKey": "The verification method ${proof.verificationMethod} is not allowed for the proof purpose ${expectedProofPurpose}",
+      "assertProofValidityDomainVerifier": "The proof is not authorized for this domain",
       "ensureHashesEqual": "Computed hash does not match remote hash",
       "ensureMerkleRootEqual": "Merkle root does not match remote hash.",
       "ensureValidReceipt": "The receipt is malformed. There was a problem navigating the merkle tree in the receipt.",
@@ -21,6 +22,7 @@
     "errors": {
       "assertProofValidityPurposeVerifier": "Objectif de la signature invalide. Attendu: ${expectedProofPurpose} mais la signature a un objectif de ${proof.proofPurpose}",
       "assertProofValidityPurposeIssuerKey": "La méthode de vérification ${proof.verificationMethod} n'est pas autorisée pour l'objectif de verification: ${expectedProofPurpose}",
+      "assertProofValidityDomainVerifier": "La signature n'est pas autorisée pour ce domaine",
       "ensureHashesEqual": "Calcul du hash local différent du hash distant",
       "ensureMerkleRootEqual": "Le Merkle root ne correspond pas au hash distant",
       "ensureValidReceipt": "Erreur d'écriture du reçu. Un problème est survenu lors de la navigation de l'arbre Merkle du reçu.",
@@ -38,7 +40,8 @@
   "es": {
     "errors": {
       "assertProofValidityPurposeVerifier": "Objectivo de verificación invalido. Se esperaba ${expectedProofPurpose} pero recibió ${proof.proofPurpose}",
-      "assertProofValidityPurposeIssuerKey": "The verification method ${proof.verificationMethod} is not allowed for the proof purpose ${expectedProofPurpose}",
+      "assertProofValidityPurposeIssuerKey": "El método de verificación ${proof.verificationMethod} no está permitido para el objectivo de verificación ${expectedProofPurpose}",
+      "assertProofValidityDomainVerifier": "La prueba no está autorizada para este dominio",
       "ensureHashesEqual": "La cadena binaria calculada no corresponde con la cadena binaria remota",
       "ensureMerkleRootEqual": "La raíz Merkle no corresponde con la cadena binaria remota",
       "ensureValidReceipt": "El recibo está malformado. Hubo un problema navegando el árbol Merkle en el recibo",
@@ -57,6 +60,7 @@
     "errors": {
       "assertProofValidityPurposeVerifier": "Invalid proof purpose. Expected ${expectedProofPurpose} but received ${proof.proofPurpose}",
       "assertProofValidityPurposeIssuerKey": "The verification method ${proof.verificationMethod} is not allowed for the proof purpose ${expectedProofPurpose}",
+      "assertProofValidityDomainVerifier": "The proof is not authorized for this domain",
       "ensureHashesEqual": "Il-hash ikkalkulat ma jikkorrispondix mar-remote hash",
       "ensureMerkleRootEqual": "Merkle root ma taqbilx mar-remote hash",
       "ensureValidReceipt": "L-irċevuta hija malformata. Kien hemm problema fin-navigazzjoni tal-merkle tree fl-irċevuta",
@@ -75,6 +79,7 @@
     "errors": {
       "assertProofValidityPurposeVerifier": "Invalid proof purpose. Expected ${expectedProofPurpose} but received ${proof.proofPurpose}",
       "assertProofValidityPurposeIssuerKey": "The verification method ${proof.verificationMethod} is not allowed for the proof purpose ${expectedProofPurpose}",
+      "assertProofValidityDomainVerifier": "The proof is not authorized for this domain",
       "ensureHashesEqual": "L'hash calcolato non corrisponde all'hash remoto",
       "ensureMerkleRootEqual": "La radice di Merkle non corrisponde all'hash remoto.",
       "ensureValidReceipt": "La ricevuta è malformata. C'è stato un problema nella navigazione dell'albero di Merkle nella ricevuta.",
@@ -93,6 +98,7 @@
     "errors": {
       "assertProofValidityPurposeVerifier": "Invalid proof purpose. Expected ${expectedProofPurpose} but received ${proof.proofPurpose}",
       "assertProofValidityPurposeIssuerKey": "The verification method ${proof.verificationMethod} is not allowed for the proof purpose ${expectedProofPurpose}",
+      "assertProofValidityDomainVerifier": "The proof is not authorized for this domain",
       "ensureHashesEqual": "算出されたハッシュがリモートハッシュと一致しませんでした",
       "ensureMerkleRootEqual": "Merkle rootがリモートハッシュと一致しませんでした",
       "ensureValidReceipt": "レシートが異常です。レシート内のMerkle treeを辿る際に問題が発生しました。",

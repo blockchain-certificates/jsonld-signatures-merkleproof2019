@@ -244,6 +244,7 @@ export class LDMerkleProof2019 extends LinkedDataProof {
       'assertProofValidity',
       () => assertProofValidity({
         expectedProofPurpose: this.proofPurpose,
+        expectedDomain: this.domain,
         proof: this.proof,
         issuer: this.issuer
       }),

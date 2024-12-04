@@ -56,4 +56,26 @@ describe('given the document is signed following the DataIntegrityProof spec', f
       });
     });
   });
+
+  describe('given the domain property of the proof does not match the verifier\'s domain', function () {
+    it('should throw an error', async function () {
+      const instance = new LDMerkleProof2019({
+        document: fixture,
+        proof: {
+          ...fixture.proof,
+          domain: 'blockcerts.org'
+        },
+        proofPurpose: 'assertionMethod',
+        issuer: fixtureIssuerProfile,
+        domain: ['example.com', 'another-domain.com']
+      });
+
+      const result = await instance.verifyProof();
+      expect(result).toEqual({
+        verified: false,
+        verificationMethod: null,
+        error: 'The proof is not authorized for this domain'
+      });
+    });
+  });
 });

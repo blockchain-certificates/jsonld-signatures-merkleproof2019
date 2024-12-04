@@ -1,5 +1,6 @@
 import VerifierError from '../models/VerifierError';
 import getText from '../helpers/getText';
+import type { VCProof } from '../models/Proof';
 
 function assertProofPurposeValidity ({ expectedProofPurpose, proof, issuer }): void {
   if (proof.proofPurpose !== expectedProofPurpose) {
@@ -23,13 +24,37 @@ function assertProofPurposeValidity ({ expectedProofPurpose, proof, issuer }): v
   }
 }
 
+function assertProofDomain ({ expectedDomain, proof }): void {
+  if (!expectedDomain.includes(proof.domain)) {
+    throw new VerifierError('assertProofValidity',
+      getText('errors', 'assertProofValidityDomainVerifier')
+        // eslint-disable-next-line no-template-curly-in-string
+        .replace('${expectedDomain}', expectedDomain)
+        // eslint-disable-next-line no-template-curly-in-string
+        .replace('${proof.domain}', proof.domain)
+    );
+  }
+}
+
+interface AssertProofValidityAPI {
+  expectedProofPurpose: string;
+  expectedDomain: string[];
+  proof: VCProof;
+  issuer: any;
+}
+
 export default function assertProofValidity ({
   expectedProofPurpose,
+  expectedDomain,
   proof,
   issuer
-}): boolean {
+}: AssertProofValidityAPI): boolean {
   if (proof.proofPurpose) {
     assertProofPurposeValidity({ expectedProofPurpose, proof, issuer });
+  }
+
+  if (proof.domain) {
+    assertProofDomain({ expectedDomain, proof });
   }
 
   return true;
