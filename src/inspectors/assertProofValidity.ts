@@ -22,9 +22,14 @@ function assertProofPurposeValidity ({ expectedProofPurpose, proof, issuer }): v
         .replace('${expectedProofPurpose}', expectedProofPurpose)
     );
   }
+
+  if (expectedProofPurpose === 'authentication' && !proof.domain) {
+    // TODO: return actual warning
+    console.warn('No domain found in proof, but it is recommended for authentication purposes');
+  }
 }
 
-function assertProofDomain ({ expectedDomain, proof }): void {
+function assertProofDomain ({ expectedDomain, proof, expectedChallenge }): void {
   if (!expectedDomain.includes(proof.domain)) {
     throw new VerifierError('assertProofValidity',
       getText('errors', 'assertProofValidityDomainVerifier')
@@ -34,11 +39,22 @@ function assertProofDomain ({ expectedDomain, proof }): void {
         .replace('${proof.domain}', proof.domain)
     );
   }
+
+  if (proof.domain && !proof.challenge) {
+    // TODO: return actual warning
+    console.warn('No challenge found in proof, but it is recommended for domain verification');
+  }
+
+  if (proof.challenge && proof.challenge !== expectedChallenge) {
+    throw new VerifierError('assertProofValidity',
+      getText('errors', 'assertProofValidityInvalidChallenge'));
+  }
 }
 
 interface AssertProofValidityAPI {
   expectedProofPurpose: string;
   expectedDomain: string[];
+  expectedChallenge: string;
   proof: VCProof;
   issuer: any;
 }
@@ -46,6 +62,7 @@ interface AssertProofValidityAPI {
 export default function assertProofValidity ({
   expectedProofPurpose,
   expectedDomain,
+  expectedChallenge,
   proof,
   issuer
 }: AssertProofValidityAPI): boolean {
@@ -54,7 +71,7 @@ export default function assertProofValidity ({
   }
 
   if (proof.domain) {
-    assertProofDomain({ expectedDomain, proof });
+    assertProofDomain({ expectedDomain, proof, expectedChallenge });
   }
 
   return true;

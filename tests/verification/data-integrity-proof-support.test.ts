@@ -78,4 +78,28 @@ describe('given the document is signed following the DataIntegrityProof spec', f
       });
     });
   });
+
+  describe('given the challenge provided by the proof does not match the verifier\'s challenge', function () {
+    it('should throw an error', async function () {
+      const instance = new LDMerkleProof2019({
+        document: fixture,
+        proof: {
+          ...fixture.proof,
+          domain: 'blockcerts.org',
+          challenge: 'another-challenge'
+        },
+        proofPurpose: 'assertionMethod',
+        issuer: fixtureIssuerProfile,
+        domain: 'blockcerts.org',
+        challenge: 'challenge'
+      });
+
+      const result = await instance.verifyProof();
+      expect(result).toEqual({
+        verified: false,
+        verificationMethod: null,
+        error: 'The proof\'s challenge does not match the verifier\'s challenge'
+      });
+    });
+  });
 });
