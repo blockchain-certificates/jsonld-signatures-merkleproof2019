@@ -38,6 +38,7 @@ export interface MerkleProof2019API {
   // the purpose of proof that the verifier will be used for, defaults to assertionMethod
   proofPurpose?: string;
   domain?: string | string[];
+  challenge?: string;
 }
 
 export interface MerkleProof2019VerificationResult {
@@ -60,6 +61,7 @@ export class LDMerkleProof2019 extends LinkedDataProof {
    *   using a context different from security-v2).
    * @param [document] {document} document used and signed by the MerkleProof2019 signature
    */
+  public challenge: string;
   public domain: string[];
   public type: string = 'MerkleProof2019';
   public issuer: any = null; // TODO: define issuer type
@@ -98,7 +100,8 @@ export class LDMerkleProof2019 extends LinkedDataProof {
     proof = null,
     options = {},
     proofPurpose = 'assertionMethod',
-    domain = []
+    domain = [],
+    challenge = ''
   }: MerkleProof2019API) {
     super({ type: 'MerkleProof2019' });
 
@@ -111,6 +114,7 @@ export class LDMerkleProof2019 extends LinkedDataProof {
     this.document = document;
     this.proofPurpose = proofPurpose;
     this.domain = Array.isArray(domain) ? domain : [domain];
+    this.challenge = challenge;
     this.setProof(proof);
     this.setOptions(options);
     this.getChain();
@@ -245,6 +249,7 @@ export class LDMerkleProof2019 extends LinkedDataProof {
       () => assertProofValidity({
         expectedProofPurpose: this.proofPurpose,
         expectedDomain: this.domain,
+        expectedChallenge: this.challenge,
         proof: this.proof,
         issuer: this.issuer
       }),
