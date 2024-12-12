@@ -19,6 +19,26 @@ describe('given the document is signed following the DataIntegrityProof spec', f
     });
   });
 
+  describe('given the proofPurpose property of the proof is missing', function () {
+    it('should throw an error', async function () {
+      const proof = {
+        ...fixture.proof
+      };
+      delete proof.proofPurpose;
+      const instance = new LDMerkleProof2019({
+        document: fixture,
+        proof
+      });
+
+      const result = await instance.verifyProof();
+      expect(result).toEqual({
+        verified: false,
+        verificationMethod: null,
+        error: '`proofPurpose` property is missing from proof'
+      });
+    });
+  });
+
   describe('given the proofPurpose of the proof does not match the one of the verifier', function () {
     it('should throw an error', async function () {
       const instance = new LDMerkleProof2019({
@@ -99,6 +119,28 @@ describe('given the document is signed following the DataIntegrityProof spec', f
         verified: false,
         verificationMethod: null,
         error: 'The proof\'s challenge does not match the verifier\'s challenge'
+      });
+    });
+  });
+
+  describe('given the created property is missing', function () {
+    it('should throw an error', async function () {
+      const proof = {
+        ...fixture.proof
+      };
+      delete proof.created;
+      const instance = new LDMerkleProof2019({
+        document: fixture,
+        proof,
+        proofPurpose: 'assertionMethod',
+        issuer: fixtureIssuerProfile
+      });
+
+      const result = await instance.verifyProof();
+      expect(result).toEqual({
+        verified: false,
+        verificationMethod: null,
+        error: '`created` property is missing from proof'
       });
     });
   });
