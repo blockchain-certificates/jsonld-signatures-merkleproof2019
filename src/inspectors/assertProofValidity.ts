@@ -66,6 +66,14 @@ export default function assertProofValidity ({
   proof,
   issuer
 }: AssertProofValidityAPI): boolean {
+  if (!proof.proofPurpose) {
+    throw new VerifierError('assertProofValidity', getText('errors', 'assertProofValidityNoProofPurpose'));
+  }
+
+  if (!proof.created) {
+    throw new VerifierError('assertProofValidity', getText('errors', 'assertProofValidityNoCreated'));
+  }
+
   if (proof.proofPurpose) {
     assertProofPurposeValidity({ expectedProofPurpose, proof, issuer });
   }
