@@ -51,7 +51,7 @@
     "sinon": "^17.0.1",
     "tslib": "^2.6.2",
     "typescript": "^5.2.2",
-    "vitest": "^2.1.1"
+    "vitest": "^3.0.9"
   },
   "scripts": {
     "compile": "npm run clean:build && tsc -p tsconfig.json && tsc -p tsconfig.cjs.json && npm run dts:bundle",
