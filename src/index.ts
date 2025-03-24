@@ -16,7 +16,8 @@ import {
   compareIssuingAddress
 } from './inspectors';
 import isMockChain from './helpers/isMockChain';
-import type { IDidDocumentPublicKey } from '@decentralized-identity/did-common-typescript';
+import VerifierError from './models/VerifierError';
+import type IVerificationMethod from './models/VerificationMethod';
 
 const { LinkedDataProof } = jsigs.suites;
 
@@ -32,7 +33,7 @@ export interface VCDocument {
 export interface MerkleProof2019API {
   options?: MerkleProof2019Options;
   issuer?: any; // TODO: define issuer type
-  verificationMethod?: IDidDocumentPublicKey;
+  verificationMethod?: IVerificationMethod;
   document: VCDocument;
   proof?: VCProof;
   // the purpose of proof that the verifier will be used for, defaults to assertionMethod
@@ -44,7 +45,7 @@ export interface MerkleProof2019API {
 export interface MerkleProof2019VerificationResult {
   verified: boolean;
   error?: string;
-  verificationMethod: IDidDocumentPublicKey;
+  verificationMethod: IVerificationMethod;
 }
 
 export interface MerkleProof2019VerifyProofAPI {
@@ -65,7 +66,7 @@ export class LDMerkleProof2019 extends LinkedDataProof {
   public domain: string[];
   public type: string = 'MerkleProof2019';
   public issuer: any = null; // TODO: define issuer type
-  public verificationMethod: IDidDocumentPublicKey = null;
+  public verificationMethod: IVerificationMethod = null;
   public proof: VCProof = null;
   public proofValue: DecodedProof = null;
   public proofPurpose: string;
@@ -88,6 +89,7 @@ export class LDMerkleProof2019 extends LinkedDataProof {
 
   public identityVerificationProcess = [
     'deriveIssuingAddressFromPublicKey',
+    'ensureVerificationMethodValidity',
     'compareIssuingAddress'
   ];
 
@@ -218,7 +220,9 @@ export class LDMerkleProof2019 extends LinkedDataProof {
   }
 
   private adaptIdentityVerificationProcessToMocknet (): void {
-    this.identityVerificationProcess = [];
+    this.identityVerificationProcess = [
+      'ensureVerificationMethodValidity'
+    ];
   }
 
   private setOptions (options: MerkleProof2019Options): void {
@@ -319,6 +323,26 @@ export class LDMerkleProof2019 extends LinkedDataProof {
     this.derivedIssuingAddress = await this.executeStep(
       'deriveIssuingAddressFromPublicKey',
       async () => await deriveIssuingAddressFromPublicKey(this.verificationMethod, this.chain),
+      this.type
+    );
+  }
+
+  private async ensureVerificationMethodValidity (): Promise<void> {
+    await this.executeStep(
+      'ensureVerificationMethodValidity',
+      async (): Promise<void> => {
+        if (this.verificationMethod.expires) {
+          const expirationDate = new Date(this.verificationMethod.expires).getTime();
+          if (expirationDate < Date.now()) {
+            throw new VerifierError('ensureVerificationMethodValidity', 'The verification key has expired');
+          }
+        }
+
+        if (this.verificationMethod.revoked) {
+          // waiting on clarification https://github.com/w3c/cid/issues/152
+          throw new VerifierError('ensureVerificationMethodValidity', 'The verification key has been revoked');
+        }
+      },
       this.type
     );
   }

@@ -2,6 +2,7 @@ import { describe, it, expect } from 'vitest';
 import fixture from '../fixtures/mocknet-vc-v2-data-integrity-proof.json';
 import { LDMerkleProof2019 } from '../../src';
 import fixtureIssuerProfile from '../fixtures/issuer-blockcerts.json';
+import type IVerificationMethod from '../../src/models/VerificationMethod';
 
 describe('given the document is signed following the DataIntegrityProof spec', function () {
   describe('and is a valid MerkleProof2019 signature', function () {
@@ -141,6 +142,66 @@ describe('given the document is signed following the DataIntegrityProof spec', f
         verified: false,
         verificationMethod: null,
         error: '`created` property is missing from proof'
+      });
+    });
+  });
+
+  describe('given the specified verification method has expired', function () {
+    it('should throw an error', async function () {
+      const issuer = {
+        ...fixtureIssuerProfile
+      };
+
+      const issuerVerificationMethod: IVerificationMethod = issuer.verificationMethod
+        .find(vm => vm.id === fixture.proof.verificationMethod);
+      const verificationMethod = {
+        ...issuerVerificationMethod,
+        expires: '2023-04-05T18:45:30Z'
+      };
+
+      const instance = new LDMerkleProof2019({
+        document: fixture,
+        proof: fixture.proof,
+        proofPurpose: 'assertionMethod',
+        verificationMethod,
+        issuer
+      });
+
+      const result = await instance.verifyProof();
+      expect(result).toEqual({
+        verified: false,
+        verificationMethod,
+        error: 'Error: The verification key has expired'
+      });
+    });
+  });
+
+  describe('given the specified verification method has been revoked', function () {
+    it('should throw an error', async function () {
+      const issuer = {
+        ...fixtureIssuerProfile
+      };
+
+      const issuerVerificationMethod: IVerificationMethod = issuer.verificationMethod
+        .find(vm => vm.id === fixture.proof.verificationMethod);
+      const verificationMethod = {
+        ...issuerVerificationMethod,
+        revoked: '2023-04-05T18:45:30Z'
+      };
+
+      const instance = new LDMerkleProof2019({
+        document: fixture,
+        proof: fixture.proof,
+        proofPurpose: 'assertionMethod',
+        verificationMethod,
+        issuer
+      });
+
+      const result = await instance.verifyProof();
+      expect(result).toEqual({
+        verified: false,
+        verificationMethod,
+        error: 'Error: The verification key has been revoked'
       });
     });
   });
