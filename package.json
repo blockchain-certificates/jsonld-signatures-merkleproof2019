@@ -28,7 +28,7 @@
   "devDependencies": {
     "@decentralized-identity/did-common-typescript": "^0.1.19",
     "@digitalbazaar/vc": "^6.2.0",
-    "@rollup/plugin-commonjs": "^25.0.7",
+    "@rollup/plugin-commonjs": "^28.0.3",
     "@rollup/plugin-node-resolve": "^15.2.3",
     "@types/node": "^20.9.0",
     "@types/sinon": "^17.0.1",
