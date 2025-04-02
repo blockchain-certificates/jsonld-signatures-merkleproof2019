@@ -13,7 +13,6 @@ export function getUnmappedFields (normalized: string): string[] | null {
     .map(normalizedString => myRegexp.exec(normalizedString))
     .filter(match => match != null);
   if (matches.length > 0) {
-    // eslint-disable-next-line @typescript-eslint/require-array-sort-compare
     const unmappedFields = matches.map(match => match[1]).sort(); // only return name of unmapped key
     return Array.from(new Set(unmappedFields)); // dedup
   }
@@ -68,7 +67,7 @@ export default async function computeLocalHash (
     safe: false
   };
 
-  let normalizedDocument;
+  let normalizedDocument: string;
 
   try {
     normalizedDocument = await (jsonld as any).normalize(theDocument, normalizeArgs);

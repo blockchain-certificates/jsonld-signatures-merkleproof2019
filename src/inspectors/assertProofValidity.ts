@@ -2,13 +2,17 @@ import VerifierError from '../models/VerifierError';
 import getText from '../helpers/getText';
 import type { VCProof } from '../models/Proof';
 
-function assertProofPurposeValidity ({ expectedProofPurpose, proof, issuer }): void {
+interface AssertProofPurposeValidityAPI {
+  expectedProofPurpose: string;
+  proof: VCProof;
+  issuer: any; // TODO: use better defined, from CVJS potentially (split to avoid circular dependency)
+}
+
+function assertProofPurposeValidity ({ expectedProofPurpose, proof, issuer }: AssertProofPurposeValidityAPI): void {
   if (proof.proofPurpose !== expectedProofPurpose) {
     throw new VerifierError('assertProofValidity',
       getText('errors', 'assertProofValidityPurposeVerifier')
-        // eslint-disable-next-line no-template-curly-in-string
         .replace('${expectedProofPurpose}', expectedProofPurpose)
-        // eslint-disable-next-line no-template-curly-in-string
         .replace('${proof.proofPurpose}', proof.proofPurpose)
     );
   }
@@ -16,9 +20,7 @@ function assertProofPurposeValidity ({ expectedProofPurpose, proof, issuer }): v
   if (issuer && !issuer[expectedProofPurpose]?.includes(proof.verificationMethod)) {
     throw new VerifierError('assertProofValidity',
       getText('errors', 'assertProofValidityPurposeIssuerKey')
-        // eslint-disable-next-line no-template-curly-in-string
         .replace('${proof.verificationMethod}', proof.verificationMethod)
-        // eslint-disable-next-line no-template-curly-in-string
         .replace('${expectedProofPurpose}', expectedProofPurpose)
     );
   }
@@ -29,13 +31,17 @@ function assertProofPurposeValidity ({ expectedProofPurpose, proof, issuer }): v
   }
 }
 
-function assertProofDomain ({ expectedDomain, proof, expectedChallenge }): void {
+interface AssertProofDomainAPI {
+  expectedDomain: string[];
+  proof: VCProof;
+  expectedChallenge: string;
+}
+
+function assertProofDomain ({ expectedDomain, proof, expectedChallenge }: AssertProofDomainAPI): void {
   if (!expectedDomain.includes(proof.domain)) {
     throw new VerifierError('assertProofValidity',
       getText('errors', 'assertProofValidityDomainVerifier')
-        // eslint-disable-next-line no-template-curly-in-string
-        .replace('${expectedDomain}', expectedDomain)
-        // eslint-disable-next-line no-template-curly-in-string
+        .replace('${expectedDomain}', expectedDomain.join(', '))
         .replace('${proof.domain}', proof.domain)
     );
   }

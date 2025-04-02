@@ -13,6 +13,7 @@ export interface VCProof {
   chainedProofType?: string;
   previousProof?: VCProof;
   domain?: string;
+  challenge?: string;
 }
 
 export interface DecodedProof {

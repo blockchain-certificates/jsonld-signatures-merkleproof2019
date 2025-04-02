@@ -1,18 +1,18 @@
 /* eslint no-useless-escape: 0 prefer-spread: 0 */ // TODO: at some point fix this
 
-function noOffset (s): number {
-  let day = s.slice(0, -5).split(/\D/).map(function (itm) {
+function noOffset (s: string): number {
+  const day: number[] = s.slice(0, -5).split(/\D/).map(function (itm: string) {
     return parseInt(itm, 10) || 0;
   });
   day[1] -= 1;
-  day = new Date(Date.UTC.apply(Date, day));
+  const date = new Date(Date.UTC.apply(Date, day));
   const offsetString = s.slice(-5);
   let offset = parseInt(offsetString, 10) / 100;
   if (offsetString.slice(0, 1) === '+') {
     offset *= -1;
   }
-  day.setHours(day.getHours() + offset);
-  return day.getTime();
+  date.setHours(date.getHours() + offset);
+  return date.getTime();
 }
 
 function dateFromRegex (s: string): Date {
@@ -66,7 +66,6 @@ export function dateToUnixTimestamp (date: Date | string): any /* Date | string 
   if (date === '') {
     return '';
   }
-  // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
   return dateFromIso(`${date}`);
 }
 

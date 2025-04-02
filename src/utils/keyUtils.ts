@@ -82,11 +82,11 @@ export const getKid = (
 
 /** convert compressed hex encoded private key to jwk */
 export const privateKeyJwkFromPrivateKeyHex = (privateKeyHex: string): ISecp256k1PrivateKeyJwk => {
-  const jwk = {
+  const jwk: ISecp256k1PrivateKeyJwk = {
     ...keyto.from(privateKeyHex, 'blk').toJwk('private'),
     crv: 'secp256k1'
   };
-  const kid = getKid(jwk);
+  const kid: string = getKid(jwk);
   return {
     ...jwk,
     kid
@@ -95,7 +95,7 @@ export const privateKeyJwkFromPrivateKeyHex = (privateKeyHex: string): ISecp256k
 
 /** convert compressed hex encoded public key to jwk */
 export const publicKeyJwkFromPublicKeyHex = (publicKeyHex: string): ISecp256k1PublicKeyJwk => {
-  let key = publicKeyHex;
+  let key: string = publicKeyHex;
   if (publicKeyHex.length === compressedHexEncodedPublicKeyLength) {
     const keyBin = secp256k1.publicKeyConvert(
       buffer.from(publicKeyHex, 'hex'),
@@ -103,11 +103,11 @@ export const publicKeyJwkFromPublicKeyHex = (publicKeyHex: string): ISecp256k1Pu
     );
     key = buffer.from(keyBin).toString('hex');
   }
-  const jwk = {
+  const jwk: ISecp256k1PublicKeyJwk = {
     ...keyto.from(key, 'blk').toJwk('public'),
     crv: 'secp256k1'
   };
-  const kid = getKid(jwk);
+  const kid: string = getKid(jwk);
 
   return {
     ...jwk,
@@ -117,12 +117,12 @@ export const publicKeyJwkFromPublicKeyHex = (publicKeyHex: string): ISecp256k1Pu
 
 /** convert pem encoded private key to jwk */
 export const privateKeyJwkFromPrivateKeyPem = (privateKeyPem: string): ISecp256k1PrivateKeyJwk => {
-  const jwk = {
+  const jwk: ISecp256k1PrivateKeyJwk = {
     ...keyto.from(privateKeyPem, 'pem').toJwk('private'),
     crv: 'secp256k1'
   };
   // console.log(jwk);
-  const kid = getKid(jwk);
+  const kid: string = getKid(jwk);
 
   return {
     ...jwk,
@@ -132,7 +132,7 @@ export const privateKeyJwkFromPrivateKeyPem = (privateKeyPem: string): ISecp256k
 
 /** convert pem encoded public key to jwk */
 export const publicKeyJwkFromPublicKeyPem = (publicKeyPem: string): ISecp256k1PublicKeyJwk => {
-  const jwk = {
+  const jwk: ISecp256k1PublicKeyJwk = {
     ...keyto.from(publicKeyPem, 'pem').toJwk('public'),
     crv: 'secp256k1'
   };
@@ -158,7 +158,7 @@ export const privateKeyHexFromJwk = (jwk: ISecp256k1PrivateKeyJwk): string =>
 
 /** convert jwk to hex encoded public key */
 export const publicKeyHexFromJwk = (jwk: ISecp256k1PublicKeyJwk): string => {
-  const uncompressedPublicKey = keyto
+  const uncompressedPublicKey: string = keyto
     .from(
       {
         ...jwk,
@@ -168,7 +168,7 @@ export const publicKeyHexFromJwk = (jwk: ISecp256k1PublicKeyJwk): string => {
     )
     .toString('blk', 'public');
 
-  const compressed = secp256k1.publicKeyConvert(
+  const compressed: string = secp256k1.publicKeyConvert(
     buffer.from(uncompressedPublicKey, 'hex'),
     true
   );
@@ -177,7 +177,7 @@ export const publicKeyHexFromJwk = (jwk: ISecp256k1PublicKeyJwk): string => {
 
 /** convert jwk to binary encoded private key */
 export const privateKeyUInt8ArrayFromJwk = (jwk: ISecp256k1PrivateKeyJwk): Buffer => {
-  const privateKeyHex = privateKeyHexFromJwk(jwk);
+  const privateKeyHex: string = privateKeyHexFromJwk(jwk);
   let asBuffer = buffer.from(privateKeyHex, 'hex');
   let padding = 32 - asBuffer.length;
   while (padding > 0) {
@@ -189,7 +189,7 @@ export const privateKeyUInt8ArrayFromJwk = (jwk: ISecp256k1PrivateKeyJwk): Buffe
 
 /** convert jwk to binary encoded public key */
 export const publicKeyUInt8ArrayFromJwk = (jwk: ISecp256k1PublicKeyJwk): Buffer => {
-  const publicKeyHex = publicKeyHexFromJwk(jwk);
+  const publicKeyHex: string = publicKeyHexFromJwk(jwk);
   let asBuffer = buffer.from(publicKeyHex, 'hex');
   let padding = 32 - asBuffer.length;
   while (padding > 0) {
@@ -200,7 +200,7 @@ export const publicKeyUInt8ArrayFromJwk = (jwk: ISecp256k1PublicKeyJwk): Buffer 
 };
 
 export const publicKeyUInt8ArrayFromMultibase = async (publicKeyMultibase): Promise<Buffer> => {
-  const pubKeyJwk = await multikey.toJwk({ keyPair: publicKeyMultibase });
+  const pubKeyJwk: ISecp256k1PublicKeyJwk = await multikey.toJwk({ keyPair: publicKeyMultibase });
   return publicKeyUInt8ArrayFromJwk(pubKeyJwk);
 };
 
@@ -234,13 +234,11 @@ export const publicKeyHexFromPrivateKeyHex = (privateKeyHex: string): string => 
 };
 
 export const publicKeyJwkFromPublicKeyBase58 = (publicKeybase58: string): ISecp256k1PublicKeyJwk => {
-  return publicKeyJwkFromPublicKeyHex(
-    bs58.decode(publicKeybase58).toString('hex')
-  );
+  const decodedPublicKeyAsHex: string = bs58.decode(publicKeybase58).toString('hex');
+  return publicKeyJwkFromPublicKeyHex(decodedPublicKeyAsHex);
 };
 
 export const privateKeyJwkFromPrivateKeyBase58 = (privateKeyBase58: string): ISecp256k1PrivateKeyJwk => {
-  return privateKeyJwkFromPrivateKeyHex(
-    bs58.decode(privateKeyBase58).toString('hex')
-  );
+  const decodedPrivateKeyAsHex: string = bs58.decode(privateKeyBase58).toString('hex');
+  return privateKeyJwkFromPrivateKeyHex(decodedPrivateKeyAsHex);
 };

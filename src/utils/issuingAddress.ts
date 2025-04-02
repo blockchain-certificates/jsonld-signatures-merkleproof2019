@@ -10,14 +10,13 @@ export function computeBitcoinAddressFromPublicKey (publicKey: Buffer, chain: IB
 
 export function computeEthereumAddressFromPublicKey (publicKey: Buffer, chain: IBlockchainObject): string {
   const publicKeyString = publicKey.toString('hex');
-  // eslint-disable-next-line new-cap
   const ellipticCurve = new ec('secp256k1');
 
   // Decode public key
   const key = ellipticCurve.keyFromPublic(publicKeyString, 'hex');
 
   // Convert to uncompressed format
-  const publicKeyUncompressed = key.getPublic().encode('hex').slice(2);
+  const publicKeyUncompressed: string = key.getPublic().encode('hex').slice(2);
 
   const buffer = typeof Buffer === 'undefined' ? BufferPolyfill : Buffer;
   // Now apply keccak
