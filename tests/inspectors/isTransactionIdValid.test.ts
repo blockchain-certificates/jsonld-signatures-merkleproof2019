@@ -17,7 +17,6 @@ describe('Inspectors test suite', function () {
       it('throw an error', function () {
         const transactionIdFixture = 1 as any;
         expect(() => {
-          // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
           isTransactionIdValid(transactionIdFixture);
         }).toThrow(errorMessage);
       });

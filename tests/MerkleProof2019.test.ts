@@ -11,7 +11,6 @@ describe('MerkleProof2019 test suite', function () {
   describe('given a document is not passed', function () {
     it('should throw', function () {
       expect(() => {
-        // eslint-disable-next-line no-new,@typescript-eslint/no-unsafe-argument
         new LDMerkleProof2019({} as any);
       }).toThrow('A document signed by MerkleProof2019 is required for the verification process.');
     });
@@ -22,7 +21,6 @@ describe('MerkleProof2019 test suite', function () {
       const unsignedDocument = JSON.parse(JSON.stringify(blockcertsV3Fixture));
       delete unsignedDocument.proof;
       expect(() => {
-        // eslint-disable-next-line no-new
         new LDMerkleProof2019({ document: unsignedDocument });
       }).toThrow('The passed document is not signed.');
     });

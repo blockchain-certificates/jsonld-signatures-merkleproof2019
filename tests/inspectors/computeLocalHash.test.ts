@@ -17,7 +17,6 @@ describe('computeLocalHash test suite', function () {
   describe('given it is provided with a documentLoader', function () {
     it('should call the documentLoader', async function () {
       const stubLoader = sinon.stub().resolves(null);
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
       await computeLocalHash(blockcertsV3Fixture, null, stubLoader);
       expect(stubLoader.callCount > 0).toBe(true);
     });

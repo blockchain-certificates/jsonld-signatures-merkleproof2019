@@ -12,9 +12,7 @@ function assertProofPurposeValidity ({ expectedProofPurpose, proof, issuer }: As
   if (proof.proofPurpose !== expectedProofPurpose) {
     throw new VerifierError('assertProofValidity',
       getText('errors', 'assertProofValidityPurposeVerifier')
-        // eslint-disable-next-line no-template-curly-in-string
         .replace('${expectedProofPurpose}', expectedProofPurpose)
-        // eslint-disable-next-line no-template-curly-in-string
         .replace('${proof.proofPurpose}', proof.proofPurpose)
     );
   }
@@ -22,9 +20,7 @@ function assertProofPurposeValidity ({ expectedProofPurpose, proof, issuer }: As
   if (issuer && !issuer[expectedProofPurpose]?.includes(proof.verificationMethod)) {
     throw new VerifierError('assertProofValidity',
       getText('errors', 'assertProofValidityPurposeIssuerKey')
-        // eslint-disable-next-line no-template-curly-in-string
         .replace('${proof.verificationMethod}', proof.verificationMethod)
-        // eslint-disable-next-line no-template-curly-in-string
         .replace('${expectedProofPurpose}', expectedProofPurpose)
     );
   }
@@ -45,9 +41,7 @@ function assertProofDomain ({ expectedDomain, proof, expectedChallenge }: Assert
   if (!expectedDomain.includes(proof.domain)) {
     throw new VerifierError('assertProofValidity',
       getText('errors', 'assertProofValidityDomainVerifier')
-        // eslint-disable-next-line no-template-curly-in-string
         .replace('${expectedDomain}', expectedDomain)
-        // eslint-disable-next-line no-template-curly-in-string
         .replace('${proof.domain}', proof.domain)
     );
   }

@@ -11,7 +11,6 @@ export default function ensureValidReceipt (receipt: DecodedProof): void {
   try {
     const proof = receipt.path;
     if (proof && proofHash) {
-      // eslint-disable-next-line @typescript-eslint/no-for-in-array
       for (const index in proof) {
         const node: PathDefinition = proof[index];
         let appendedBuffer;

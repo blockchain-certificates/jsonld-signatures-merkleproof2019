@@ -10,7 +10,6 @@ export function computeBitcoinAddressFromPublicKey (publicKey: Buffer, chain: IB
 
 export function computeEthereumAddressFromPublicKey (publicKey: Buffer, chain: IBlockchainObject): string {
   const publicKeyString = publicKey.toString('hex');
-  // eslint-disable-next-line new-cap
   const ellipticCurve = new ec('secp256k1');
 
   // Decode public key

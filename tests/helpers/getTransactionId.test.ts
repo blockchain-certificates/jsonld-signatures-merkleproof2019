@@ -27,7 +27,6 @@ describe('getTransactionId test suite', function () {
               target: 'invalidData'
             }
           };
-          // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
           getTransactionId(invalidProof as any);
         }).toThrow('Could not retrieve transaction id as was provided an unexpected format');
       });
@@ -39,7 +38,6 @@ describe('getTransactionId test suite', function () {
           const invalidProof = {
             anchors: [{ target: 'invalidData' }]
           };
-          // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
           getTransactionId(invalidProof as any);
         }).toThrow('Could not retrieve transaction id as was provided an unexpected format');
       });
