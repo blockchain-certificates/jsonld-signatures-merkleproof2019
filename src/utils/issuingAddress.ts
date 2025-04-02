@@ -17,7 +17,7 @@ export function computeEthereumAddressFromPublicKey (publicKey: Buffer, chain: I
   const key = ellipticCurve.keyFromPublic(publicKeyString, 'hex');
 
   // Convert to uncompressed format
-  const publicKeyUncompressed = key.getPublic().encode('hex').slice(2);
+  const publicKeyUncompressed: string = key.getPublic().encode('hex').slice(2);
 
   const buffer = typeof Buffer === 'undefined' ? BufferPolyfill : Buffer;
   // Now apply keccak

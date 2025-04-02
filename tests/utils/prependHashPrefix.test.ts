@@ -7,6 +7,7 @@ describe('explorers utils cleanupRemoteHash test suite', function () {
       it('should return the remote hash', function () {
         const remoteHashFixture = '6a20x1234567890';
         const prefixes = [];
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
         expect(prependHashPrefix(remoteHashFixture, prefixes)).toBe(remoteHashFixture);
       });
     });

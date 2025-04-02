@@ -4,6 +4,7 @@ import { capitalize, startsWith } from '../../src/utils/string';
 describe('startsWith method', function () {
   describe('when given a invalid stringContent', function () {
     it('should return false', function () {
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
       const result = startsWith(100 as any, 'foo');
       expect(result).toBe(false);
     });

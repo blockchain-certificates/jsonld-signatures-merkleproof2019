@@ -68,7 +68,7 @@ export default async function computeLocalHash (
     safe: false
   };
 
-  let normalizedDocument;
+  let normalizedDocument: string;
 
   try {
     normalizedDocument = await (jsonld as any).normalize(theDocument, normalizeArgs);

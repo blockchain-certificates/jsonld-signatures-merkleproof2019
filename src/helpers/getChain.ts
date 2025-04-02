@@ -3,7 +3,7 @@ import { capitalize } from '../utils/string';
 import { BLOCKCHAINS, type IBlockchainObject } from '@blockcerts/explorer-lookup';
 
 // merkleRoot2019: see https://w3c-dvcg.github.io/lds-merkle-proof-2019/#blockchain-keymap
-function getMerkleRoot2019Chain (anchor): IBlockchainObject {
+function getMerkleRoot2019Chain (anchor: string): IBlockchainObject {
   const dataArray = anchor.split(':');
 
   let mainChain;
@@ -25,7 +25,7 @@ function getMerkleRoot2019Chain (anchor): IBlockchainObject {
   return getChainObject(chainCodeSignatureValue);
 }
 
-function getChainObject (chainCodeProofValue): IBlockchainObject {
+function getChainObject (chainCodeProofValue: string): IBlockchainObject {
   const chainObject: IBlockchainObject = Object.keys(BLOCKCHAINS)
     .map(key => BLOCKCHAINS[key])
     .find((entry: IBlockchainObject) => entry.signatureValue === chainCodeProofValue);
