@@ -32,7 +32,7 @@ function assertProofPurposeValidity ({ expectedProofPurpose, proof, issuer }: As
 }
 
 interface AssertProofDomainAPI {
-  expectedDomain: string;
+  expectedDomain: string[];
   proof: VCProof;
   expectedChallenge: string;
 }
@@ -41,7 +41,7 @@ function assertProofDomain ({ expectedDomain, proof, expectedChallenge }: Assert
   if (!expectedDomain.includes(proof.domain)) {
     throw new VerifierError('assertProofValidity',
       getText('errors', 'assertProofValidityDomainVerifier')
-        .replace('${expectedDomain}', expectedDomain)
+        .replace('${expectedDomain}', expectedDomain.join(', '))
         .replace('${proof.domain}', proof.domain)
     );
   }
