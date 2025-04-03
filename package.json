@@ -16,7 +16,7 @@
     "bitcoinjs-lib": "^6.0.2",
     "bs58": "^6.0.0",
     "elliptic": "^6.5.7",
-    "js-sha3": "^0.8.0",
+    "js-sha3": "^0.9.3",
     "jsonld": "^8.3.2",
     "jsonld-signatures": "^11.2.1",
     "lodash.clonedeep": "^4.5.0",
