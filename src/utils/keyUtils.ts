@@ -216,13 +216,13 @@ export const privateKeyBase58FromPrivateKeyHex = (privateKeyHex: string): string
 
 export const privateKeyUInt8ArrayFromPrivateKeyBase58 = (
   privateKeyBase58: string
-): Buffer => {
+): Uint8Array<ArrayBufferLike> => {
   return bs58.decode(privateKeyBase58);
 };
 
 export const publicKeyUInt8ArrayFromPublicKeyBase58 = (
   publicKeyBase58: string
-): Buffer => {
+): Uint8Array<ArrayBufferLike> => {
   return bs58.decode(publicKeyBase58);
 };
 
@@ -234,11 +234,11 @@ export const publicKeyHexFromPrivateKeyHex = (privateKeyHex: string): string => 
 };
 
 export const publicKeyJwkFromPublicKeyBase58 = (publicKeybase58: string): ISecp256k1PublicKeyJwk => {
-  const decodedPublicKeyAsHex: string = bs58.decode(publicKeybase58).toString('hex');
+  const decodedPublicKeyAsHex: string = bs58.decode(publicKeybase58).toString();
   return publicKeyJwkFromPublicKeyHex(decodedPublicKeyAsHex);
 };
 
 export const privateKeyJwkFromPrivateKeyBase58 = (privateKeyBase58: string): ISecp256k1PrivateKeyJwk => {
-  const decodedPrivateKeyAsHex: string = bs58.decode(privateKeyBase58).toString('hex');
+  const decodedPrivateKeyAsHex: string = bs58.decode(privateKeyBase58).toString();
   return privateKeyJwkFromPrivateKeyHex(decodedPrivateKeyAsHex);
 };
