@@ -27,7 +27,7 @@
     "@decentralized-identity/did-common-typescript": "^0.1.19",
     "@digitalbazaar/vc": "^6.2.0",
     "@eslint/js": "^9.23.0",
-    "@types/node": "^20.9.0",
+    "@types/node": "^22.14.0",
     "@types/sinon": "^17.0.1",
     "dts-bundle-generator": "^9.5.1",
     "eslint": "^9.23.0",
