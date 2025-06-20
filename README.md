@@ -8,8 +8,10 @@ package locally as MerkleProof2019 is not part of the current npm distribution. 
 
 ## Usage
 
-This package is currently designed to work with [vc.js](https://github.com/digitalbazaar/vc-js) in order to 
+This package is works with [vc.js](https://github.com/digitalbazaar/vc-js) in order to issue and 
 verify MerkleProof2019 signed documents.
+It is also used in [cert-verifier-js](https://github.com/blockchain-certificates/cert-verifier-js) 
+to verify MerkleProof2019 signed documents within the Blockcerts ecosystem.
   
 You will need to wrap the certificate with the Signature Suite:
 
@@ -22,6 +24,20 @@ const verificationSuite = new LDMerkleProof2019({document: myBlockcertsV3Definit
 ```
 
 In the case of vc.js, you would then pass this suite to the `verify` method, through the `suite` parameter.
+
+## Issue
+To issue a MerkleProof2019 signed document, you can call `vcjs.issue` with an instance of this library as
+the `suite` parameter.
+
+When instantiating the suite, you need to specify the `issuerEndpoint` as part of the `options` parameter.
+
+It is expected that the `issuerEndpoint` is a URL that points to the issuing service, which will be used to create the Merkle proof.
+
+You may use [cert-issuer](https://github.com/blockchain-certificates/cert-verifier-js) as a server to satisfy this requirement, 
+or you can implement your own issuing service.
+
+For convenience, we provide a VC-API issuing service: [cert-issuer-vc-api](https://github.com/blockchain-certificates/cert-issuer-vc-api).
+
 
 ## Under the hood
 The verification principle of MerkleProof2019 is to compare the distant hash of the document 

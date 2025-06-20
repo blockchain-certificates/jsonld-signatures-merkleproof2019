@@ -24,6 +24,7 @@ const { LinkedDataProof } = jsigs.suites;
 export interface MerkleProof2019Options {
   explorerAPIs?: ExplorerAPI[];
   executeStepMethod?: (step: string, action: () => any, verificationSuite?: string, type?: string) => Promise<any>;
+  issuerEndpoint?: string; // server endpoint used to sign credentials
 }
 
 export interface VCDocument {
@@ -34,7 +35,7 @@ export interface MerkleProof2019API {
   options?: MerkleProof2019Options;
   issuer?: any; // TODO: define issuer type
   verificationMethod?: IVerificationMethod;
-  document: VCDocument;
+  document?: VCDocument;
   proof?: VCProof;
   // the purpose of proof that the verifier will be used for, defaults to assertionMethod
   proofPurpose?: string;
@@ -66,6 +67,7 @@ export class LDMerkleProof2019 extends LinkedDataProof {
   public domain: string[];
   public type: string = 'MerkleProof2019';
   public issuer: any = null; // TODO: define issuer type
+  public issuerEndpoint: string = '';
   public verificationMethod: IVerificationMethod = null;
   public proof: VCProof = null;
   public proofValue: DecodedProof = null;
@@ -168,6 +170,28 @@ export class LDMerkleProof2019 extends LinkedDataProof {
     };
   }
 
+  async createProof({ document, purpose }) {
+    if (!this.issuerEndpoint) {
+      throw new Error('No issuer endpoint provided. ' +
+        'Please set the issuerEndpoint option when instantiating the suite.');
+    }
+    const response = await fetch(
+      this.issuerEndpoint,
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          credential: document
+        })
+      }).then(response => response.json()) as { verifiableCredential: VCDocument & { proof: VCProof } };
+
+    return response.verifiableCredential.proof;
+  }
+
+  ensureSuiteContext (): void {}
+
   async verifyIdentity (): Promise<void> {
     if (this.verificationMethod != null) {
       try {
@@ -230,6 +254,8 @@ export class LDMerkleProof2019 extends LinkedDataProof {
     if (options.executeStepMethod && typeof options.executeStepMethod === 'function') {
       this.executeStep = options.executeStepMethod;
     }
+
+    this.issuerEndpoint = options.issuerEndpoint ?? '';
   }
 
   private async executeStep (step: string, action, verificationSuite = ''): Promise<any> {

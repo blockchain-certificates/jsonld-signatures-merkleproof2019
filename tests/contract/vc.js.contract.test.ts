@@ -24,6 +24,29 @@ function generateDocumentLoader (): any {
 
 describe('Contract test suite', function () {
   describe('vc.js compatibility', function () {
+    it('should issue a MerkleProof2019 signed document', async function () {
+      const candidateDocument = {
+        ...blockcertsDocument
+      }
+      delete candidateDocument.proof;
+      const suite = new LDMerkleProof2019({
+        document: blockcertsDocument,
+        verificationMethod: didDocument.verificationMethod[0],
+        options: {
+          issuerEndpoint: 'http://localhost:3002/credentials/issue'
+        }
+      });
+
+      const document = await vcjs.issue({
+        credential: candidateDocument,
+        suite
+      });
+
+      expect(document.proof).toBeDefined();
+      expect(document.proof.type).toBe('DataIntegrityProof');
+      expect(document.proof.cryptosuite).toBe('merkle-proof-2019');
+    });
+
     it('should verify a MerkleProof2019 signed document', async function () {
       const suite = [new LDMerkleProof2019({
         document: blockcertsDocument,
