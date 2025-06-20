@@ -34,7 +34,7 @@ export interface MerkleProof2019API {
   options?: MerkleProof2019Options;
   issuer?: any; // TODO: define issuer type
   verificationMethod?: IVerificationMethod;
-  document: VCDocument;
+  document?: VCDocument;
   proof?: VCProof;
   // the purpose of proof that the verifier will be used for, defaults to assertionMethod
   proofPurpose?: string;
@@ -167,6 +167,24 @@ export class LDMerkleProof2019 extends LinkedDataProof {
       error
     };
   }
+
+  async createProof({ document, purpose }) {
+    const response = await fetch(
+      'http://localhost:5000/api/v1/credentials/issue/ethereum/sepolia',
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          credential: document
+        })
+      }).then(response => response.json()) as { verifiableCredential: VCDocument & { proof: VCProof } };
+
+    return response.verifiableCredential.proof;
+  }
+
+  ensureSuiteContext (): void {}
 
   async verifyIdentity (): Promise<void> {
     if (this.verificationMethod != null) {
