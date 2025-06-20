@@ -31,7 +31,10 @@ describe('Contract test suite', function () {
       delete candidateDocument.proof;
       const suite = new LDMerkleProof2019({
         document: blockcertsDocument,
-        verificationMethod: didDocument.verificationMethod[0]
+        verificationMethod: didDocument.verificationMethod[0],
+        options: {
+          issuerEndpoint: 'http://localhost:5000/api/v1/credentials/issue/ethereum/sepolia'
+        }
       });
 
       const document = await vcjs.issue({
