@@ -33,7 +33,7 @@ describe('Contract test suite', function () {
         document: blockcertsDocument,
         verificationMethod: didDocument.verificationMethod[0],
         options: {
-          issuerEndpoint: 'http://localhost:5000/api/v1/credentials/issue/ethereum/sepolia'
+          issuerEndpoint: 'http://localhost:3002/credentials/issue'
         }
       });
 

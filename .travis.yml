@@ -4,6 +4,7 @@ branches:
   only:
     - master
 before_script:
+  - npm run start:mock-server &
   - npm run test
   - npm run lint
 script:
