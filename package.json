@@ -55,7 +55,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/blockchain-certificates/jsonld-signatures-merkle-proof-2019.git"
+    "url": "git+https://github.com/blockchain-certificates/jsonld-signatures-merkleproof2019.git"
   },
   "keywords": [
     "verifiable",
@@ -69,7 +69,7 @@
   "author": "Blockcerts",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/blockchain-certificates/jsonld-signatures-merkle-proof-2019/issues"
+    "url": "https://github.com/blockchain-certificates/jsonld-signatures-merkleproof2019/issues"
   },
-  "homepage": "https://github.com/blockchain-certificates/jsonld-signatures-merkle-proof-2019#readme"
+  "homepage": "https://github.com/blockchain-certificates/jsonld-signatures-merkleproof2019#readme"
 }
