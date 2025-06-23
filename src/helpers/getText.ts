@@ -1,5 +1,5 @@
 import currentLocale from '../constants/currentLocale.js';
-import i18n from '../data/i18n.json';
+import i18n from '../data/i18n.json' with { type: 'json' };
 
 export default function getText (group: string, item: string): string { // TODO: use enum for parameters
   if (!group || !item) {
