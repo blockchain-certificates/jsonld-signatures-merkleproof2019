@@ -1,10 +1,9 @@
 import { Decoder } from '@vaultie/lds-merkle-proof-2019';
 import jsigs from 'jsonld-signatures';
 import { lookForTx, type ExplorerAPI, type TransactionData, type IBlockchainObject } from '@blockcerts/explorer-lookup';
-import { type DecodedProof, type VCProof } from './models/Proof';
-import getTransactionId from './helpers/getTransactionId';
-import getChain from './helpers/getChain';
-import { removeEntry } from './utils/array';
+import getTransactionId from './helpers/getTransactionId.js';
+import getChain from './helpers/getChain.js';
+import { removeEntry } from './utils/array.js';
 import {
   assertProofValidity,
   isTransactionIdValid,
@@ -14,10 +13,11 @@ import {
   ensureValidReceipt,
   deriveIssuingAddressFromPublicKey,
   compareIssuingAddress
-} from './inspectors';
-import isMockChain from './helpers/isMockChain';
-import VerifierError from './models/VerifierError';
+} from './inspectors/index.js';
+import isMockChain from './helpers/isMockChain.js';
+import VerifierError from './models/VerifierError.js';
 import type IVerificationMethod from './models/VerificationMethod';
+import { type DecodedProof, type VCProof } from './models/Proof';
 
 const { LinkedDataProof } = jsigs.suites;
 

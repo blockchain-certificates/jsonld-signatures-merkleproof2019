@@ -1,10 +1,10 @@
 import jsonld from 'jsonld';
 import sha256 from 'sha256';
-import preloadedContexts from '../constants/contexts/preloadedContexts';
-import { toUTF8Data } from '../utils/data';
-import { isObject } from '../utils/object';
-import VerifierError from '../models/VerifierError';
-import getText from '../helpers/getText';
+import preloadedContexts from '../constants/contexts/preloadedContexts.js';
+import { toUTF8Data } from '../utils/data.js';
+import { isObject } from '../utils/object.js';
+import VerifierError from '../models/VerifierError.js';
+import getText from '../helpers/getText.js';
 
 export function getUnmappedFields (normalized: string): string[] | null {
   const normalizedArray = normalized.split('\n');
