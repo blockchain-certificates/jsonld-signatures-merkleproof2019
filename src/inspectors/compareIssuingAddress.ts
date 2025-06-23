@@ -1,5 +1,5 @@
-import getText from '../helpers/getText';
-import VerifierError from '../models/VerifierError';
+import getText from '../helpers/getText.js';
+import VerifierError from '../models/VerifierError.js';
 
 export default function compareIssuingAddress (issuingAddress: string, derivedIssuingAddress: string): void {
   const baseError = getText('errors', 'identityErrorBaseMessage');

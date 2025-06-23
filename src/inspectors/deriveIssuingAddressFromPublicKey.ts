@@ -1,8 +1,8 @@
 import type { IDidDocumentPublicKey } from '@decentralized-identity/did-common-typescript';
-import { publicKeyUInt8ArrayFromJwk, publicKeyUInt8ArrayFromMultibase } from '../utils/keyUtils';
-import { computeBitcoinAddressFromPublicKey, computeEthereumAddressFromPublicKey } from '../utils/issuingAddress';
-import getText from '../helpers/getText';
-import VerifierError from '../models/VerifierError';
+import { publicKeyUInt8ArrayFromJwk, publicKeyUInt8ArrayFromMultibase } from '../utils/keyUtils.js';
+import { computeBitcoinAddressFromPublicKey, computeEthereumAddressFromPublicKey } from '../utils/issuingAddress.js';
+import getText from '../helpers/getText.js';
+import VerifierError from '../models/VerifierError.js';
 import { SupportedChains } from '@blockcerts/explorer-lookup';
 import type { IBlockchainObject } from '@blockcerts/explorer-lookup';
 import type { ISecp256k1PublicKeyJwk } from '../utils/keyUtils';

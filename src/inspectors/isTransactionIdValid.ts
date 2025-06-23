@@ -1,5 +1,5 @@
-import VerifierError from '../models/VerifierError';
-import getText from '../helpers/getText';
+import VerifierError from '../models/VerifierError.js';
+import getText from '../helpers/getText.js';
 
 export default function isTransactionIdValid (transactionId: string): string {
   if (typeof transactionId === 'string' && transactionId.length > 0) {

@@ -1,7 +1,7 @@
 import sha256 from 'sha256';
-import VerifierError from '../models/VerifierError';
-import { toByteArray } from '../utils/data';
-import getText from '../helpers/getText';
+import VerifierError from '../models/VerifierError.js';
+import { toByteArray } from '../utils/data.js';
+import getText from '../helpers/getText.js';
 import type { DecodedProof, PathDefinition } from '../models/Proof';
 
 export default function ensureValidReceipt (receipt: DecodedProof): void {
