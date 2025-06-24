@@ -51,7 +51,9 @@ export interface MerkleProof2019VerificationResult {
 
 export interface MerkleProof2019VerifyProofAPI {
   documentLoader?: (url: string) => any; // jsonld document loader hook
-  verifyIdentity?: boolean; // allow splitting verification process for more control
+  verifyIdentity?: boolean; // allow splitting verification process for more control,
+  proof?: VCProof;
+  document?: VCDocument; // document to verify, if not provided the one passed to the constructor will be used
 }
 
 export class LDMerkleProof2019 extends LinkedDataProof {
@@ -69,6 +71,7 @@ export class LDMerkleProof2019 extends LinkedDataProof {
   public issuer: any = null; // TODO: define issuer type
   public issuerEndpoint: string = '';
   public verificationMethod: IVerificationMethod = null;
+  public externalProof: VCProof = null; // external proof passed to the constructor, used for verification
   public proof: VCProof = null;
   public proofValue: DecodedProof = null;
   public proofPurpose: string;
@@ -109,22 +112,22 @@ export class LDMerkleProof2019 extends LinkedDataProof {
   }: MerkleProof2019API) {
     super({ type: 'MerkleProof2019' });
 
-    if (!document) {
-      throw new Error('A document signed by MerkleProof2019 is required for the verification process.');
-    }
-
     this.issuer = issuer;
     this.verificationMethod = verificationMethod;
     this.document = document;
     this.proofPurpose = proofPurpose;
     this.domain = Array.isArray(domain) ? domain : [domain];
     this.challenge = challenge;
-    this.setProof(proof);
+    this.externalProof = proof;
     this.setOptions(options);
-    this.getChain();
-    if (isMockChain(this.chain)) {
-      this.adaptProofVerificationProcessToMocknet();
-      this.adaptIdentityVerificationProcessToMocknet();
+
+    if (this.externalProof || this.document) {
+      this.setProof(this.externalProof);
+      this.getChain();
+      if (isMockChain(this.chain)) {
+        this.adaptProofVerificationProcessToMocknet();
+        this.adaptIdentityVerificationProcessToMocknet();
+      }
     }
   }
 
@@ -143,13 +146,31 @@ export class LDMerkleProof2019 extends LinkedDataProof {
     this.proofValue = LDMerkleProof2019.decodeMerkleProof2019(this.proof);
   }
 
-  async verifyProof ({ documentLoader, verifyIdentity }: MerkleProof2019VerifyProofAPI = {
+  async verifyProof ({ documentLoader, verifyIdentity, document, proof }: MerkleProof2019VerifyProofAPI = {
     documentLoader: (url): any => {},
     verifyIdentity: true
   }): Promise<MerkleProof2019VerificationResult> {
     this.documentLoader = documentLoader;
     let verified: boolean;
     let error: string = '';
+
+    if (document) {
+      this.document = document;
+    }
+
+    if (proof) {
+      this.setProof(proof);
+    }
+
+    this.getChain();
+    if (isMockChain(this.chain)) {
+      this.adaptProofVerificationProcessToMocknet();
+      this.adaptIdentityVerificationProcessToMocknet();
+    }
+
+    if (!this.document) {
+      throw new Error('A document signed by MerkleProof2019 is required for the verification process.');
+    }
 
     try {
       await this.verifyProcess(this.proofVerificationProcess);

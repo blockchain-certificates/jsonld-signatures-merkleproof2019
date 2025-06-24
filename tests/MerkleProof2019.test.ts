@@ -8,14 +8,6 @@ import blockcertsV3Fixture, { documentHash } from './fixtures/testnet-v3-did';
 import fixtureTransactionData from './fixtures/transactionData';
 
 describe('MerkleProof2019 test suite', function () {
-  describe('given a document is not passed', function () {
-    it('should throw', function () {
-      expect(() => {
-        new LDMerkleProof2019({} as any);
-      }).toThrow('A document signed by MerkleProof2019 is required for the verification process.');
-    });
-  });
-
   describe('given the document is not signed', function () {
     it('should throw', function () {
       const unsignedDocument = JSON.parse(JSON.stringify(blockcertsV3Fixture));
