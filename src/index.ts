@@ -109,10 +109,6 @@ export class LDMerkleProof2019 extends LinkedDataProof {
   }: MerkleProof2019API) {
     super({ type: 'MerkleProof2019' });
 
-    if (!document) {
-      throw new Error('A document signed by MerkleProof2019 is required for the verification process.');
-    }
-
     this.issuer = issuer;
     this.verificationMethod = verificationMethod;
     this.document = document;
@@ -150,6 +146,10 @@ export class LDMerkleProof2019 extends LinkedDataProof {
     this.documentLoader = documentLoader;
     let verified: boolean;
     let error: string = '';
+
+    if (!this.document) {
+      throw new Error('A document signed by MerkleProof2019 is required for the verification process.');
+    }
 
     try {
       await this.verifyProcess(this.proofVerificationProcess);
