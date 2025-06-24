@@ -1,6 +1,6 @@
 import * as bitcoin from 'bitcoinjs-lib';
 import { secp256k1 } from '@noble/curves/secp256k1.js';
-import { keccak256 } from 'js-sha3';
+import { keccak256 } from '@ethersproject/keccak256';
 import { Buffer as BufferPolyfill } from 'buffer';
 import type { IBlockchainObject } from '@blockcerts/explorer-lookup';
 
@@ -18,6 +18,6 @@ export function computeEthereumAddressFromPublicKey (publicKey: Buffer, chain: I
   ).toString('hex').slice(2);
 
   // Now apply keccak
-  const address: string = keccak256(buffer.from(publicKeyUncompressed, 'hex')).slice(64 - 40);
+  const address: string = keccak256(buffer.from(publicKeyUncompressed, 'hex')).slice(64 - 38);
   return `0x${address.toString()}`;
 }
