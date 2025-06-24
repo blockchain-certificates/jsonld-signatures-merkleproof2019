@@ -30,7 +30,6 @@ describe('Contract test suite', function () {
       }
       delete candidateDocument.proof;
       const suite = new LDMerkleProof2019({
-        document: blockcertsDocument,
         verificationMethod: didDocument.verificationMethod[0],
         options: {
           issuerEndpoint: 'http://localhost:3002/credentials/issue'
@@ -49,7 +48,6 @@ describe('Contract test suite', function () {
 
     it('should verify a MerkleProof2019 signed document', async function () {
       const suite = [new LDMerkleProof2019({
-        document: blockcertsDocument,
         verificationMethod: didDocument.verificationMethod[0]
       })];
 
