@@ -136,6 +136,10 @@ export class LDMerkleProof2019 extends LinkedDataProof {
     return base58Decoder.decode();
   }
 
+  createVerifier () {}
+
+  createVerifyData () {} 
+
   setProof (externalProof: VCProof = null): void {
     const proof = externalProof ?? this.document.proof;
     if (!proof) {
@@ -191,7 +195,7 @@ export class LDMerkleProof2019 extends LinkedDataProof {
     };
   }
 
-  async createProof({ document, purpose }) {
+  async createProof({ document, purpose = 'assertionMethod' }: { document: VCDocument; purpose?: string }) {
     if (!this.issuerEndpoint) {
       throw new Error('No issuer endpoint provided. ' +
         'Please set the issuerEndpoint option when instantiating the suite.');
@@ -206,9 +210,22 @@ export class LDMerkleProof2019 extends LinkedDataProof {
         body: JSON.stringify({
           credential: document
         })
-      }).then(response => response.json()) as { verifiableCredential: VCDocument & { proof: VCProof } };
+      })
+      .then(response => response.json())
+      .catch(error => {
+        console.error(error);
+      });
 
-    return response.verifiableCredential.proof;
+    if (response.verifiableCredential) {
+      return response.verifiableCredential.proof;
+    } else {
+      console.error('An error occurred while creating the proof:', response);
+    }
+  }
+
+  async createProofValue ({ document }) {
+    const proof = await this.createProof({ document });
+    return proof ? proof.proofValue : 'error creating proof';
   }
 
   ensureSuiteContext (): void {}
