@@ -9,7 +9,7 @@
   "typings": "lib/index.d.ts",
   "dependencies": {
     "@blockcerts/explorer-lookup": "^1.5.6",
-    "@blockcerts/schemas": "^3.6.4",
+    "@blockcerts/schemas": "^3.9.2",
     "@digitalbazaar/ecdsa-multikey": "github:blockchain-certificates/ecdsa-multikey#feat/secp256k1",
     "@ethersproject/keccak256": "^5.8.0",
     "@noble/curves": "^1.9.2",
