@@ -138,7 +138,7 @@ export class LDMerkleProof2019 extends LinkedDataProof {
 
   createVerifier () {}
 
-  createVerifyData () {} 
+  createVerifyData () {}
 
   setProof (externalProof: VCProof = null): void {
     const proof = externalProof ?? this.document.proof;
