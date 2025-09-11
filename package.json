@@ -12,7 +12,7 @@
     "@blockcerts/schemas": "^3.9.2",
     "@digitalbazaar/ecdsa-multikey": "github:blockchain-certificates/ecdsa-multikey#feat/secp256k1",
     "@ethersproject/keccak256": "^5.8.0",
-    "@noble/curves": "^1.9.2",
+    "@noble/curves": "^2.0.0",
     "@trust/keyto": "^1.0.1",
     "@vaultie/lds-merkle-proof-2019": "^0.0.12",
     "bitcoinjs-lib": "^6.0.2",
