@@ -48,8 +48,7 @@
     "lint": "eslint . --ext .ts",
     "start:mock-server": "tsx ./tests/mock-server/issuer.ts",
     "test": "vitest run",
-    "test:watch": "vitest",
-    "prepare": "husky install"
+    "test:watch": "vitest"
   },
   "repository": {
     "type": "git",
