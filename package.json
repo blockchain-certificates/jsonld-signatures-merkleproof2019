@@ -34,7 +34,6 @@
     "express": "^5.1.0",
     "husky": "^9.1.7",
     "rimraf": "^6.0.1",
-    "semantic-release": "^24.2.3",
     "sinon": "^21.0.0",
     "tslib": "^2.6.2",
     "tsx": "^4.20.3",
@@ -49,9 +48,7 @@
     "lint": "eslint . --ext .ts",
     "start:mock-server": "tsx ./tests/mock-server/issuer.ts",
     "test": "vitest run",
-    "test:watch": "vitest",
-    "semantic-release": "semantic-release",
-    "prepare": "husky install"
+    "test:watch": "vitest"
   },
   "repository": {
     "type": "git",
