@@ -15,7 +15,7 @@
     "@noble/curves": "^1.9.2",
     "@trust/keyto": "^1.0.1",
     "@vaultie/lds-merkle-proof-2019": "^0.0.12",
-    "bitcoinjs-lib": "^6.0.2",
+    "bitcoinjs-lib": "^7.0.0",
     "bs58": "^6.0.0",
     "jsonld": "^8.3.2",
     "jsonld-signatures": "^11.2.1",
