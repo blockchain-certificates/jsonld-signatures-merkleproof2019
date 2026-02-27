@@ -17,8 +17,8 @@
     "@vaultie/lds-merkle-proof-2019": "^0.0.12",
     "bitcoinjs-lib": "^7.0.0",
     "bs58": "^6.0.0",
-    "jsonld": "^8.3.2",
-    "jsonld-signatures": "^11.2.1",
+    "jsonld": "^9.0.0",
+    "jsonld-signatures": "^11.6.0",
     "lodash.clonedeep": "^4.5.0",
     "secp256k1": "^5.0.0",
     "sha256": "^0.2.0"
