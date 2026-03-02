@@ -7,11 +7,15 @@ import { SupportedChains } from '@blockcerts/explorer-lookup';
 import type { IBlockchainObject } from '@blockcerts/explorer-lookup';
 import type { ISecp256k1PublicKeyJwk } from '../utils/keyUtils';
 
+function hasPublicKeyMultibase (o: any): o is { publicKeyMultibase: string } {
+  return o.publicKeyMultibase !== undefined
+}
+
 export default async function deriveIssuingAddressFromPublicKey (verificationMethodPublicKey: IDidDocumentPublicKey, chain: IBlockchainObject): Promise<string> {
   let publicKey;
   if ('publicKeyJwk' in verificationMethodPublicKey) {
     publicKey = publicKeyUInt8ArrayFromJwk(verificationMethodPublicKey.publicKeyJwk as ISecp256k1PublicKeyJwk);
-  } else if ('publicKeyMultibase' in verificationMethodPublicKey) {
+  } else if (hasPublicKeyMultibase(verificationMethodPublicKey)) {
     publicKey = await publicKeyUInt8ArrayFromMultibase(verificationMethodPublicKey);
   }
 
