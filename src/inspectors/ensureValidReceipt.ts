@@ -1,4 +1,5 @@
 import { sha256 } from '@noble/hashes/sha2.js';
+import { Buffer } from 'buffer';
 import VerifierError from '../models/VerifierError.js';
 import { toByteArray } from '../utils/data.js';
 import getText from '../helpers/getText.js';

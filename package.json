@@ -16,6 +16,7 @@
     "@noble/hashes": "^2.0.1",
     "@noble/secp256k1": "^3.0.0",
     "bitcoinjs-lib": "^7.0.0",
+    "buffer": "^6.0.3",
     "jsonld": "^9.0.0",
     "jsonld-signatures": "^11.6.0",
     "lodash.clonedeep": "^4.5.0"

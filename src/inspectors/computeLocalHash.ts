@@ -1,5 +1,6 @@
 import jsonld from 'jsonld';
 import { sha256 } from '@noble/hashes/sha2.js';
+import { Buffer } from 'buffer';
 import preloadedContexts from '../constants/contexts/preloadedContexts.js';
 import { toUTF8Data } from '../utils/data.js';
 import { isObject } from '../utils/object.js';
