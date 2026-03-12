@@ -1,4 +1,4 @@
-import { Decoder } from '@vaultie/lds-merkle-proof-2019';
+import { Decoder } from '@blockcerts/lds-merkle-proof-2019';
 import jsigs from 'jsonld-signatures';
 import { lookForTx, type ExplorerAPI, type TransactionData, type IBlockchainObject } from '@blockcerts/explorer-lookup';
 import getTransactionId from './helpers/getTransactionId.js';
