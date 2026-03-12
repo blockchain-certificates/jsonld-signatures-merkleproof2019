@@ -1,4 +1,4 @@
-import sha256 from 'sha256';
+import { sha256 } from '@noble/hashes/sha2.js';
 import VerifierError from '../models/VerifierError.js';
 import { toByteArray } from '../utils/data.js';
 import getText from '../helpers/getText.js';
@@ -16,10 +16,10 @@ export default function ensureValidReceipt (receipt: DecodedProof): void {
         let appendedBuffer;
         if (typeof node.left !== 'undefined') {
           appendedBuffer = toByteArray(`${node.left}${proofHash}`);
-          proofHash = sha256(appendedBuffer) as any;
+          proofHash = Buffer.from(sha256(Uint8Array.from(appendedBuffer))).toString('hex');
         } else if (typeof node.right !== 'undefined') {
           appendedBuffer = toByteArray(`${proofHash}${node.right}`);
-          proofHash = sha256(appendedBuffer) as any;
+          proofHash = Buffer.from(sha256(Uint8Array.from(appendedBuffer))).toString('hex');
         } else {
           throw new VerifierError(
             'checkReceipt',

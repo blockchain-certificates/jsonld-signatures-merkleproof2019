@@ -1,5 +1,5 @@
 import jsonld from 'jsonld';
-import sha256 from 'sha256';
+import { sha256 } from '@noble/hashes/sha2.js';
 import preloadedContexts from '../constants/contexts/preloadedContexts.js';
 import { toUTF8Data } from '../utils/data.js';
 import { isObject } from '../utils/object.js';
@@ -83,6 +83,6 @@ export default async function computeLocalHash (
       `${getText('errors', 'foundUnmappedFields')}: ${unmappedFields.join(', ')}`
     );
   } else {
-    return sha256(toUTF8Data(normalizedDocument));
+    return Buffer.from(sha256(Uint8Array.from(toUTF8Data(normalizedDocument)))).toString('hex');
   }
 }
