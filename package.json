@@ -9,7 +9,7 @@
   "typings": "lib/index.d.ts",
   "dependencies": {
     "@blockcerts/explorer-lookup": "^1.7.0",
-    "@blockcerts/lds-merkle-proof-2019": "^1.0.1",
+    "@blockcerts/lds-merkle-proof-2019": "^1.0.2",
     "@blockcerts/schemas": "^3.9.2",
     "@digitalbazaar/ecdsa-multikey": "github:blockchain-certificates/ecdsa-multikey#feat/secp256k1",
     "@ethersproject/keccak256": "^5.8.0",
