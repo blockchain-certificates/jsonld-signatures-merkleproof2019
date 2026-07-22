@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - master
+  pull_request:
 
 jobs:
   build-and-release:
@@ -35,4 +36,5 @@ jobs:
         run: npm run compile
 
       - name: Release
+        if: github.event_name == 'push' && github.ref == 'refs/heads/master'
         uses: cycjimmy/semantic-release-action@v6
