@@ -16,6 +16,7 @@ import {
 } from './inspectors/index.js';
 import isMockChain from './helpers/isMockChain.js';
 import VerifierError from './models/VerifierError.js';
+import { ProblemDetailsType } from './models/ProblemDetails.js';
 import type IVerificationMethod from './models/VerificationMethod';
 import { type DecodedProof, type VCProof } from './models/Proof';
 
@@ -398,13 +399,13 @@ export class LDMerkleProof2019 extends LinkedDataProof {
         if (this.verificationMethod.expires) {
           const expirationDate = new Date(this.verificationMethod.expires).getTime();
           if (expirationDate < Date.now()) {
-            throw new VerifierError('ensureVerificationMethodValidity', 'The verification key has expired');
+            throw new VerifierError('ensureVerificationMethodValidity', 'The verification key has expired', ProblemDetailsType.CRYPTOGRAPHIC_SECURITY_ERROR);
           }
         }
 
         if (this.verificationMethod.revoked) {
           // waiting on clarification https://github.com/w3c/cid/issues/152
-          throw new VerifierError('ensureVerificationMethodValidity', 'The verification key has been revoked');
+          throw new VerifierError('ensureVerificationMethodValidity', 'The verification key has been revoked', ProblemDetailsType.CRYPTOGRAPHIC_SECURITY_ERROR);
         }
       },
       this.type

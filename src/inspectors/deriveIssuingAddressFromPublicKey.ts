@@ -3,6 +3,7 @@ import { publicKeyUInt8ArrayFromJwk, publicKeyUInt8ArrayFromMultibase } from '..
 import { computeBitcoinAddressFromPublicKey, computeEthereumAddressFromPublicKey } from '../utils/issuingAddress.js';
 import getText from '../helpers/getText.js';
 import VerifierError from '../models/VerifierError.js';
+import { ProblemDetailsType } from '../models/ProblemDetails.js';
 import { SupportedChains } from '@blockcerts/explorer-lookup';
 import type { IBlockchainObject } from '@blockcerts/explorer-lookup';
 import type { ISecp256k1PublicKeyJwk } from '../utils/keyUtils';
@@ -37,7 +38,7 @@ export default async function deriveIssuingAddressFromPublicKey (verificationMet
       break;
 
     default:
-      throw new VerifierError('deriveIssuingAddressFromPublicKey', `${baseError} - ${getText('errors', 'deriveIssuingAddressFromPublicKey')}`);
+      throw new VerifierError('deriveIssuingAddressFromPublicKey', `${baseError} - ${getText('errors', 'deriveIssuingAddressFromPublicKey')}`, ProblemDetailsType.MALFORMED_VALUE_ERROR);
   }
   return address;
 }

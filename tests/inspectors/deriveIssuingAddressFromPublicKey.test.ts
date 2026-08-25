@@ -3,6 +3,7 @@ import type { IDidDocumentPublicKey } from '@decentralized-identity/did-common-t
 import didDocument from '../fixtures/did:ion:EiA_Z6LQILbB2zj_eVrqfQ2xDm4HNqeJUw5Kj2Z7bFOOeQ.json';
 import { BLOCKCHAINS } from '@blockcerts/explorer-lookup';
 import { deriveIssuingAddressFromPublicKey } from '../../src/inspectors';
+import { ProblemDetailsType } from '../../src/models/ProblemDetails';
 
 describe('deriveIssuingAddressFromPublicKey test suite', function () {
   let publicKey: IDidDocumentPublicKey;
@@ -76,6 +77,18 @@ describe('deriveIssuingAddressFromPublicKey test suite', function () {
       await expect(async () => {
         await deriveIssuingAddressFromPublicKey(publicKey, BLOCKCHAINS.regtest);
       }).rejects.toThrow('Issuer identity mismatch - Unsupported blockchain for DID verification');
+    });
+
+    it('should expose the appropriate problemDetails', async function () {
+      try {
+        await deriveIssuingAddressFromPublicKey(publicKey, BLOCKCHAINS.regtest);
+        throw new Error('should not reach here');
+      } catch (e) {
+        expect(e.problemDetails).toEqual({
+          type: ProblemDetailsType.MALFORMED_VALUE_ERROR,
+          detail: 'Issuer identity mismatch - Unsupported blockchain for DID verification'
+        });
+      }
     });
   });
 

@@ -1,4 +1,5 @@
 import VerifierError from '../models/VerifierError.js';
+import { ProblemDetailsType } from '../models/ProblemDetails.js';
 import getText from '../helpers/getText.js';
 import type { VCProof } from '../models/Proof';
 
@@ -13,7 +14,8 @@ function assertProofPurposeValidity ({ expectedProofPurpose, proof, issuer }: As
     throw new VerifierError('assertProofValidity',
       getText('errors', 'assertProofValidityPurposeVerifier')
         .replace('${expectedProofPurpose}', expectedProofPurpose)
-        .replace('${proof.proofPurpose}', proof.proofPurpose)
+        .replace('${proof.proofPurpose}', proof.proofPurpose),
+      ProblemDetailsType.MALFORMED_VALUE_ERROR
     );
   }
 
@@ -21,7 +23,8 @@ function assertProofPurposeValidity ({ expectedProofPurpose, proof, issuer }: As
     throw new VerifierError('assertProofValidity',
       getText('errors', 'assertProofValidityPurposeIssuerKey')
         .replace('${proof.verificationMethod}', proof.verificationMethod)
-        .replace('${expectedProofPurpose}', expectedProofPurpose)
+        .replace('${expectedProofPurpose}', expectedProofPurpose),
+      ProblemDetailsType.CRYPTOGRAPHIC_SECURITY_ERROR
     );
   }
 
@@ -42,7 +45,8 @@ function assertProofDomain ({ expectedDomain, proof, expectedChallenge }: Assert
     throw new VerifierError('assertProofValidity',
       getText('errors', 'assertProofValidityDomainVerifier')
         .replace('${expectedDomain}', expectedDomain.join(', '))
-        .replace('${proof.domain}', proof.domain)
+        .replace('${proof.domain}', proof.domain),
+      ProblemDetailsType.MALFORMED_VALUE_ERROR
     );
   }
 
@@ -53,7 +57,8 @@ function assertProofDomain ({ expectedDomain, proof, expectedChallenge }: Assert
 
   if (proof.challenge && proof.challenge !== expectedChallenge) {
     throw new VerifierError('assertProofValidity',
-      getText('errors', 'assertProofValidityInvalidChallenge'));
+      getText('errors', 'assertProofValidityInvalidChallenge'),
+      ProblemDetailsType.MALFORMED_VALUE_ERROR);
   }
 }
 
@@ -73,11 +78,11 @@ export default function assertProofValidity ({
   issuer
 }: AssertProofValidityAPI): boolean {
   if (!proof.proofPurpose) {
-    throw new VerifierError('assertProofValidity', getText('errors', 'assertProofValidityNoProofPurpose'));
+    throw new VerifierError('assertProofValidity', getText('errors', 'assertProofValidityNoProofPurpose'), ProblemDetailsType.MALFORMED_VALUE_ERROR);
   }
 
   if (!proof.created) {
-    throw new VerifierError('assertProofValidity', getText('errors', 'assertProofValidityNoCreated'));
+    throw new VerifierError('assertProofValidity', getText('errors', 'assertProofValidityNoCreated'), ProblemDetailsType.MALFORMED_VALUE_ERROR);
   }
 
   if (proof.proofPurpose) {
