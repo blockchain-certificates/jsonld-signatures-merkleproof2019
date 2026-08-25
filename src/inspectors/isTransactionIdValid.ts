@@ -1,4 +1,5 @@
 import VerifierError from '../models/VerifierError.js';
+import { ProblemDetailsType } from '../models/ProblemDetails.js';
 import getText from '../helpers/getText.js';
 
 export default function isTransactionIdValid (transactionId: string): string {
@@ -7,7 +8,8 @@ export default function isTransactionIdValid (transactionId: string): string {
   } else {
     throw new VerifierError(
       'getTransactionId',
-      getText('errors', 'isTransactionIdValid')
+      getText('errors', 'isTransactionIdValid'),
+      ProblemDetailsType.MALFORMED_VALUE_ERROR
     );
   }
 }

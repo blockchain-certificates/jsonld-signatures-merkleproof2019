@@ -5,6 +5,7 @@ import preloadedContexts from '../constants/contexts/preloadedContexts.js';
 import { toUTF8Data } from '../utils/data.js';
 import { isObject } from '../utils/object.js';
 import VerifierError from '../models/VerifierError.js';
+import { ProblemDetailsType } from '../models/ProblemDetails.js';
 import getText from '../helpers/getText.js';
 
 export function getUnmappedFields (normalized: string): string[] | null {
@@ -40,7 +41,8 @@ export default async function computeLocalHash (
     if (!targetProof) {
       throw new VerifierError(
         'computeLocalHash',
-        getText('errors', 'noProofSpecified')
+        getText('errors', 'noProofSpecified'),
+        ProblemDetailsType.MALFORMED_VALUE_ERROR
       );
     }
     const proofIndex = theDocument.proof.findIndex(proof => proof.proofValue === targetProof.proofValue);
@@ -74,14 +76,15 @@ export default async function computeLocalHash (
     normalizedDocument = await (jsonld as any).normalize(theDocument, normalizeArgs);
   } catch (e: any) {
     console.error(e);
-    throw new VerifierError('computeLocalHash', getText('errors', 'failedJsonLdNormalization'));
+    throw new VerifierError('computeLocalHash', getText('errors', 'failedJsonLdNormalization'), ProblemDetailsType.PROOF_TRANSFORMATION_ERROR);
   }
 
   const unmappedFields: string[] = getUnmappedFields(normalizedDocument);
   if (unmappedFields) {
     throw new VerifierError(
       'computeLocalHash',
-      `${getText('errors', 'foundUnmappedFields')}: ${unmappedFields.join(', ')}`
+      `${getText('errors', 'foundUnmappedFields')}: ${unmappedFields.join(', ')}`,
+      ProblemDetailsType.MALFORMED_VALUE_ERROR
     );
   } else {
     return Buffer.from(sha256(Uint8Array.from(toUTF8Data(normalizedDocument)))).toString('hex');

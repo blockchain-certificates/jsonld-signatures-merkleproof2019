@@ -1,5 +1,6 @@
 import { describe, it, expect } from 'vitest';
 import ensureHashesEqual from '../../src/inspectors/ensureHashesEqual';
+import { ProblemDetailsType } from '../../src/models/ProblemDetails';
 
 describe('Inspectors test suite', function () {
   describe('ensureHashesEqual method', function () {
@@ -17,6 +18,18 @@ describe('Inspectors test suite', function () {
         expect(function () {
           ensureHashesEqual('hash', 'different-hash');
         }).toThrowError(errorMessage);
+      });
+
+      it('should expose the appropriate problemDetails', function () {
+        try {
+          ensureHashesEqual('hash', 'different-hash');
+          throw new Error('should not reach here');
+        } catch (e) {
+          expect(e.problemDetails).toEqual({
+            type: ProblemDetailsType.CRYPTOGRAPHIC_SECURITY_ERROR,
+            detail: errorMessage
+          });
+        }
       });
     });
   });

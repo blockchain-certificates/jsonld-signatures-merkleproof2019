@@ -1,5 +1,6 @@
 import { describe, it, expect } from 'vitest';
 import isTransactionIdValid from '../../src/inspectors/isTransactionIdValid';
+import { ProblemDetailsType } from '../../src/models/ProblemDetails';
 
 describe('Inspectors test suite', function () {
   describe('isTransactionIdValid method', function () {
@@ -19,6 +20,19 @@ describe('Inspectors test suite', function () {
         expect(() => {
           isTransactionIdValid(transactionIdFixture);
         }).toThrow(errorMessage);
+      });
+
+      it('should expose the appropriate problemDetails', function () {
+        const transactionIdFixture = 1 as any;
+        try {
+          isTransactionIdValid(transactionIdFixture);
+          throw new Error('should not reach here');
+        } catch (e) {
+          expect(e.problemDetails).toEqual({
+            type: ProblemDetailsType.MALFORMED_VALUE_ERROR,
+            detail: errorMessage
+          });
+        }
       });
     });
 
