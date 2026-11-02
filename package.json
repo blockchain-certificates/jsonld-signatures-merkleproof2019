@@ -31,7 +31,6 @@
     "eslint": "^10.0.2",
     "express": "^5.1.0",
     "husky": "^9.1.7",
-    "rimraf": "^6.0.1",
     "sinon": "^21.0.0",
     "tslib": "^2.6.2",
     "tsx": "^4.20.3",
@@ -42,7 +41,7 @@
   "scripts": {
     "compile": "npm run clean:build && tsc -p tsconfig.json && tsc -p tsconfig.cjs.json && npm run dts:bundle",
     "dts:bundle": "dts-bundle-generator -o ./lib/index.d.ts --project tsconfig.json --no-banner src/index.ts",
-    "clean:build": "rimraf lib",
+    "clean:build": "rm -rf lib",
     "lint": "eslint . --ext .ts",
     "start:mock-server": "tsx ./tests/mock-server/issuer.ts",
     "test": "vitest run",
